@@ -937,6 +937,7 @@ let calGoal   = +localStorage.getItem('il_calgoal') || 2200;
 let starRating = 3;
 let exCount = 0;
 let setCount = 0;
+let editingSessionId = null;
 let timerSec = 90, timerOn = false, timerIval = null;
 let progressChartInst = null, weightChartInst = null, macroRingInst = null;
 let histFilter = 'all';
@@ -1394,7 +1395,10 @@ function renderHistory() {
             </div>
           </div>
         `).join('')}
-        <button class="btn-full btn-danger" style="margin-top:8px" onclick="event.stopPropagation();deleteSession(${s.id})">Supprimer</button>
+        <div style="display:flex;gap:8px;margin-top:8px">
+  <button class="btn-full btn-ghost" onclick="event.stopPropagation();editSession(${s.id})">✏️ Modifier</button>
+  <button class="btn-full btn-danger" onclick="event.stopPropagation();deleteSession(${s.id})">Supprimer</button>
+</div>
       </div>
     </div>`;
   }).join('');
