@@ -585,9 +585,87 @@ input[type=range]::-webkit-slider-thumb {
 /* ANIM */
 @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 .page.active { animation: fadeIn 0.25s ease; }
+
+/* SPLASH */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+#splash.hide {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+.splash-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  animation: splashLogo 0.7s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.splash-logo span { color: var(--orange); }
+@keyframes splashLogo {
+  from { opacity: 0; transform: translateY(20px) scale(0.92); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.splash-question {
+  font-size: 17px;
+  color: var(--text2);
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  animation: splashQ 0.6s 0.25s ease both;
+}
+@keyframes splashQ {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.splash-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 28px;
+  animation: splashQ 0.6s 0.4s ease both;
+}
+.splash-bar {
+  width: 4px;
+  border-radius: 2px;
+  background: var(--orange);
+  animation: barPulse 1s ease-in-out infinite alternate;
+}
+.splash-bar:nth-child(1) { height: 40%; animation-delay: 0s; }
+.splash-bar:nth-child(2) { height: 70%; animation-delay: 0.15s; }
+.splash-bar:nth-child(3) { height: 100%; animation-delay: 0.3s; }
+.splash-bar:nth-child(4) { height: 70%; animation-delay: 0.45s; }
+.splash-bar:nth-child(5) { height: 40%; animation-delay: 0.6s; }
+@keyframes barPulse {
+  from { transform: scaleY(0.5); opacity: 0.4; }
+  to   { transform: scaleY(1);   opacity: 1; }
+}
 </style>
 </head>
 <body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-logo">IRON<span>LOG</span></div>
+  <div class="splash-bars">
+    <div class="splash-bar"></div>
+    <div class="splash-bar"></div>
+    <div class="splash-bar"></div>
+    <div class="splash-bar"></div>
+    <div class="splash-bar"></div>
+  </div>
+  <div class="splash-question">Prêt pour l'entraînement ?</div>
+</div>
+
 <div class="app">
   <div class="scroll-area" id="scrollArea">
 
@@ -947,6 +1025,13 @@ const TODAY = new Date().toISOString().split('T')[0];
 //  INIT
 // ══════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  // Splash screen
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+    splash.classList.add('hide');
+    setTimeout(() => splash.remove(), 500);
+  }, 2000);
+
   document.getElementById('sDate').value = TODAY;
   document.getElementById('sRpe').addEventListener('input', e => {
     document.getElementById('rpeVal').textContent = e.target.value;
