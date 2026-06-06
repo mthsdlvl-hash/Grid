@@ -8,60 +8,7 @@
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap');
   *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
   html,body{width:100%;height:100%;background:#000;font-family:'DM Sans',sans-serif;overflow:hidden;}
-
-  .app{
-    width:100vw;height:100vh;
-    background:#000000;
-    display:flex;align-items:center;justify-content:center;
-    position:relative;overflow:hidden;
-  }
-
-  /* ── Lueur ambiante noire ── */
-  .glow{
-    position:absolute;width:360px;height:360px;border-radius:50%;
-    background:radial-gradient(circle,rgba(255,255,255,0.04) 0%,transparent 70%);
-    animation:glowPulse 5s ease-in-out infinite;pointer-events:none;
-    transition:opacity 0.6s;
-  }
-  .menu-open .glow{opacity:0.2;}
-  @keyframes glowPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
-
-  /* ── Anneaux ── */
-  .rings{position:absolute;pointer-events:none;transition:opacity 0.4s;}
-  .menu-open .rings{opacity:0;}
-  .ring{
-    position:absolute;border-radius:50%;
-    border:0.5px solid rgba(255,255,255,0.06);
-    animation:ringOut 5s ease-out infinite;
-    top:50%;left:50%;transform:translate(-50%,-50%);
-  }
-  .ring:nth-child(1){width:260px;height:260px;animation-delay:0s;}
-  .ring:nth-child(2){width:330px;height:330px;animation-delay:1.6s;}
-  .ring:nth-child(3){width:410px;height:410px;animation-delay:3.2s;}
-  @keyframes ringOut{
-    0%{opacity:0;transform:translate(-50%,-50%) scale(0.88);}
-    20%{opacity:1;}
-    100%{opacity:0;transform:translate(-50%,-50%) scale(1.12);}
-  }
-
-  /* ── Sphère ── */
-  .sphere-wrap{
-    position:absolute;
-    left:50%;top:50%;
-    transform:translate(-50%,-50%);
-    width:200px;height:200px;
-    cursor:pointer;z-index:20;
-    transition:left 0.65s cubic-bezier(0.77,0,0.18,1),
-               top 0.65s cubic-bezier(0.77,0,0.18,1),
-               transform 0.65s cubic-bezier(0.77,0,0.18,1);
-  }
-  .menu-open .sphere-wrap{
-    left:22%;top:50%;
-    transform:translate(-50%,-50%) scale(0.78);
-  }
-  canvas#c{
-    display:block;width:200px;height:200px;border-radius:50%;
-  }
+  .app{width:100vw;height:100vh;background:#000;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
 
   /* ── Status ── */
   .status{
@@ -75,7 +22,6 @@
   .dot{width:5px;height:5px;border-radius:50%;background:rgba(180,255,200,0.6);animation:blink 2.5s ease-in-out infinite;}
   @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.1;}}
 
-  /* ── Hint ── */
   .hint{
     position:absolute;bottom:70px;left:50%;transform:translateX(-50%);
     font-size:10px;color:rgba(255,255,255,0.1);letter-spacing:0.14em;
@@ -85,21 +31,13 @@
   .menu-open .hint{opacity:0;}
   @keyframes hintFloat{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-5px);}}
 
-  /* ══════════════════════════════════════
-     ARC MENU
-  ══════════════════════════════════════ */
-  .arc-canvas{
-    position:absolute;inset:0;width:100%;height:100%;
-    pointer-events:none;z-index:9;
-    opacity:0;transition:opacity 0.5s;
-  }
+  /* ══ ARC MENU ══ */
+  .arc-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:9;opacity:0;transition:opacity 0.5s;}
   .menu-open .arc-canvas{opacity:1;}
 
   .menu-item{
-    position:absolute;
-    display:flex;align-items:center;gap:14px;
-    cursor:pointer;opacity:0;
-    transform:scale(0.85) translateX(10px);
+    position:absolute;display:flex;align-items:center;gap:14px;
+    cursor:pointer;opacity:0;transform:scale(0.85) translateX(10px);
     transition:opacity 0.35s,transform 0.38s cubic-bezier(0.34,1.4,0.64,1);
     z-index:30;user-select:none;pointer-events:none;
   }
@@ -109,82 +47,50 @@
   .menu-open .menu-item:nth-child(3){transition-delay:0.16s;}
   .menu-open .menu-item:nth-child(4){transition-delay:0.22s;}
 
-  .item-label{
-    font-size:19px;font-weight:300;
-    color:rgba(255,255,255,0.22);
-    letter-spacing:-0.01em;
-    transition:color 0.25s;white-space:nowrap;
-  }
-  .menu-item.active .item-label,
-  .menu-item.hovered .item-label{color:rgba(255,255,255,0.85);font-weight:400;}
+  .item-label{font-size:19px;font-weight:300;color:rgba(255,255,255,0.22);letter-spacing:-0.01em;transition:color 0.25s;white-space:nowrap;}
+  .menu-item.active .item-label,.menu-item.hovered .item-label{color:rgba(255,255,255,0.85);font-weight:400;}
 
   .item-icon{
-    width:54px;height:54px;border-radius:50%;
-    background:rgba(255,255,255,0.05);
-    display:flex;align-items:center;justify-content:center;
-    font-size:24px;flex-shrink:0;position:relative;
-    transition:transform 0.3s,background 0.3s;
+    width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.05);
+    display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;
+    position:relative;transition:transform 0.3s,background 0.3s;
   }
-  .menu-item.active .item-icon,
-  .menu-item.hovered .item-icon{
-    background:rgba(255,255,255,0.09);transform:scale(1.1);
-  }
-
-  /* Contour blanc néon tournant sur item actif */
+  .menu-item.active .item-icon,.menu-item.hovered .item-icon{background:rgba(255,255,255,0.09);transform:scale(1.1);}
   .menu-item.active .item-icon::before{
     content:'';position:absolute;inset:-2.5px;border-radius:50%;
-    background:conic-gradient(from 0deg,
-      rgba(255,255,255,0.9),rgba(255,255,255,0.2),
-      rgba(255,255,255,0.9),rgba(255,255,255,0.1),
-      rgba(255,255,255,0.9)
-    );
+    background:conic-gradient(from 0deg,rgba(255,255,255,0.9),rgba(255,255,255,0.2),rgba(255,255,255,0.9),rgba(255,255,255,0.1),rgba(255,255,255,0.9));
     -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
     mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
     -webkit-mask-composite:xor;mask-composite:exclude;
     animation:spinBorder 2.5s linear infinite;
   }
   @keyframes spinBorder{to{transform:rotate(360deg);}}
-
-  .active-pill{
-    display:none;width:30px;height:14px;border-radius:20px;
-    background:rgba(255,255,255,0.75);flex-shrink:0;
-  }
+  .active-pill{display:none;width:30px;height:14px;border-radius:20px;background:rgba(255,255,255,0.75);flex-shrink:0;}
   .menu-item.active .active-pill{display:block;}
+
+  /* Wrapper sphère */
+  .sphere-wrap{
+    position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%);
+    cursor:pointer;z-index:20;
+    transition:left 0.65s cubic-bezier(0.77,0,0.18,1),top 0.65s cubic-bezier(0.77,0,0.18,1),transform 0.65s cubic-bezier(0.77,0,0.18,1);
+  }
+  .menu-open .sphere-wrap{left:22%;top:50%;transform:translate(-50%,-50%) scale(0.72);}
+  canvas#c{display:block;}
 </style>
 </head>
 <body>
 <div class="app" id="app">
 
-  <div class="glow"></div>
-  <div class="rings">
-    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-  </div>
-
   <canvas class="arc-canvas" id="arcCanvas"></canvas>
 
-  <div class="menu-item" data-index="0" id="item0">
-    <span class="item-label">Habitudes</span>
-    <div class="item-icon">🌱</div>
-    <div class="active-pill"></div>
-  </div>
-  <div class="menu-item" data-index="1" id="item1">
-    <span class="item-label">Sommeil</span>
-    <div class="item-icon">🌙</div>
-    <div class="active-pill"></div>
-  </div>
-  <div class="menu-item" data-index="2" id="item2">
-    <span class="item-label">Sport</span>
-    <div class="item-icon">⚡</div>
-    <div class="active-pill"></div>
-  </div>
-  <div class="menu-item" data-index="3" id="item3">
-    <span class="item-label">Réflexion</span>
-    <div class="item-icon">✦</div>
-    <div class="active-pill"></div>
-  </div>
+  <div class="menu-item" data-index="0" id="item0"><span class="item-label">Habitudes</span><div class="item-icon">🌱</div><div class="active-pill"></div></div>
+  <div class="menu-item" data-index="1" id="item1"><span class="item-label">Sommeil</span><div class="item-icon">🌙</div><div class="active-pill"></div></div>
+  <div class="menu-item" data-index="2" id="item2"><span class="item-label">Sport</span><div class="item-icon">⚡</div><div class="active-pill"></div></div>
+  <div class="menu-item" data-index="3" id="item3"><span class="item-label">Réflexion</span><div class="item-icon">✦</div><div class="active-pill"></div></div>
 
   <div class="sphere-wrap" id="wrap">
-    <canvas id="c" width="480" height="480"></canvas>
+    <canvas id="c"></canvas>
   </div>
 
   <div class="hint">appuie pour explorer</div>
@@ -192,122 +98,231 @@
 </div>
 
 <script>
-/* ══════════════════════════════════════
-   SPHERE — blanc sur noir, effet neon animé
-══════════════════════════════════════ */
-const SC   = document.getElementById('c');
-const sctx = SC.getContext('2d');
-const SW=480,SH=480,SCX=SW/2,SCY=SH/2,SR=175;
+/* ══════════════════════════════════════════════════════════
+   BLOB ORGANIQUE — Metaball field + edge detection
+   Reproduit l'effet des frames : masse liquide noire,
+   contours blanc néon dessinés, déformations violentes
+══════════════════════════════════════════════════════════ */
 
+const C    = document.getElementById('c');
+const ctx  = C.getContext('2d');
+
+const SIZE = Math.min(window.innerWidth, window.innerHeight, 520);
+C.width  = SIZE;
+C.height = SIZE;
+C.style.width  = SIZE + 'px';
+C.style.height = SIZE + 'px';
+
+const W = SIZE, H = SIZE, CX = W/2, CY = H/2;
+
+/* ── Grille de champ scalaire ── */
+const GRID = 3;           // px par cellule — plus petit = plus de détail
+const COLS = Math.ceil(W / GRID) + 1;
+const ROWS = Math.ceil(H / GRID) + 1;
+const field = new Float32Array(COLS * ROWS);
+
+/* ── Blobs / metaballs ── */
+/* Chaque blob a : position (bx,by), rayon d'influence r, poids w,
+   vitesse (vx,vy), et une fréquence de pulsation */
 let t = 0;
 
-// Légère ondulation de surface — amplitude très faible, forme reste ronde
-const waves=[
-  {freq:2,amp:4,speed:0.22,phase:0.0},
-  {freq:3,amp:3,speed:0.15,phase:1.4},
-  {freq:5,amp:2,speed:0.30,phase:2.7},
-  {freq:7,amp:1.5,speed:0.18,phase:0.9},
+/* Noyau central — large, lent */
+const BLOBS = [
+  /* Noyau principal */
+  { bx:0, by:0, r:0.38, w:1.8,  vx:0.0011, vy:0.0008, ox:0,    oy:0,    pr:0.04, pp:0 },
+  /* Lobes orbitaux */
+  { bx:0, by:0, r:0.22, w:1.0,  vx:0.0031, vy:0.0019, ox:0.18, oy:0.12, pr:0.06, pp:1.1 },
+  { bx:0, by:0, r:0.20, w:0.95, vx:-0.0027,vy:0.0023, ox:-0.15,oy:0.16, pr:0.07, pp:2.4 },
+  { bx:0, by:0, r:0.18, w:0.85, vx:0.0021, vy:-0.0031,ox:0.10, oy:-0.20,pr:0.05, pp:3.7 },
+  { bx:0, by:0, r:0.16, w:0.80, vx:-0.0018,vy:-0.0025,ox:-0.20,oy:-0.10,pr:0.08, pp:5.0 },
+  /* Petits détails */
+  { bx:0, by:0, r:0.12, w:0.60, vx:0.0042, vy:0.0033, ox:0.25, oy:0.05, pr:0.10, pp:0.8 },
+  { bx:0, by:0, r:0.10, w:0.55, vx:-0.0038,vy:0.0041, ox:-0.05,oy:0.28, pr:0.09, pp:4.2 },
+  { bx:0, by:0, r:0.09, w:0.50, vx:0.0035, vy:-0.0038,ox:0.22, oy:-0.18,pr:0.11, pp:2.9 },
+  /* Protubérances violentes */
+  { bx:0, by:0, r:0.13, w:0.70, vx:-0.0052,vy:0.0044, ox:-0.28,oy:0.08, pr:0.13, pp:1.6 },
+  { bx:0, by:0, r:0.11, w:0.65, vx:0.0048, vy:-0.0051,ox:0.08, oy:-0.30,pr:0.12, pp:3.3 },
+  { bx:0, by:0, r:0.08, w:0.45, vx:-0.0060,vy:-0.0048,ox:-0.22,oy:-0.24,pr:0.14, pp:0.4 },
+  { bx:0, by:0, r:0.10, w:0.55, vx:0.0055, vy:0.0047, ox:0.30, oy:0.20, pr:0.10, pp:5.8 },
 ];
 
-function getR(a,time){
-  let r=SR;
-  for(const w of waves) r+=Math.sin(a*w.freq+w.phase+time*w.speed)*w.amp;
-  return r;
+/* Angles et vitesses angulaires pour l'orbite */
+const angles = BLOBS.map((_,i)=> i * (Math.PI*2/BLOBS.length));
+const angVel = BLOBS.map(b => b.vx * 1.5 + 0.001);
+
+function updateBlobs(time){
+  const half = Math.min(W,H)/2;
+  BLOBS.forEach((b, i) => {
+    /* Orbite + perturbation sinusoïdale */
+    angles[i] += angVel[i];
+    const pulsR = b.r * half * (1 + Math.sin(time * b.pr * 60 + b.pp) * 0.3);
+    const dist  = Math.sqrt(b.ox*b.ox + b.oy*b.oy) * half;
+    const baseAngle = angles[i];
+
+    /* Position : orbite autour du centre + dérive lente */
+    b.bx = CX + Math.cos(baseAngle) * dist
+               + Math.sin(time * b.vy * 80 + b.pp) * half * 0.06;
+    b.by = CY + Math.sin(baseAngle) * dist * 0.85
+               + Math.cos(time * b.vx * 80 + b.pp) * half * 0.06;
+    b.currentR = pulsR;
+  });
 }
 
-function buildPath(time){
-  sctx.beginPath();
-  const steps=300;
-  for(let i=0;i<=steps;i++){
-    const a=(i/steps)*Math.PI*2;
-    const r=getR(a,time);
-    const x=SCX+Math.cos(a)*r, y=SCY+Math.sin(a)*r;
-    i===0?sctx.moveTo(x,y):sctx.lineTo(x,y);
+/* ── Calcul du champ scalaire (metaballs) ── */
+function computeField(){
+  const half = Math.min(W,H)/2;
+  for(let row=0; row<ROWS; row++){
+    const py = row * GRID;
+    for(let col=0; col<COLS; col++){
+      const px = col * GRID;
+      let sum = 0;
+      for(const b of BLOBS){
+        const dx = px - b.bx;
+        const dy = py - b.by;
+        const d2 = dx*dx + dy*dy;
+        const r  = b.currentR;
+        if(d2 < r*r*9){
+          sum += b.w * (r*r) / (d2 + 0.001);
+        }
+      }
+      field[row * COLS + col] = sum;
+    }
   }
-  sctx.closePath();
 }
 
-// Point lumineux qui tourne lentement sur la surface → simule un éclairage orbital
-function drawSphere(){
-  t += 0.007;
-  sctx.clearRect(0,0,SW,SH);
+/* ── Marching Squares — extraction du contour ── */
+const THRESHOLD = 1.0;
 
-  sctx.save();
-  buildPath(t);
-  sctx.clip();
-
-  // ── Corps principal : sphère blanche texturée ──
-  // Lumière orbitale : source qui tourne autour de la sphère
-  const lx = SCX + Math.cos(t*0.35) * SR * 0.55;
-  const ly = SCY + Math.sin(t*0.35) * SR * 0.42;
-
-  // Gradient de base : gris foncé au centre → blanc sur les bords éclairés
-  const base = sctx.createRadialGradient(lx, ly, 0, SCX, SCY, SR+10);
-  base.addColorStop(0.0,  'rgba(255,255,255,1.0)');  // point le plus éclairé
-  base.addColorStop(0.18, 'rgba(230,230,230,0.98)');
-  base.addColorStop(0.42, 'rgba(160,160,160,0.95)');
-  base.addColorStop(0.70, 'rgba(70,70,70,0.97)');
-  base.addColorStop(0.88, 'rgba(25,25,25,0.98)');
-  base.addColorStop(1.0,  'rgba(8,8,8,1.0)');
-  sctx.fillStyle = base;
-  sctx.fillRect(0,0,SW,SH);
-
-  // ── Texture de grain fin sur la surface ──
-  // Simulée via un gradient radial bruit-like avec second point lumineux
-  const grain = sctx.createRadialGradient(
-    SCX + Math.sin(t*0.6)*30, SCY + Math.cos(t*0.45)*25, SR*0.3,
-    SCX, SCY, SR
-  );
-  grain.addColorStop(0.0, 'rgba(255,255,255,0.06)');
-  grain.addColorStop(0.5, 'rgba(200,200,200,0.03)');
-  grain.addColorStop(1.0, 'rgba(0,0,0,0.12)');
-  sctx.fillStyle = grain;
-  sctx.fillRect(0,0,SW,SH);
-
-  // ── Halo néon blanc animé sur le bord ──
-  // Intensité qui pulse doucement
-  const neonAmp = 0.55 + Math.sin(t*1.1)*0.20 + Math.sin(t*0.7)*0.12;
-  const neon = sctx.createRadialGradient(SCX,SCY,SR*0.72, SCX,SCY,SR+6);
-  neon.addColorStop(0.0, 'rgba(255,255,255,0)');
-  neon.addColorStop(0.7, `rgba(255,255,255,${0.08*neonAmp})`);
-  neon.addColorStop(0.88,`rgba(255,255,255,${0.55*neonAmp})`);
-  neon.addColorStop(0.96,`rgba(255,255,255,${0.80*neonAmp})`);
-  neon.addColorStop(1.0, `rgba(255,255,255,${0.30*neonAmp})`);
-  sctx.fillStyle = neon;
-  sctx.fillRect(0,0,SW,SH);
-
-  // ── Second arc néon décalé (côté opposé) ──
-  const lx2 = SCX - Math.cos(t*0.35) * SR * 0.7;
-  const ly2 = SCY - Math.sin(t*0.35) * SR * 0.55;
-  const neon2 = sctx.createRadialGradient(lx2,ly2,SR*0.5, lx2,ly2,SR*1.1);
-  neon2.addColorStop(0.0,'rgba(255,255,255,0)');
-  neon2.addColorStop(0.7,`rgba(255,255,255,${0.04*neonAmp})`);
-  neon2.addColorStop(1.0,`rgba(255,255,255,${0.18*neonAmp})`);
-  sctx.fillStyle = neon2;
-  sctx.fillRect(0,0,SW,SH);
-
-  // ── Coeur sombre (profondeur) ──
-  const core = sctx.createRadialGradient(SCX,SCY,0,SCX,SCY,SR*0.65);
-  core.addColorStop(0.0,'rgba(0,0,0,0.45)');
-  core.addColorStop(1.0,'rgba(0,0,0,0)');
-  sctx.fillStyle = core;
-  sctx.fillRect(0,0,SW,SH);
-
-  sctx.restore();
-
-  // ── Contour extérieur néon blanc (hors clip) ──
-  buildPath(t);
-  const neonAmp2 = 0.5 + Math.sin(t*1.1+1)*0.25;
-  sctx.shadowColor = `rgba(255,255,255,${0.55*neonAmp2})`;
-  sctx.shadowBlur  = 18 + Math.sin(t*0.9)*8;
-  sctx.strokeStyle = `rgba(255,255,255,${0.55*neonAmp2})`;
-  sctx.lineWidth   = 1.2;
-  sctx.stroke();
-  sctx.shadowBlur  = 0;
-
-  requestAnimationFrame(drawSphere);
+function lerpPt(a, b, va, vb){
+  const tt = Math.max(0, Math.min(1, (THRESHOLD - va) / (vb - va + 1e-6)));
+  return a + tt * (b - a);
 }
-drawSphere();
+
+function getContourLines(){
+  const lines = [];
+  for(let row=0; row<ROWS-1; row++){
+    for(let col=0; col<COLS-1; col++){
+      const v00 = field[row     * COLS + col];
+      const v10 = field[row     * COLS + col+1];
+      const v11 = field[(row+1) * COLS + col+1];
+      const v01 = field[(row+1) * COLS + col];
+
+      const idx = (v00>THRESHOLD?8:0)|(v10>THRESHOLD?4:0)|(v11>THRESHOLD?2:0)|(v01>THRESHOLD?1:0);
+      if(idx===0||idx===15) continue;
+
+      const x0=col*GRID, x1=(col+1)*GRID;
+      const y0=row*GRID, y1=(row+1)*GRID;
+
+      /* 4 points interpolés : 0=top 1=right 2=bottom 3=left */
+      const p = [
+        [lerpPt(x0,x1,v00,v10), y0],
+        [x1, lerpPt(y0,y1,v10,v11)],
+        [lerpPt(x1,x0,v11,v01), y1],
+        [x0, lerpPt(y1,y0,v01,v00)],
+      ];
+
+      /* Table complète des 14 cas non-triviaux */
+      const T = {
+        1:[3,2], 2:[2,1], 3:[3,1], 4:[1,0], 5:[3,0,2,1],
+        6:[2,0], 7:[3,0], 8:[0,3], 9:[0,2], 10:[0,1,3,2],
+        11:[0,1], 12:[1,3], 13:[1,2], 14:[2,3]
+      };
+      const s = T[idx];
+      if(!s) continue;
+      for(let k=0;k<s.length;k+=2){
+        lines.push(p[s[k]], p[s[k+1]]);
+      }
+    }
+  }
+  return lines;
+}
+
+/* ── Rendu ── */
+function render(time){
+  ctx.clearRect(0,0,W,H);
+
+  /* Fond noir absolu */
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0,0,W,H);
+
+  /* Remplissage de la masse (noir très légèrement teinté pour volume) */
+  /* On utilise clipPath basé sur le contour reconstruit */
+
+  /* D'abord, remplissage de la zone metaball */
+  const imgData = ctx.createImageData(W, H);
+  const d = imgData.data;
+
+  /* Remplissage pixel par pixel de la zone inside */
+  for(let row=0; row<ROWS-1; row++){
+    const py = row * GRID;
+    for(let col=0; col<COLS-1; col++){
+      const px = col * GRID;
+      const v = field[row * COLS + col];
+      if(v > THRESHOLD){
+        /* Zone intérieure — très sombre */
+        const brightness = Math.min(28, (v - THRESHOLD) * 6);
+        for(let dy=0;dy<GRID;dy++){
+          for(let dx=0;dx<GRID;dx++){
+            const iy = py + dy, ix = px + dx;
+            if(iy>=H||ix>=W) continue;
+            const off = (iy*W+ix)*4;
+            d[off]   = brightness;
+            d[off+1] = brightness;
+            d[off+2] = brightness;
+            d[off+3] = 255;
+          }
+        }
+      }
+    }
+  }
+  ctx.putImageData(imgData, 0, 0);
+
+  /* Contours néon blancs */
+  const lines = getContourLines();
+
+  /* Néon intense — pulsation */
+  const neonAmp = 0.7 + Math.sin(time * 1.8) * 0.2 + Math.sin(time * 0.9) * 0.1;
+
+  /* Couche 1 : halo large */
+  ctx.shadowColor = `rgba(255,255,255,${0.6 * neonAmp})`;
+  ctx.shadowBlur  = 6;
+  ctx.strokeStyle = `rgba(255,255,255,${0.85 * neonAmp})`;
+  ctx.lineWidth   = 1.2;
+  ctx.lineCap     = 'round';
+
+  ctx.beginPath();
+  for(let i=0;i<lines.length;i+=2){
+    const p1 = lines[i], p2 = lines[i+1];
+    ctx.moveTo(p1[0], p1[1]);
+    ctx.lineTo(p2[0], p2[1]);
+  }
+  ctx.stroke();
+
+  /* Couche 2 : trait fin très blanc par-dessus */
+  ctx.shadowBlur  = 2;
+  ctx.shadowColor = 'rgba(255,255,255,0.9)';
+  ctx.strokeStyle = `rgba(255,255,255,${0.95 * neonAmp})`;
+  ctx.lineWidth   = 0.5;
+  ctx.beginPath();
+  for(let i=0;i<lines.length;i+=2){
+    const p1 = lines[i], p2 = lines[i+1];
+    ctx.moveTo(p1[0], p1[1]);
+    ctx.lineTo(p2[0], p2[1]);
+  }
+  ctx.stroke();
+
+  ctx.shadowBlur = 0;
+}
+
+/* ── Loop principale ── */
+function loop(){
+  t += 0.008;
+  updateBlobs(t);
+  computeField();
+  render(t);
+  requestAnimationFrame(loop);
+}
+loop();
 
 /* ══════════════════════════════════════
    ARC MENU
@@ -319,81 +334,66 @@ const actx    = arcCv.getContext('2d');
 const itemEls = document.querySelectorAll('.menu-item');
 
 let menuOpen=false, activeIdx=-1, hoveredIdx=-1;
-let rayTarget=-1, rayProgress=0, pulseT=0;
+let rayTarget=-1, rayProgress=0, pulseT2=0;
 
-const ARC_START = -52*Math.PI/180;
-const ARC_END   =  52*Math.PI/180;
-
-function getItemAngle(i){ return ARC_START+(ARC_END-ARC_START)*(i/(itemEls.length-1)); }
-
+const ARC_START=-52*Math.PI/180, ARC_END=52*Math.PI/180;
+function getItemAngle(i){return ARC_START+(ARC_END-ARC_START)*(i/(itemEls.length-1));}
 function getSphereCenter(){
-  if(!menuOpen) return {x:window.innerWidth/2, y:window.innerHeight/2};
-  return {x:window.innerWidth*0.22, y:window.innerHeight*0.50};
+  if(!menuOpen) return{x:window.innerWidth/2,y:window.innerHeight/2};
+  return{x:window.innerWidth*0.22,y:window.innerHeight*0.50};
 }
-
 function positionItems(){
-  const sc  = getSphereCenter();
-  const arcR= Math.min(window.innerWidth,window.innerHeight)*0.42;
+  const sc=getSphereCenter();
+  const arcR=Math.min(window.innerWidth,window.innerHeight)*0.42;
   itemEls.forEach((el,i)=>{
-    const angle=getItemAngle(i);
-    const ix=sc.x+Math.cos(angle)*arcR;
-    const iy=sc.y+Math.sin(angle)*arcR;
+    const a=getItemAngle(i);
+    const ix=sc.x+Math.cos(a)*arcR, iy=sc.y+Math.sin(a)*arcR;
     el.style.left=(ix-54/2-130-14)+'px';
-    el.style.top =(iy-27)+'px';
+    el.style.top=(iy-27)+'px';
     el.style.width=(130+14+54)+'px';
   });
 }
+function resizeArc(){arcCv.width=window.innerWidth;arcCv.height=window.innerHeight;positionItems();}
 
-function resize(){ arcCv.width=window.innerWidth; arcCv.height=window.innerHeight; positionItems(); }
-
-function drawRay(sc, targetEl, progress){
+function drawRay(sc,targetEl,progress){
   const iconEl=targetEl.querySelector('.item-icon');
   const ir=iconEl.getBoundingClientRect();
-  const tx=ir.left+ir.width/2, ty=ir.top+ir.height/2;
-  const dx=tx-sc.x, dy=ty-sc.y;
+  const tx=ir.left+ir.width/2,ty=ir.top+ir.height/2;
+  const dx=tx-sc.x,dy=ty-sc.y;
   const dist=Math.sqrt(dx*dx+dy*dy);
-  const sphereR=200/2*0.78*0.9;
-  const nx=dx/dist, ny=dy/dist;
-  const sx=sc.x+nx*sphereR, sy=sc.y+ny*sphereR;
-  const ex=sx+dx*progress, ey=sy+dy*progress;
-
+  const sphereR=SIZE/2*0.72*0.5;
+  const nx=dx/dist,ny=dy/dist;
+  const sx=sc.x+nx*sphereR,sy=sc.y+ny*sphereR;
+  const ex=sx+dx*progress,ey=sy+dy*progress;
   actx.save();
-  // Rayon blanc néon
   const grad=actx.createLinearGradient(sx,sy,ex,ey);
-  grad.addColorStop(0.0,'rgba(255,255,255,0)');
+  grad.addColorStop(0,'rgba(255,255,255,0)');
   grad.addColorStop(0.1,'rgba(255,255,255,0.6)');
   grad.addColorStop(0.7,'rgba(255,255,255,0.35)');
-  grad.addColorStop(1.0,'rgba(255,255,255,0)');
+  grad.addColorStop(1,'rgba(255,255,255,0)');
   actx.beginPath();actx.moveTo(sx,sy);actx.lineTo(ex,ey);
   actx.strokeStyle=grad;actx.lineWidth=1;
-  actx.shadowColor='rgba(255,255,255,0.5)';actx.shadowBlur=8;
-  actx.stroke();
-  // Lueur terminale
+  actx.shadowColor='rgba(255,255,255,0.5)';actx.shadowBlur=8;actx.stroke();
   if(progress>0.82){
     const alpha=(progress-0.82)/0.18;
     const g2=actx.createRadialGradient(ex,ey,0,ex,ey,16);
-    g2.addColorStop(0,`rgba(255,255,255,${0.4*alpha})`);
-    g2.addColorStop(1,'rgba(0,0,0,0)');
+    g2.addColorStop(0,`rgba(255,255,255,${0.4*alpha})`);g2.addColorStop(1,'rgba(0,0,0,0)');
     actx.fillStyle=g2;actx.beginPath();actx.arc(ex,ey,16,0,Math.PI*2);actx.fill();
   }
   actx.restore();
 }
-
 function drawArcLine(sc){
   const arcR=Math.min(window.innerWidth,window.innerHeight)*0.42;
-  actx.save();
-  actx.beginPath();
+  actx.save();actx.beginPath();
   actx.arc(sc.x,sc.y,arcR,ARC_START-0.06,ARC_END+0.06);
-  actx.strokeStyle='rgba(255,255,255,0.07)';
-  actx.lineWidth=0.8;actx.setLineDash([3,9]);actx.stroke();actx.setLineDash([]);
-  actx.restore();
+  actx.strokeStyle='rgba(255,255,255,0.07)';actx.lineWidth=0.8;
+  actx.setLineDash([3,9]);actx.stroke();actx.setLineDash([]);actx.restore();
 }
-
-function arcLoop(){
-  requestAnimationFrame(arcLoop);
+function arcLoop2(){
+  requestAnimationFrame(arcLoop2);
   actx.clearRect(0,0,arcCv.width,arcCv.height);
   if(!menuOpen) return;
-  pulseT+=0.04;
+  pulseT2+=0.04;
   const sc=getSphereCenter();
   drawArcLine(sc);
   const ti=hoveredIdx>=0?hoveredIdx:activeIdx;
@@ -401,15 +401,14 @@ function arcLoop(){
     if(rayTarget!==ti){rayTarget=ti;rayProgress=0;}
     if(rayProgress<1) rayProgress=Math.min(1,rayProgress+0.07);
     drawRay(sc,itemEls[rayTarget],rayProgress);
-  } else {rayTarget=-1;rayProgress=0;}
+  } else{rayTarget=-1;rayProgress=0;}
 }
-arcLoop();
+arcLoop2();
 
 function openMenu(){if(menuOpen)return;menuOpen=true;app.classList.add('menu-open');setTimeout(positionItems,50);}
 function closeMenu(){if(!menuOpen)return;menuOpen=false;hoveredIdx=-1;app.classList.remove('menu-open');}
 
 wrap.addEventListener('click',()=>{menuOpen?closeMenu():openMenu();});
-
 itemEls.forEach((el,i)=>{
   el.addEventListener('mouseenter',()=>{hoveredIdx=i;el.classList.add('hovered');});
   el.addEventListener('mouseleave',()=>{hoveredIdx=-1;el.classList.remove('hovered');});
@@ -428,12 +427,11 @@ itemEls.forEach((el,i)=>{
     hoveredIdx=-1;setTimeout(closeMenu,380);
   });
 });
-
 app.addEventListener('click',(e)=>{
   if(menuOpen&&!wrap.contains(e.target)&&![...itemEls].some(el=>el.contains(e.target))) closeMenu();
 });
-window.addEventListener('resize',resize);
-resize();
+window.addEventListener('resize',resizeArc);
+resizeArc();
 </script>
 </body>
 </html>
