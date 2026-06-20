@@ -42,7 +42,9 @@
   button{font-family:inherit;cursor:pointer;border:none}
   a{color:inherit;text-decoration:none;cursor:pointer}
 
-  .app{display:flex;align-items:stretch;min-height:100vh}
+  #stars{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;display:block}
+  [data-theme="light"] #stars{display:none}
+  .app{display:flex;align-items:stretch;min-height:100vh;position:relative;z-index:1}
 
   /* ---- sidebar ---- */
   .sidebar{width:248px;flex:none;background:var(--side);border-right:1px solid var(--card-bd);
@@ -73,8 +75,7 @@
   .su-gear{color:var(--muted);flex:none}
   .side-user:hover .su-gear{color:var(--ink)}
   .avatar{width:36px;height:36px;border-radius:11px;background:var(--accent-grad);color:#04231b;display:grid;place-items:center;font-weight:700;font-size:14px;flex:none}
-  .su-name{font-size:13px;font-weight:700;outline:none;border-bottom:1px dashed transparent;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:uppercase;letter-spacing:.02em}
-  .su-name:hover,.su-name:focus{border-bottom-color:var(--line-2)}
+  .su-name{font-size:13px;font-weight:700;color:var(--ink);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:uppercase;letter-spacing:.02em}
 
   /* ---- main ---- */
   .main{flex:1;min-width:0;padding:24px 30px 70px}
@@ -302,7 +303,7 @@
   }
 
   /* ---- paramètres ---- */
-  .settings-panel{max-width:760px}
+  .settings-panel{max-width:760px;margin-left:auto;margin-right:auto}
   .set-block{margin-bottom:22px}
   .set-block-h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
   .set-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 0;border-bottom:1px solid var(--line)}
@@ -333,6 +334,7 @@
 </style>
 </head>
 <body>
+<canvas id="stars" aria-hidden="true"></canvas>
 <div class="app">
 
   <aside class="sidebar">
@@ -347,7 +349,6 @@
       <div class="nav-sec">Gestion</div>
       <a class="nav-item" id="navOpen"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>Ouvrir une session</a>
       <a class="nav-item" id="navExport"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l4-4m-4 4l-4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>Exporter (CSV)</a>
-      <a class="nav-item" id="navTheme"><span id="themeIco"></span>Thème</a>
     </nav>
     <div class="side-recent">
       <div class="nav-sec">Sessions récentes</div>
@@ -561,14 +562,40 @@
   let data=load();save();let goal=rg();let current='overview';
 
   // ---- thème ----
-  const sunIco='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>';
-  const moonIco='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 109.8 9.8z"/></svg>';
-  function applyTheme(t){document.documentElement.setAttribute('data-theme',t);$('#themeIco').innerHTML=t==='dark'?sunIco:moonIco;
+  function applyTheme(t){document.documentElement.setAttribute('data-theme',t);
     document.querySelectorAll('.theme-seg button').forEach(b=>b.classList.toggle('on',b.dataset.themeSet===t));
+    const sky=document.getElementById('stars');if(sky)sky.style.display=t==='dark'?'block':'none';
     try{localStorage.setItem(TKEY,t);}catch(e){}}
   let theme;try{theme=localStorage.getItem(TKEY)||'dark';}catch(e){theme='dark';}
   applyTheme(theme);
-  $('#navTheme').addEventListener('click',()=>applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'));
+
+  // ---- fond étoilé animé ----
+  (function initSky(){
+    const c=document.getElementById('stars');if(!c)return;const ctx=c.getContext('2d');
+    const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let W=0,H=0,dpr=1,stars=[],shoot=null,tShoot=0,raf=0;
+    function resize(){dpr=Math.min(2,window.devicePixelRatio||1);W=c.width=Math.floor(innerWidth*dpr);H=c.height=Math.floor(innerHeight*dpr);
+      c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';
+      const n=Math.min(220,Math.floor(innerWidth*innerHeight/7000));stars=[];
+      for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:(Math.random()*1.3+0.25)*dpr,base:Math.random()*0.5+0.22,amp:Math.random()*0.5+0.2,ph:Math.random()*6.283,sp:Math.random()*0.015+0.004,vy:(Math.random()*0.05+0.015)*dpr});}
+    function drawStar(s,a){ctx.globalAlpha=a;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,6.283);ctx.fill();
+      if(s.r>1.05*dpr){ctx.globalAlpha=a*0.22;ctx.beginPath();ctx.arc(s.x,s.y,s.r*2.6,0,6.283);ctx.fill();}}
+    function staticDraw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';for(const s of stars)drawStar(s,s.base+s.amp*0.5);ctx.globalAlpha=1;}
+    function frame(t){
+      if(c.style.display==='none'){raf=requestAnimationFrame(frame);return;}
+      ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';
+      for(const s of stars){s.ph+=s.sp;const a=Math.max(0.05,Math.min(1,s.base+Math.sin(s.ph)*s.amp));s.y+=s.vy;if(s.y>H+2){s.y=-2;s.x=Math.random()*W;}drawStar(s,a);}
+      if(!shoot&&t>tShoot&&Math.random()<0.013){shoot={x:Math.random()*W*0.7,y:Math.random()*H*0.35,vx:(4+Math.random()*3)*dpr,vy:(2+Math.random()*1.4)*dpr,len:0,maxlen:(120+Math.random()*120)*dpr,life:0};}
+      if(shoot){shoot.x+=shoot.vx;shoot.y+=shoot.vy;shoot.life++;const sp=Math.hypot(shoot.vx,shoot.vy);shoot.len=Math.min(shoot.maxlen,shoot.len+sp);
+        const ex=shoot.x-shoot.vx/sp*shoot.len,ey=shoot.y-shoot.vy/sp*shoot.len;
+        const g=ctx.createLinearGradient(shoot.x,shoot.y,ex,ey);g.addColorStop(0,'rgba(255,255,255,.9)');g.addColorStop(1,'rgba(255,255,255,0)');
+        ctx.globalAlpha=1;ctx.strokeStyle=g;ctx.lineWidth=1.6*dpr;ctx.beginPath();ctx.moveTo(shoot.x,shoot.y);ctx.lineTo(ex,ey);ctx.stroke();
+        if(shoot.x>W+60||shoot.y>H+60||shoot.life>140){shoot=null;tShoot=t+2500+Math.random()*4500;}}
+      ctx.globalAlpha=1;raf=requestAnimationFrame(frame);
+    }
+    resize();window.addEventListener('resize',()=>{resize();if(reduce)staticDraw();});
+    if(reduce)staticDraw();else raf=requestAnimationFrame(frame);
+  })();
 
   // ---- plateformes / mouvements ----
   const getPlat=id=>data.platforms.find(p=>p.id===id);
