@@ -259,7 +259,112 @@ a{color:inherit;text-decoration:none}
 .payout-mini .s{font-size:11px;color:var(--muted);margin-top:7px}
 
 /* ---------- Main ---------- */
-.main{overflow:auto;padding-right:2px}
+.main{display:flex;flex-direction:column;min-height:0}
+
+/* ---------- Barre d'onglets ---------- */
+.tabbar{
+  display:flex;align-items:center;gap:10px;
+  padding:4px 4px 14px;flex:none;position:relative;z-index:20;
+}
+.tabs{
+  display:flex;align-items:center;gap:2px;
+  background:#E6E8EC;border-radius:99px;padding:3px;
+  min-width:0;overflow-x:auto;scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  display:flex;align-items:center;gap:7px;
+  padding:7px 13px;border-radius:99px;
+  font-size:12.5px;color:#767C87;white-space:nowrap;
+  transition:color .18s, background .18s;
+  animation:tabIn .32s cubic-bezier(.34,1.3,.5,1);
+  position:relative;
+}
+@keyframes tabIn{from{opacity:0;transform:translateY(-5px) scale(.9)}to{opacity:1;transform:none}}
+.tab.out{animation:tabOut .2s ease forwards;pointer-events:none}
+@keyframes tabOut{to{opacity:0;transform:scale(.85);margin-left:-6px}}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{
+  background:var(--card);color:var(--ink);font-weight:500;
+  box-shadow:0 1px 2px rgba(20,23,30,.06), 0 4px 12px rgba(20,23,30,.07);
+}
+.tab svg{flex:none;opacity:.65;transition:opacity .18s}
+.tab[aria-selected="true"] svg{opacity:1}
+/* l'animation de l'icône au moment où l'onglet prend la main */
+.tab[aria-selected="true"] svg{animation:pop .42s cubic-bezier(.34,1.5,.5,1)}
+@keyframes pop{
+  0%{transform:scale(.6) rotate(-12deg);opacity:.3}
+  60%{transform:scale(1.14) rotate(3deg)}
+  100%{transform:none;opacity:1}
+}
+.tab-close{
+  display:grid;place-items:center;width:15px;height:15px;margin:-4px -5px -4px 1px;
+  border-radius:50%;color:var(--muted);opacity:0;
+  transition:opacity .15s, background .15s, color .15s;
+}
+.tab:hover .tab-close, .tab[aria-selected="true"] .tab-close{opacity:1}
+.tab-close:hover{background:#EBEDF0;color:var(--coral)}
+.tab.pinned .tab-close{display:none}
+.tab-dot{width:5px;height:5px;border-radius:50%;background:var(--amber);flex:none}
+
+.tab-add{
+  width:30px;height:30px;border-radius:50%;flex:none;
+  display:grid;place-items:center;color:var(--muted);
+  background:var(--card);box-shadow:var(--shadow);
+  transition:transform .25s cubic-bezier(.34,1.4,.5,1), color .18s;
+}
+.tab-add:hover{color:var(--ink);transform:scale(1.08)}
+.tab-add[aria-expanded="true"]{color:var(--ink);transform:rotate(45deg)}
+
+/* ---------- Menu flottant ---------- */
+.menu-wrap{position:relative;flex:none}
+.menu{
+  position:absolute;top:calc(100% + 11px);left:-8px;z-index:30;
+  width:262px;padding:8px;
+  background:var(--card);border-radius:20px;
+  box-shadow:0 2px 6px rgba(20,23,30,.05), 0 24px 60px rgba(20,23,30,.16);
+  opacity:0;transform:translateY(-8px) scale(.96);transform-origin:34px -8px;
+  pointer-events:none;
+  transition:opacity .2s ease, transform .28s cubic-bezier(.34,1.3,.5,1);
+}
+.menu.on{opacity:1;transform:none;pointer-events:auto}
+.menu::before{
+  content:"";position:absolute;top:-6px;left:30px;
+  width:14px;height:14px;background:var(--card);
+  border-radius:3px;transform:rotate(45deg);
+}
+.menu-row{
+  position:relative;display:flex;align-items:center;gap:12px;
+  width:100%;padding:10px 10px;border-radius:13px;
+  color:#A9AEB8;font-size:13.5px;
+  transition:color .16s, background .16s;
+}
+.menu-row:hover:not([disabled]), .menu-row.cursor:not([disabled]){
+  background:#F6F7F9;color:var(--ink);font-weight:500;
+}
+.menu-row svg{flex:none;opacity:.85}
+.menu-row .keys{margin-left:auto;display:flex;gap:4px}
+.menu-row .keys span{
+  display:grid;place-items:center;min-width:24px;height:24px;padding:0 5px;
+  border-radius:7px;background:#F2F3F5;color:#B0B5BE;
+  font-family:var(--mono);font-size:10.5px;
+  transition:background .16s, color .16s, box-shadow .16s;
+}
+.menu-row:hover:not([disabled]) .keys span, .menu-row.cursor:not([disabled]) .keys span{
+  background:#fff;color:#5A606B;box-shadow:0 1px 3px rgba(20,23,30,.10);
+}
+.menu-row[disabled]{opacity:.45;cursor:default}
+.menu-row .open-flag{
+  margin-left:auto;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+}
+.menu-sep{height:1px;background:var(--hair);margin:6px 10px}
+.menu-foot{padding:4px 10px 5px;font-size:10.5px;color:var(--muted);display:flex;gap:6px;align-items:center}
+
+/* ---------- Vue ---------- */
+.view{flex:1;min-height:0;overflow:auto;padding-right:2px}
+.view.swap{animation:viewIn .34s cubic-bezier(.22,.8,.3,1)}
+@keyframes viewIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
 .topbar{
   display:flex;align-items:center;gap:10px;
   padding:4px 4px 16px;
@@ -271,7 +376,7 @@ a{color:inherit;text-decoration:none}
 }
 .chip.ghost{box-shadow:inset 0 0 0 1px var(--hair);background:transparent}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);flex:none}
-.topbar .spacer{flex:1}
+.spacer{flex:1;min-width:8px}
 .search-wide{
   display:flex;align-items:center;gap:9px;
   background:var(--card);border-radius:99px;padding:9px 14px;
@@ -542,7 +647,28 @@ tr:hover .row-action{opacity:1}
   </aside>
 
   <!-- MAIN -->
-  <main class="main" id="main"></main>
+  <main class="main">
+    <div class="tabbar">
+      <div class="tabs" id="tabs"></div>
+
+      <div class="menu-wrap">
+        <button class="tab-add" id="tabAdd" aria-expanded="false" aria-haspopup="menu" title="Ouvrir un onglet" aria-label="Ouvrir un onglet">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <div class="menu" id="menu" role="menu"></div>
+      </div>
+
+      <span class="spacer"></span>
+      <span class="chip ghost">Cycle juillet 2026</span>
+      <label class="search-wide">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input placeholder="Chercher dans Grid">
+        <span class="kbd">⌘K</span>
+      </label>
+    </div>
+
+    <div class="view" id="view"></div>
+  </main>
 </div>
 
 <script>
@@ -683,18 +809,7 @@ PAGES.dashboard = () => {
   }).join("");
 
   return `
-  <div class="topbar">
-    <span class="chip"><span class="dot"></span>Compte créateur vérifié</span>
-    <span class="chip ghost">Cycle juillet 2026</span>
-    <span class="spacer"></span>
-    <label class="search-wide">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <input placeholder="Chercher dans Grid">
-      <span class="kbd">⌘K</span>
-    </label>
-  </div>
-
-  <div class="page-head">
+  <div class="page-head" style="padding-top:4px">
     <div class="eyebrow">Vue d'ensemble</div>
     <h1>Bonjour ${SESSION.pseudo}. <em>7 îles, 2 952 joueurs en ligne.</em></h1>
   </div>
@@ -830,24 +945,155 @@ PAGES.pipeline = soon("Publications",    "Suivi des soumissions Epic, relectures
 PAGES.team     = soon("Équipe & parts",  "Répartition des parts entre collaborateurs et calcul automatique de chaque versement.");
 PAGES.costs    = soon("Charges",         "Assets achetés, sous-traitance, outils : ce qui part avant que la marge n'arrive.");
 
-/* ---------------- Routeur ---------------- */
-const main = document.getElementById('main');
-function go(page){
-  main.innerHTML = (PAGES[page] || PAGES.dashboard)();
-  main.scrollTop = 0;
+/* ---------------- Onglets ---------------- */
+const ICON = {
+  dashboard:'<path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+  maps:'<path d="M9 4L3 7v13l6-3 6 3 6-3V4l-6 3-6-3z"/><path d="M9 4v13M15 7v13"/>',
+  revenue:'<path d="M4 19V9M10 19V5M16 19v-6M22 19H2"/>',
+  players:'<circle cx="9" cy="8" r="3.2"/><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5"/><path d="M16 5.2a3.2 3.2 0 010 5.6M18 14c2.4.6 3.9 2.3 3.9 5"/>',
+  pipeline:'<circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="12" r="2.5"/><path d="M6 8.5v7M8.5 6h4a3 3 0 013 3v.5M8.5 18h4a3 3 0 003-3v-.5"/>',
+  team:'<path d="M12 3v18M4 8h16M4 16h16"/>',
+  costs:'<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 15h4"/>',
+};
+const svg = (k, size=14) =>
+  `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICON[k]}</svg>`;
+
+const META = {
+  dashboard:{ label:'Tableau de bord', key:'D', pinned:true },
+  maps:     { label:'Mes îles',        key:'I' },
+  revenue:  { label:'Revenus',         key:'R' },
+  players:  { label:'Joueurs',         key:'J' },
+  pipeline: { label:'Publications',    key:'P' },
+  team:     { label:'Équipe & parts',  key:'E' },
+  costs:    { label:'Charges',         key:'C' },
+};
+const MAC = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+const MOD = MAC ? '⌥' : 'Alt';
+
+let TABS = ['dashboard'];
+let ACTIVE = 'dashboard';
+
+const tabsEl = () => document.getElementById('tabs');
+const viewEl = () => document.getElementById('view');
+
+function renderTabs(){
+  tabsEl().innerHTML = TABS.map(id=>{
+    const m = META[id];
+    return `<button class="tab ${m.pinned?'pinned':''}" data-tab="${id}" role="tab"
+              aria-selected="${id===ACTIVE}">
+      ${svg(id)}<span>${m.label}</span>
+      <span class="tab-close" data-close="${id}" role="button" aria-label="Fermer ${m.label}">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </span>
+    </button>`;
+  }).join('');
+}
+
+function renderView(){
+  const v = viewEl();
+  v.innerHTML = (PAGES[ACTIVE] || PAGES.dashboard)();
+  v.classList.remove('swap'); void v.offsetWidth; v.classList.add('swap');
+  v.scrollTop = 0;
   document.querySelectorAll('#nav .nav-item').forEach(b=>{
-    b.toggleAttribute('aria-current', b.dataset.page===page);
-    if(b.dataset.page===page) b.setAttribute('aria-current','page');
+    if(b.dataset.page===ACTIVE) b.setAttribute('aria-current','page');
+    else b.removeAttribute('aria-current');
   });
 }
+
+function go(id){
+  if(!META[id]) id = 'dashboard';
+  if(!TABS.includes(id)) TABS.push(id);
+  ACTIVE = id;
+  renderTabs(); renderView(); renderMenu(); saveTabs();
+  closeMenu();
+}
+
+function closeTab(id){
+  if(META[id].pinned) return;
+  const el = tabsEl().querySelector(`[data-tab="${id}"]`);
+  const i = TABS.indexOf(id);
+  const next = ACTIVE === id ? (TABS[i-1] || TABS[i+1] || 'dashboard') : ACTIVE;
+  TABS = TABS.filter(t=>t!==id);
+  if(el && !reduce){
+    el.classList.add('out');
+    setTimeout(()=>{ ACTIVE = next; renderTabs(); renderView(); renderMenu(); saveTabs(); }, 190);
+  } else {
+    ACTIVE = next; renderTabs(); renderView(); renderMenu(); saveTabs();
+  }
+}
+
+const saveTabs = () => SESSION.pseudo && Store.set('grid:tabs:'+SESSION.pseudo, {tabs:TABS, active:ACTIVE});
+
+/* ---------------- Menu « + » ---------------- */
+function renderMenu(){
+  const rows = Object.entries(META).filter(([id])=>!META[id].pinned).map(([id,m])=>{
+    const open = TABS.includes(id);
+    return `<button class="menu-row" role="menuitem" data-open="${id}" ${open?'disabled':''}>
+      ${svg(id,16)}<span>${m.label}</span>
+      ${open ? '<span class="open-flag">Ouvert</span>'
+             : `<span class="keys"><span>${MOD}</span><span>${m.key}</span></span>`}
+    </button>`;
+  }).join('');
+  document.getElementById('menu').innerHTML = rows + `
+    <div class="menu-sep"></div>
+    <div class="menu-foot">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      ${MOD} W ferme l'onglet ouvert
+    </div>`;
+}
+
+const menu = () => document.getElementById('menu');
+const addBtn = () => document.getElementById('tabAdd');
+let menuOpen = false;
+
+function openMenu(){
+  menuOpen = true; renderMenu();
+  menu().classList.add('on'); addBtn().setAttribute('aria-expanded','true');
+}
+function closeMenu(){
+  menuOpen = false;
+  menu().classList.remove('on'); addBtn().setAttribute('aria-expanded','false');
+}
+function toggleMenu(){ menuOpen ? closeMenu() : openMenu(); }
+
+/* ---------------- Écoutes ---------------- */
 document.getElementById('nav').addEventListener('click', e=>{
   const b = e.target.closest('.nav-item'); if(b) go(b.dataset.page);
 });
-main.addEventListener('click', e=>{
+document.getElementById('tabs').addEventListener('click', e=>{
+  const c = e.target.closest('[data-close]');
+  if(c){ e.stopPropagation(); return closeTab(c.dataset.close); }
+  const t = e.target.closest('[data-tab]'); if(t) go(t.dataset.tab);
+});
+document.getElementById('tabs').addEventListener('auxclick', e=>{
+  const t = e.target.closest('[data-tab]');
+  if(t && e.button === 1){ e.preventDefault(); closeTab(t.dataset.tab); }
+});
+addBtn().addEventListener('click', e=>{ e.stopPropagation(); toggleMenu(); });
+menu().addEventListener('click', e=>{
+  const r = e.target.closest('[data-open]');
+  if(r && !r.hasAttribute('disabled')) go(r.dataset.open);
+});
+document.addEventListener('click', e=>{
+  if(menuOpen && !e.target.closest('.menu-wrap')) closeMenu();
+});
+viewEl().addEventListener('click', e=>{
   const g = e.target.closest('[data-goto]'); if(g) go(g.dataset.goto);
   const f = e.target.closest('.filter');
   if(f){ f.parentElement.querySelectorAll('.filter').forEach(x=>x.setAttribute('aria-pressed','false')); f.setAttribute('aria-pressed','true'); }
 });
+
+/* Raccourcis : ⌥/Alt + lettre — on évite ⌘ qui appartient au navigateur */
+document.addEventListener('keydown', e=>{
+  if(!document.getElementById('shell').classList.contains('on')) return;
+  if(e.key === 'Escape' && menuOpen) return closeMenu();
+  if(!e.altKey || e.ctrlKey || e.metaKey) return;
+  const k = (e.key || '').toUpperCase();
+  if(k === 'W'){ e.preventDefault(); return closeTab(ACTIVE); }
+  const hit = Object.entries(META).find(([,m]) => m.key === k);
+  if(hit){ e.preventDefault(); go(hit[0]); }
+});
+
 /* ---------------- Écran de lancement ---------------- */
 const $ = id => document.getElementById(id);
 const boot = $('boot'), bootGrid = $('bootGrid'), bootBar = $('bootBar'), bootStatus = $('bootStatus');
@@ -981,7 +1227,12 @@ async function enter(pseudo){
   shell.classList.add('on');
   $('meName').textContent = pseudo;
   $('meAv').textContent = pseudo[0].toUpperCase();
-  go('dashboard');
+
+  const saved = await Store.get('grid:tabs:'+pseudo);
+  TABS = (saved?.tabs || []).filter(t=>META[t]);
+  if(!TABS.includes('dashboard')) TABS.unshift('dashboard');
+  ACTIVE = META[saved?.active] ? saved.active : 'dashboard';
+  go(ACTIVE);
 }
 $('meOut').addEventListener('click', async ()=>{
   await Store.del(K_SESSION);
