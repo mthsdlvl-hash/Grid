@@ -26,6 +26,9 @@
   --amber-soft:#FFF3D0;
   --mint:#4FBF8B;
   --coral:#F0655A;
+  --btn-hi:#4EABFF;
+  --btn-lo:#0B69F0;
+  --btn-halo:rgba(45,145,255,.42);
   --r:18px;
   --shadow:0 1px 2px rgba(20,23,30,.04), 0 8px 24px rgba(20,23,30,.06);
   --shadow-lift:0 2px 4px rgba(20,23,30,.05), 0 18px 48px rgba(20,23,30,.10);
@@ -48,6 +51,7 @@
   --key:#20242C;
   --field:#13161B;
   --amber-soft:#3A2F14;
+  --btn-halo:rgba(45,145,255,.34);
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
   --shadow-lift:0 2px 4px rgba(0,0,0,.45), 0 18px 48px rgba(0,0,0,.5);
   --shadow-pop:0 2px 6px rgba(0,0,0,.5), 0 24px 60px rgba(0,0,0,.6);
@@ -163,7 +167,7 @@ input{font:inherit}
 }
 #boot.gate .boot-blob:hover{transform:scale(1.05)}
 #boot.gate .boot-blob:active{transform:scale(.97)}
-#boot.gate .boot-blob:focus-visible{outline:2px solid var(--ink);outline-offset:10px}
+#boot.gate .boot-blob:focus-visible{outline:none;filter:drop-shadow(0 0 14px rgba(58,150,255,.75))}
 .boot-foot{display:grid;place-items:center;min-height:34px;margin-top:-4px}
 .boot-foot > *{grid-area:1/1}
 .boot-load{display:flex;flex-direction:column;align-items:center;gap:13px;transition:opacity .3s ease}
@@ -210,8 +214,7 @@ input{font:inherit}
 .ask-conf .q{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.45}
 .ask-conf .acts{display:flex;gap:6px;margin-top:12px}
 .ask-conf .acts button{flex:1;padding:8px;border-radius:9px;font-size:12px;font-weight:500;transition:.15s}
-.ask-conf .yes{background:var(--ink);color:var(--card)}
-.ask-conf .yes:hover{opacity:.87}
+
 .ask-conf .no{background:var(--key);color:var(--dim)}
 .ask-conf .no:hover{background:var(--hair);color:var(--ink)}
 .ask-conf .hint{font-size:10.5px;color:var(--muted);margin-top:9px;text-align:center}
@@ -236,10 +239,47 @@ input{font:inherit}
 .nudge .sub{font-size:11.5px;color:var(--muted)}
 .nudge .acts{display:flex;gap:6px;margin-top:13px}
 .nudge .acts button{flex:1;padding:8px;border-radius:9px;font-size:12px;font-weight:500;transition:.15s}
-.nudge .ok{background:var(--ink);color:var(--card)}
-.nudge .ok:hover{opacity:.87}
+
 .nudge .later{background:var(--key);color:var(--dim)}
 .nudge .later:hover{background:var(--hair);color:var(--ink)}
+
+
+/* ---------- Les boutons de Grid ----------
+   Bleu, rond, et posé sur son propre halo : le bouton appartient au personnage. */
+.gbtn{
+  position:relative;
+  background:linear-gradient(180deg, var(--btn-hi) 0%, var(--btn-lo) 100%);
+  color:#fff;
+  border-radius:99px;
+  font-weight:500;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.34),
+    inset 0 0 0 1px rgba(255,255,255,.14),
+    0 6px 18px var(--btn-halo),
+    0 0 26px var(--btn-halo);
+  transition:box-shadow .25s ease, transform .16s cubic-bezier(.34,1.4,.5,1), filter .2s;
+}
+.gbtn:hover{
+  filter:brightness(1.07);
+  transform:translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.4),
+    inset 0 0 0 1px rgba(255,255,255,.18),
+    0 9px 24px var(--btn-halo),
+    0 0 40px var(--btn-halo);
+}
+.gbtn:active{transform:translateY(0) scale(.985);filter:brightness(.97)}
+.gbtn[disabled]{opacity:.4;box-shadow:none;transform:none;filter:none;cursor:not-allowed}
+.gbtn:focus-visible{outline:none;box-shadow:
+  inset 0 1px 0 rgba(255,255,255,.34),
+  0 0 0 3px var(--card), 0 0 0 5px var(--btn-lo), 0 0 30px var(--btn-halo)}
+/* la pastille blanche du + */
+.gbtn .ic{
+  width:21px;height:21px;border-radius:50%;flex:none;
+  background:#fff;color:var(--btn-lo);
+  display:grid;place-items:center;
+  box-shadow:0 1px 3px rgba(0,0,0,.14);
+}
 
 /* ---------- Marque ---------- */
 .brand{display:flex;align-items:center;gap:9px;flex:none;padding:0 6px 0 4px}
@@ -288,10 +328,7 @@ input{font:inherit}
 .strength{display:flex;gap:3px;margin-top:7px}
 .strength i{flex:1;height:2px;border-radius:99px;background:var(--hair);transition:background .25s}
 .strength-lab{font-size:10.5px;color:var(--muted);margin-top:5px;min-height:13px}
-.auth-btn{width:100%;margin-top:22px;background:var(--ink);color:var(--card);border-radius:12px;padding:13px;font-size:13.5px;font-weight:500;transition:opacity .15s,transform .1s}
-.auth-btn:hover{opacity:.88}
-.auth-btn:active{transform:scale(.99)}
-.auth-btn[disabled]{opacity:.35;cursor:not-allowed}
+.auth-btn{width:100%;margin-top:22px;padding:13px;font-size:13.5px}
 .auth-err{font-size:12px;color:var(--coral);margin-top:13px;display:none;align-items:center;gap:7px}
 .auth-err.on{display:flex}
 .auth-alt{margin-top:18px;padding-top:16px;border-top:1px solid var(--hair);font-size:12.5px;color:var(--muted);text-align:center}
@@ -397,9 +434,7 @@ input{font:inherit}
 .pin input{border:none;background:none;outline:none;color:var(--ink);width:100%;padding:9px 0;font-size:13px}
 .pin input::placeholder{color:var(--muted);opacity:.55}
 .pin + .pin{margin-top:6px}
-.pan-btn{width:100%;margin-top:10px;background:var(--ink);color:var(--card);border-radius:10px;padding:9px;font-size:12.5px;font-weight:500;transition:opacity .15s}
-.pan-btn:hover{opacity:.87}
-.pan-btn[disabled]{opacity:.3;cursor:not-allowed}
+.pan-btn{width:100%;margin-top:10px;padding:9px;font-size:12.5px}
 .pan-msg{font-size:11.5px;margin-top:9px;min-height:14px;line-height:1.4}
 .pan-msg.err{color:var(--coral)}
 .pan-msg.ok{color:var(--mint)}
@@ -429,10 +464,9 @@ h1 em{font-style:normal;color:var(--muted)}
 @keyframes breathe{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.86)}}
 .empty h2{font-family:var(--display);font-weight:500;font-size:21px;letter-spacing:-.02em;margin-bottom:9px}
 .empty p{font-size:13px;color:var(--muted);max-width:330px;line-height:1.55;margin-bottom:20px}
-.btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--card);border-radius:99px;padding:10px 18px;font-size:13px;font-weight:500;transition:opacity .15s}
-.btn:hover{opacity:.88}
-.btn.quiet{background:none;color:var(--muted);box-shadow:inset 0 0 0 1px var(--hair)}
-.btn.quiet:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:9px 18px 9px 10px;font-size:13px}
+.btn.quiet{background:none;color:var(--muted);box-shadow:inset 0 0 0 1px var(--hair);filter:none;padding:10px 18px}
+.btn.quiet:hover{color:var(--ink);background:none;filter:none;transform:none;box-shadow:inset 0 0 0 1px var(--muted)}
 
 /* =========================================================
    TÉLÉPHONE — le PC n'est pas touché.
@@ -560,7 +594,7 @@ h1 em{font-style:normal;color:var(--muted)}
         </div>
       </div>
     </div>
-    <button class="auth-btn" id="authBtn">Créer le profil</button>
+    <button class="gbtn auth-btn" id="authBtn">Créer le profil</button>
     <div class="auth-err" id="authErr">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.01"/></svg>
       <span id="authErrTxt"></span>
@@ -690,21 +724,15 @@ const emptyState = (title, body, cta) => `
 
 PAGES.dashboard = () => `
   <div class="page-head" style="padding-top:4px">
-    <div class="eyebrow">Vue d'ensemble</div>
     <h1>Bonjour ${SESSION.pseudo}. <em>Rien à piloter pour l'instant.</em></h1>
-  </div>
-  ${emptyState(
-    'Ajoutez votre première île',
-    'Grid ne devine rien : tout part d\u2019une île. Renseignez-en une et le cycle de paiement, la rétention et la marge se rempliront autour.',
-    '<button class="btn" data-goto="maps">Aller à Mes îles</button>'
-  )}`;
+  </div>`;
 
 const soon = (eyebrow, title, desc) => () => `
   <div class="page-head" style="padding-top:4px">
     <div class="eyebrow">${eyebrow}</div>
     <h1>${title}</h1>
   </div>
-  ${emptyState('Pas encore construit', desc, '<button class="btn quiet" data-goto="dashboard">Retour au tableau de bord</button>')}`;
+  ${emptyState('Pas encore construit', desc, '<button class="gbtn btn quiet" data-goto="dashboard">Retour au tableau de bord</button>')}`;
 
 PAGES.maps     = soon('Portefeuille',  'Mes îles',       'Ici vivront la fiche de chaque île, ses versions publiées et son historique de joueurs.');
 PAGES.revenue  = soon('Argent',        'Revenus',        'Relevés Epic par cycle, projections et rapprochement avec vos versements réels.');
@@ -858,12 +886,12 @@ const ACC = {
 
       <div class="pan-lab">Nom du compte</div>
       <div class="pin"><input id="pName" type="text" value="${SESSION.pseudo}" maxlength="24" spellcheck="false"></div>
-      <button class="pan-btn" data-act="name">Enregistrer le nom</button>
+      <button class="gbtn pan-btn" data-act="name">Enregistrer le nom</button>
 
       <div class="pan-lab">Mot de passe</div>
       <div class="pin"><input id="pOld" type="password" placeholder="Mot de passe actuel" autocomplete="current-password"></div>
       <div class="pin"><input id="pNew" type="password" placeholder="Nouveau mot de passe" autocomplete="new-password"></div>
-      <button class="pan-btn" data-act="pass">Changer le mot de passe</button>
+      <button class="gbtn pan-btn" data-act="pass">Changer le mot de passe</button>
 
       <div class="pan-msg" id="pMsg"></div>
     </div>` }),
@@ -1148,11 +1176,8 @@ window.addEventListener('pointermove', eyesTo, {passive:true});
 window.addEventListener('pointerdown', eyesTo, {passive:true});
 
 /* ================= Barre de demande ================= */
+/* Les onglets, c'est le rôle du « + ». Grid, lui, s'occupe de ce que vous lui dites. */
 const ACTIONS = () => [
-  ...Object.entries(META).filter(([id])=>id!=='dashboard').map(([id,m])=>({
-    label:'Ouvrir ' + m.label, run:()=>go(id), done:TABS.includes(id)
-  })),
-  { label:'Revenir au tableau de bord', run:()=>go('dashboard'), done:ACTIVE==='dashboard' },
   { label:'Basculer en mode ' + (isDark()?'clair':'sombre'), run:()=>applyTheme(!isDark()) },
 ];
 let ASK_CUR = 0, ASK_HITS = [], ASK_READ = null;
@@ -1194,7 +1219,7 @@ function paintAsk(){
           <div class="what">${esc(ASK_READ.what)}</div>
           <div class="q">Je vous la rappelle ?</div>
           <div class="acts">
-            <button class="yes" data-conf="yes">Oui, garde-la</button>
+            <button class="gbtn yes" data-conf="yes">Oui, garde-la</button>
             <button class="no" data-conf="no">Non, laisse</button>
           </div>
           <div class="hint">Ajoutez « demain », « vendredi », « à 18h »… et je vous préviens à l'heure.</div>
@@ -1311,7 +1336,7 @@ function showNudge(n){
     <div class="txt">${esc(n.what)}</div>
     <div class="sub">Noté ${whenLabel(new Date(n.created), true)}</div>
     <div class="acts">
-      <button class="ok" data-nudge="done" data-id="${n.id}">C'est fait</button>
+      <button class="gbtn ok" data-nudge="done" data-id="${n.id}">C'est fait</button>
       <button class="later" data-nudge="later" data-id="${n.id}">Dans 10 min</button>
     </div>`;
   closeAsk();
@@ -1702,7 +1727,6 @@ function gateWait(){
     blob.addEventListener('keydown', onKey);
     cta.addEventListener('keydown', onKey);
     blob.addEventListener('pointerenter', peek);
-    blob.focus();
   });
 }
 async function bootOut(){
