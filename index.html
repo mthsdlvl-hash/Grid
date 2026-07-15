@@ -41,14 +41,150 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:6px}
 
+/* ---------- Écrans ---------- */
+.screen{display:none}
+.screen.on{display:block}
+.screen.on.flex{display:flex}
+
+/* ---------- Lancement ---------- */
+#boot{
+  position:fixed;inset:0;z-index:50;
+  background:var(--paper);
+  display:none;place-items:center;
+  transition:opacity .5s ease;
+}
+#boot.on{display:grid}
+#boot.out{opacity:0;pointer-events:none}
+.boot-inner{display:flex;flex-direction:column;align-items:center;gap:26px}
+.boot-grid{
+  display:grid;grid-template:repeat(4,1fr)/repeat(4,1fr);
+  gap:6px;width:104px;height:104px;
+  transition:width .6s cubic-bezier(.7,0,.2,1), height .6s cubic-bezier(.7,0,.2,1), gap .6s cubic-bezier(.7,0,.2,1);
+}
+.boot-grid b{
+  display:block;border-radius:4px;
+  background:#DEE1E6;
+  transform:scale(.34);
+  animation:cell .5s cubic-bezier(.34,1.4,.5,1) forwards;
+}
+.boot-grid b.key{background:var(--amber)}
+@keyframes cell{to{transform:scale(1)}}
+.boot-grid.settle b{background:var(--ink)}
+.boot-grid.settle b.key{background:var(--amber);box-shadow:0 0 0 6px var(--amber-soft)}
+.boot-grid b{transition:background .45s ease, box-shadow .45s ease}
+
+.boot-word{
+  font-family:var(--display);font-weight:700;font-size:14px;
+  text-transform:uppercase;letter-spacing:1.2em;text-indent:1.2em;
+  opacity:0;transform:translateY(4px);
+  animation:word .7s ease .55s forwards;
+}
+@keyframes word{to{opacity:1;transform:none}}
+.boot-track{width:132px;height:2px;border-radius:99px;background:#E1E3E8;overflow:hidden}
+.boot-track i{
+  display:block;height:100%;width:0;background:var(--ink);border-radius:99px;
+  transition:width .35s ease;
+}
+.boot-status{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
+  color:var(--muted);text-transform:uppercase;height:12px;
+}
+@media(prefers-reduced-motion:reduce){
+  .boot-grid b,.boot-word{animation:none;opacity:1;transform:none}
+}
+
+/* ---------- Profil ---------- */
+#auth{
+  position:fixed;inset:0;z-index:40;
+  background:
+    radial-gradient(900px 500px at 50% -20%, #FFFFFF 0%, transparent 65%),
+    var(--paper);
+  display:none;place-items:center;padding:24px;
+  animation:fadeUp .5s ease;
+}
+#auth.on{display:grid}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.auth-card{
+  width:100%;max-width:376px;
+  background:var(--card);border-radius:22px;box-shadow:var(--shadow-lift);
+  padding:30px 28px 26px;
+}
+.auth-brand{display:flex;align-items:center;gap:9px;margin-bottom:26px}
+.auth-h{font-family:var(--display);font-weight:500;font-size:24px;letter-spacing:-.03em;line-height:1.15}
+.auth-p{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.5}
+.field{margin-top:16px}
+.field label{
+  display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:7px;
+}
+.field .box{
+  display:flex;align-items:center;gap:9px;
+  border:1px solid var(--hair);border-radius:12px;
+  padding:0 12px;background:#FCFCFD;
+  transition:border-color .15s, background .15s;
+}
+.field .box:focus-within{border-color:var(--ink);background:#fff}
+.field input{
+  border:none;background:none;outline:none;font:inherit;color:var(--ink);
+  width:100%;padding:12px 0;font-size:14px;
+}
+.field input::placeholder{color:#B9BEC6}
+.field .box .reveal{color:var(--muted);font-size:11px;padding:4px;flex:none}
+.field .box .reveal:hover{color:var(--ink)}
+.strength{display:flex;gap:3px;margin-top:7px}
+.strength i{flex:1;height:2px;border-radius:99px;background:#E7E9ED;transition:background .25s}
+.strength-lab{font-size:10.5px;color:var(--muted);margin-top:5px;height:13px}
+.auth-btn{
+  width:100%;margin-top:22px;
+  background:var(--ink);color:#fff;border-radius:12px;
+  padding:13px;font-size:13.5px;font-weight:500;
+  transition:opacity .15s, transform .1s;
+}
+.auth-btn:hover{opacity:.88}
+.auth-btn:active{transform:scale(.99)}
+.auth-btn[disabled]{opacity:.35;cursor:not-allowed}
+.auth-err{
+  font-size:12px;color:var(--coral);margin-top:13px;
+  display:none;align-items:center;gap:7px;
+}
+.auth-err.on{display:flex}
+.auth-alt{
+  margin-top:18px;padding-top:16px;border-top:1px solid var(--hair);
+  font-size:12.5px;color:var(--muted);text-align:center;
+}
+.auth-alt button{color:var(--ink);font-weight:500;text-decoration:underline;text-underline-offset:2px}
+.auth-note{
+  margin-top:18px;font-size:11px;color:var(--muted);line-height:1.5;
+  background:#F7F8FA;border-radius:10px;padding:11px 12px;
+}
+.auth-note b{color:#4A4F59;font-weight:600}
+
 /* ---------- Shell ---------- */
 .app{
-  display:grid;
+  display:none;
   grid-template-columns:248px 1fr;
   height:100vh;
   gap:12px;
   padding:12px;
 }
+.app.on{display:grid;animation:fadeUp .45s ease}
+
+/* ---------- Compte (sidebar) ---------- */
+.me{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 8px;border-radius:12px;margin-top:10px;
+  transition:background .15s;
+}
+.me:hover{background:#F5F6F8}
+.me-av{
+  width:26px;height:26px;border-radius:8px;flex:none;
+  display:grid;place-items:center;
+  font-family:var(--display);font-size:11px;font-weight:600;color:#fff;
+  background:var(--ink);
+}
+.me-name{font-size:12.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.me-out{margin-left:auto;color:var(--muted);flex:none;padding:4px}
+.me-out:hover{color:var(--coral)}
 
 /* ---------- Sidebar ---------- */
 .side{
@@ -286,7 +422,61 @@ tr:hover .row-action{opacity:1}
 </style>
 </head>
 <body>
-<div class="app">
+
+<!-- LANCEMENT -->
+<div id="boot">
+  <div class="boot-inner">
+    <div class="boot-grid" id="bootGrid" aria-hidden="true"></div>
+    <div class="boot-word">Grid</div>
+    <div class="boot-track"><i id="bootBar"></i></div>
+    <div class="boot-status" id="bootStatus"></div>
+  </div>
+</div>
+
+<!-- PROFIL -->
+<div id="auth">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="brand-name">Grid</div>
+    </div>
+
+    <h1 class="auth-h" id="authH">Créez votre profil</h1>
+    <p class="auth-p" id="authP">Un pseudo, un mot de passe, et vos îles vous attendent.</p>
+
+    <div class="field">
+      <label for="pseudo">Pseudo créateur</label>
+      <div class="box">
+        <input id="pseudo" type="text" autocomplete="username" placeholder="ron" spellcheck="false" maxlength="24">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="pass">Mot de passe</label>
+      <div class="box">
+        <input id="pass" type="password" autocomplete="new-password" placeholder="••••••••">
+        <button class="reveal" id="reveal" type="button">Voir</button>
+      </div>
+      <div class="strength" id="strength"><i></i><i></i><i></i><i></i></div>
+      <div class="strength-lab" id="strengthLab"></div>
+    </div>
+
+    <button class="auth-btn" id="authBtn">Créer le profil</button>
+
+    <div class="auth-err" id="authErr">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.01"/></svg>
+      <span id="authErrTxt"></span>
+    </div>
+
+    <div class="auth-alt" id="authAlt"></div>
+
+    <p class="auth-note" id="authNote">
+      <b>Verrou local.</b> Votre profil ne quitte jamais ce navigateur et le mot de passe n'y est stocké que sous forme hachée. C'est un verrou d'écran, pas un coffre-fort : ne le réutilisez pas ailleurs.
+    </p>
+  </div>
+</div>
+
+<div class="app" id="shell">
 
   <!-- SIDEBAR -->
   <aside class="side">
@@ -341,6 +531,13 @@ tr:hover .row-action{opacity:1}
         <div class="bar"><i style="width:68%"></i></div>
         <div class="s">Cycle juillet — 68 % écoulé</div>
       </div>
+      <div class="me">
+        <span class="me-av" id="meAv">R</span>
+        <span class="me-name" id="meName">ron</span>
+        <button class="me-out" id="meOut" title="Verrouiller Grid" aria-label="Verrouiller Grid">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3"/><path d="M10 17l-5-5 5-5M5 12h11"/></svg>
+        </button>
+      </div>
     </div>
   </aside>
 
@@ -349,6 +546,54 @@ tr:hover .row-action{opacity:1}
 </div>
 
 <script>
+/* ---------------- Stockage (3 niveaux de repli) ---------------- */
+const Store = (() => {
+  const mem = {};
+  const hasWin = typeof window.storage?.get === 'function';
+  let hasLS = false;
+  try { localStorage.setItem('__t','1'); localStorage.removeItem('__t'); hasLS = true; } catch(e){}
+  return {
+    async get(k){
+      if(hasWin){ try{ const r = await window.storage.get(k); return r ? JSON.parse(r.value) : null; }catch(e){ return null; } }
+      if(hasLS){ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }
+      return mem[k] ?? null;
+    },
+    async set(k,v){
+      const s = JSON.stringify(v);
+      if(hasWin){ try{ await window.storage.set(k,s); return; }catch(e){} }
+      if(hasLS){ try{ localStorage.setItem(k,s); return; }catch(e){} }
+      mem[k] = v;
+    },
+    async del(k){
+      if(hasWin){ try{ await window.storage.delete(k); return; }catch(e){} }
+      if(hasLS){ try{ localStorage.removeItem(k); return; }catch(e){} }
+      delete mem[k];
+    }
+  };
+})();
+
+const K_USERS = 'grid:users', K_SESSION = 'grid:session';
+
+/* ---------------- Hachage ---------------- */
+const salt = () => [...crypto.getRandomValues(new Uint8Array(16))].map(b=>b.toString(16).padStart(2,'0')).join('');
+async function hash(pw, s){
+  const data = new TextEncoder().encode(s + '·grid·' + pw);
+  if(crypto.subtle){
+    const buf = await crypto.subtle.digest('SHA-256', data);
+    return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  let h = 2166136261; // repli hors contexte sécurisé
+  for(const b of data){ h ^= b; h = Math.imul(h, 16777619); }
+  return (h>>>0).toString(16);
+}
+const eq = (a,b) => { // comparaison à temps constant
+  if(a.length !== b.length) return false;
+  let d = 0; for(let i=0;i<a.length;i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return d === 0;
+};
+
+let SESSION = { pseudo: '' };
+
 /* ---------------- Données (mock — à brancher plus tard) ---------------- */
 const DATA = {
   cycle: { earned: 4812, target: 7000, progress: 68, close: "31 juil.", pay: "vers le 15 août" },
@@ -451,7 +696,7 @@ PAGES.dashboard = () => {
 
   <div class="page-head">
     <div class="eyebrow">Vue d'ensemble</div>
-    <h1>Bonjour Ron. <em>7 îles, 2 952 joueurs en ligne.</em></h1>
+    <h1>Bonjour ${SESSION.pseudo}. <em>7 îles, 2 952 joueurs en ligne.</em></h1>
   </div>
 
   <div class="grid cols-3">
@@ -603,7 +848,162 @@ main.addEventListener('click', e=>{
   const f = e.target.closest('.filter');
   if(f){ f.parentElement.querySelectorAll('.filter').forEach(x=>x.setAttribute('aria-pressed','false')); f.setAttribute('aria-pressed','true'); }
 });
-go('dashboard');
+/* ---------------- Écran de lancement ---------------- */
+const $ = id => document.getElementById(id);
+const boot = $('boot'), bootGrid = $('bootGrid'), bootBar = $('bootBar'), bootStatus = $('bootStatus');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const wait = ms => new Promise(r=>setTimeout(r, reduce ? Math.min(ms,60) : ms));
+
+const KEY_CELL = 9; // la cellule ambre
+for(let i=0;i<16;i++){
+  const b = document.createElement('b');
+  if(i===KEY_CELL) b.className = 'key';
+  b.style.animationDelay = (reduce ? 0 : 40 + i*34) + 'ms';
+  bootGrid.appendChild(b);
+}
+
+const STEPS = [
+  ['Ouverture de Grid', 18],
+  ['Lecture du profil', 46],
+  ['Cycle de paiement', 74],
+  ['Prêt', 100],
+];
+
+async function runBoot(){
+  boot.classList.add('on');
+  await wait(680);
+  bootGrid.classList.add('settle');
+  for(const [label, pct] of STEPS){
+    bootStatus.textContent = label;
+    bootBar.style.width = pct + '%';
+    await wait(340);
+  }
+  await wait(220);
+  boot.classList.add('out');
+  await wait(reduce ? 0 : 500);
+  boot.classList.remove('on','out');
+}
+
+/* ---------------- Profil ---------------- */
+const auth = $('auth'), shell = $('shell');
+const fPseudo = $('pseudo'), fPass = $('pass');
+let MODE = 'create';
+
+const RULES = [
+  { t:'8 caractères minimum', ok: p => p.length >= 8 },
+  { t:'un chiffre',           ok: p => /\d/.test(p) },
+  { t:'une majuscule',        ok: p => /[A-Z]/.test(p) },
+  { t:'un caractère spécial', ok: p => /[^A-Za-z0-9]/.test(p) },
+];
+const LABELS = ['Trop court', 'Faible', 'Correct', 'Solide', 'Excellent'];
+const COLORS = ['#E7E9ED','var(--coral)','var(--amber)','var(--mint)','var(--mint)'];
+
+function gauge_pw(){
+  const p = fPass.value;
+  const n = RULES.filter(r=>r.ok(p)).length;
+  $('strength').querySelectorAll('i').forEach((el,i)=>{
+    el.style.background = i < n ? COLORS[n] : '#E7E9ED';
+  });
+  const missing = RULES.filter(r=>!r.ok(p)).map(r=>r.t);
+  $('strengthLab').textContent = MODE !== 'create' || !p ? ''
+    : n === 4 ? LABELS[4]
+    : `${LABELS[n]} — il manque ${missing.slice(0,2).join(' et ')}`;
+  return n;
+}
+function showErr(msg){ $('authErrTxt').textContent = msg; $('authErr').classList.add('on'); }
+function clearErr(){ $('authErr').classList.remove('on'); }
+
+function paintAuth(){
+  const create = MODE === 'create';
+  $('authH').textContent = create ? 'Créez votre profil' : 'Content de vous revoir';
+  $('authP').textContent = create
+    ? 'Un pseudo, un mot de passe, et vos îles vous attendent.'
+    : 'Entrez votre mot de passe pour déverrouiller Grid.';
+  $('authBtn').textContent = create ? 'Créer le profil' : 'Ouvrir mon compte';
+  fPass.autocomplete = create ? 'new-password' : 'current-password';
+  $('strength').style.display = create ? 'flex' : 'none';
+  $('strengthLab').style.display = create ? 'block' : 'none';
+  $('authAlt').innerHTML = create
+    ? 'Vous avez déjà un profil ? <button id="swap">Se connecter</button>'
+    : 'Première visite ? <button id="swap">Créer un profil</button>';
+  $('authNote').style.display = create ? 'block' : 'none';
+  clearErr(); gauge_pw();
+}
+$('authAlt').addEventListener('click', e=>{
+  if(e.target.id === 'swap'){ MODE = MODE === 'create' ? 'login' : 'create'; paintAuth(); fPseudo.focus(); }
+});
+$('reveal').addEventListener('click', ()=>{
+  const show = fPass.type === 'password';
+  fPass.type = show ? 'text' : 'password';
+  $('reveal').textContent = show ? 'Cacher' : 'Voir';
+});
+fPass.addEventListener('input', ()=>{ clearErr(); gauge_pw(); });
+fPseudo.addEventListener('input', clearErr);
+[fPseudo, fPass].forEach(el => el.addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); }));
+$('authBtn').addEventListener('click', submit);
+
+async function submit(){
+  const pseudo = fPseudo.value.trim();
+  const pw = fPass.value;
+  const btn = $('authBtn');
+
+  if(pseudo.length < 3) return showErr('Choisissez un pseudo d\u2019au moins 3 caractères.');
+  if(!/^[a-zA-Z0-9_.\- ]+$/.test(pseudo)) return showErr('Lettres, chiffres, tirets et points uniquement.');
+  if(!pw) return showErr('Entrez votre mot de passe.');
+
+  const users = (await Store.get(K_USERS)) || {};
+  const id = pseudo.toLowerCase();
+  btn.disabled = true;
+
+  try{
+    if(MODE === 'create'){
+      if(users[id]) { MODE = 'login'; paintAuth(); return showErr('Ce pseudo existe déjà. Connectez-vous.'); }
+      if(gauge_pw() < 3) return showErr('Mot de passe trop faible pour protéger un business.');
+      const s = salt();
+      users[id] = { pseudo, salt: s, hash: await hash(pw, s), created: Date.now() };
+      await Store.set(K_USERS, users);
+    } else {
+      const u = users[id];
+      if(!u) return showErr('Aucun profil à ce pseudo sur ce navigateur.');
+      if(!eq(await hash(pw, u.salt), u.hash)) return showErr('Mot de passe incorrect.');
+    }
+    await Store.set(K_SESSION, id);
+    await enter(users[id].pseudo);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ---------------- Entrée dans l'app ---------------- */
+async function enter(pseudo){
+  SESSION.pseudo = pseudo;
+  auth.classList.remove('on');
+  shell.classList.add('on');
+  $('meName').textContent = pseudo;
+  $('meAv').textContent = pseudo[0].toUpperCase();
+  go('dashboard');
+}
+$('meOut').addEventListener('click', async ()=>{
+  await Store.del(K_SESSION);
+  shell.classList.remove('on');
+  fPass.value = ''; fPass.type = 'password'; $('reveal').textContent = 'Voir';
+  MODE = 'login'; paintAuth();
+  auth.classList.add('on');
+  fPass.focus();
+});
+
+/* ---------------- Démarrage ---------------- */
+(async function start(){
+  await runBoot();
+  const id = await Store.get(K_SESSION);
+  const users = (await Store.get(K_USERS)) || {};
+  if(id && users[id]) return enter(users[id].pseudo);
+  MODE = Object.keys(users).length ? 'login' : 'create';
+  if(MODE === 'login') fPseudo.value = Object.values(users)[0].pseudo;
+  paintAuth();
+  auth.classList.add('on');
+  (MODE === 'login' ? fPass : fPseudo).focus();
+})();
 </script>
 </body>
 </html>
