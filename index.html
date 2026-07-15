@@ -151,19 +151,72 @@ input{font:inherit}
 .ask-none{padding:14px 11px;font-size:12.5px;color:var(--muted);line-height:1.5}
 
 /* ---------- Lancement : la grille devient la bulle ---------- */
-.boot-stage{position:relative;width:104px;height:104px;display:grid;place-items:center}
-.boot-stage > *{grid-area:1/1}
-.boot-grid{transition:opacity .45s ease,transform .55s cubic-bezier(.5,0,.75,0)}
-.boot-stage.morph .boot-grid{opacity:0;transform:scale(.45)}
-.boot-blob{width:92px;height:92px;opacity:0;transform:scale(.2);transition:opacity .3s ease,transform .6s cubic-bezier(.34,1.5,.5,1)}
-.boot-stage.morph .boot-blob{opacity:1;transform:none}
+.boot-blob{width:92px;height:92px}
+
+
+/* Grid parle par la couleur */
+.blob stop{transition:stop-color .5s ease}
+.blob .body > path{transition:fill .5s ease}
+.blob.tone-green {--blob-1:#F0FFF7;--blob-2:#6FE3AC;--blob-3:#12A05C;--blob-eye:#F4FFFA}
+.blob.tone-orange{--blob-1:#FFF8EE;--blob-2:#FFC486;--blob-3:#F07C1E;--blob-eye:#FFFAF3}
+.blob.tone-orange .body{animation:breathe 1.1s ease-in-out infinite}
+.blob.tone-red   {--blob-1:#FFF3F2;--blob-2:#FFA79E;--blob-3:#E03A2B;--blob-eye:#FFF7F6}
+.blob.tone-red .body{animation:breathe .95s ease-in-out infinite}
+
+.bub-btn .badge{
+  position:absolute;top:-1px;right:-1px;min-width:9px;height:9px;border-radius:99px;
+  background:var(--coral);border:2px solid var(--card);
+  animation:pulseDot 1.8s ease-in-out infinite;
+}
+@keyframes pulseDot{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
+
+.ask-sec{padding:9px 11px 5px;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.ask-prev{
+  display:flex;align-items:flex-start;gap:11px;width:100%;text-align:left;
+  padding:11px;border-radius:12px;background:var(--soft);
+  box-shadow:inset 0 0 0 1px var(--hair);
+}
+.ask-prev .what{font-size:13px;color:var(--ink);font-weight:500;line-height:1.35}
+.ask-prev .when{font-size:11.5px;color:var(--muted);margin-top:3px}
+.ask-prev .when b{color:var(--blob-3);font-weight:600}
+.ask-conf{padding:12px 11px 11px;border-radius:12px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--hair)}
+.ask-conf .what{font-size:13.5px;font-weight:500;line-height:1.35}
+.ask-conf .q{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.45}
+.ask-conf .acts{display:flex;gap:6px;margin-top:12px}
+.ask-conf .acts button{flex:1;padding:8px;border-radius:9px;font-size:12px;font-weight:500;transition:.15s}
+.ask-conf .yes{background:var(--ink);color:var(--card)}
+.ask-conf .yes:hover{opacity:.87}
+.ask-conf .no{background:var(--key);color:var(--dim)}
+.ask-conf .no:hover{background:var(--hair);color:var(--ink)}
+.ask-conf .hint{font-size:10.5px;color:var(--muted);margin-top:9px;text-align:center}
+.ask-prev .ret{margin-left:auto;flex:none;font-family:var(--mono);font-size:9.5px;color:var(--muted);background:var(--key);border-radius:6px;padding:3px 6px}
+.note-when{margin-left:auto;flex:none;font-size:10.5px;color:var(--muted);white-space:nowrap}
+.ask-row.late .note-when{color:var(--coral)}
+.ask-row .tick{width:15px;height:15px;border-radius:5px;flex:none;box-shadow:inset 0 0 0 1.5px var(--hair);display:grid;place-items:center;color:transparent;transition:.15s}
+.ask-row:hover .tick,.ask-row.cursor .tick{box-shadow:inset 0 0 0 1.5px var(--mint);color:var(--mint)}
+
+/* Le mot qu'il vous glisse quand l'heure est venue */
+.nudge{
+  position:absolute;top:calc(100% + 11px);left:-10px;z-index:31;width:290px;
+  background:var(--card);border-radius:16px;box-shadow:var(--shadow-pop);padding:14px;
+  opacity:0;transform:translateY(-8px) scale(.96);pointer-events:none;transform-origin:26px -8px;
+  transition:opacity .2s ease,transform .3s cubic-bezier(.34,1.3,.5,1);
+}
+.nudge.on{opacity:1;transform:none;pointer-events:auto}
+.nudge.insist{animation:insist .38s ease}
+@keyframes insist{0%,100%{transform:none}20%{transform:translateX(-5px)}45%{transform:translateX(5px)}70%{transform:translateX(-2px)}}
+.nudge .lab{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--coral)}
+.nudge .txt{font-size:14px;line-height:1.4;margin:7px 0 3px;font-weight:500}
+.nudge .sub{font-size:11.5px;color:var(--muted)}
+.nudge .acts{display:flex;gap:6px;margin-top:13px}
+.nudge .acts button{flex:1;padding:8px;border-radius:9px;font-size:12px;font-weight:500;transition:.15s}
+.nudge .ok{background:var(--ink);color:var(--card)}
+.nudge .ok:hover{opacity:.87}
+.nudge .later{background:var(--key);color:var(--dim)}
+.nudge .later:hover{background:var(--hair);color:var(--ink)}
 
 /* ---------- Marque ---------- */
 .brand{display:flex;align-items:center;gap:9px;flex:none;padding:0 6px 0 4px}
-.brand-mark{width:20px;height:20px;flex:none;display:grid;grid-template:repeat(2,1fr)/repeat(2,1fr);gap:2.5px}
-.brand-mark i{display:block;border-radius:2.5px;background:var(--ink);transition:background .35s, transform .35s}
-.brand-mark i:nth-child(2){background:var(--amber)}
-.brand:hover .brand-mark i:nth-child(2){transform:scale(1.2)}
 .brand-name{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.13em;font-size:12.5px}
 
 /* ---------- Lancement ---------- */
@@ -171,15 +224,6 @@ input{font:inherit}
 #boot.on{display:grid}
 #boot.out{opacity:0;pointer-events:none}
 .boot-inner{display:flex;flex-direction:column;align-items:center;gap:26px}
-.boot-grid{display:grid;grid-template:repeat(4,1fr)/repeat(4,1fr);gap:6px;width:104px;height:104px}
-.boot-grid b{
-  display:block;border-radius:4px;background:var(--track);
-  transform:scale(.34);animation:cell .5s cubic-bezier(.34,1.4,.5,1) forwards;
-  transition:background .45s ease, box-shadow .45s ease;
-}
-@keyframes cell{to{transform:scale(1)}}
-.boot-grid.settle b{background:var(--ink)}
-.boot-grid.settle b.key{background:var(--amber);box-shadow:0 0 0 6px var(--amber-soft)}
 .boot-word{
   font-family:var(--display);font-weight:700;font-size:14px;text-transform:uppercase;
   letter-spacing:1.2em;text-indent:1.2em;opacity:0;transform:translateY(4px);
@@ -189,7 +233,7 @@ input{font:inherit}
 .boot-track{width:132px;height:2px;border-radius:99px;background:var(--hair);overflow:hidden}
 .boot-track i{display:block;height:100%;width:0;background:var(--ink);border-radius:99px;transition:width .35s ease}
 .boot-status{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;height:12px}
-@media(prefers-reduced-motion:reduce){.boot-grid b,.boot-word{animation:none;opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.boot-word{animation:none;opacity:1;transform:none}}
 
 /* ---------- Profil (écran d'entrée) ---------- */
 #auth{
@@ -352,9 +396,6 @@ h1 em{font-style:normal;color:var(--muted)}
 
 /* ---------- État vide ---------- */
 .empty{padding:64px 24px;text-align:center;display:flex;flex-direction:column;align-items:center}
-.empty-grid{display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);gap:5px;width:56px;height:56px;margin-bottom:22px}
-.empty-grid i{display:block;border-radius:3px;background:var(--track)}
-.empty-grid i.key{background:var(--amber);animation:breathe 2.6s ease-in-out infinite}
 @keyframes breathe{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.86)}}
 .empty h2{font-family:var(--display);font-weight:500;font-size:21px;letter-spacing:-.02em;margin-bottom:9px}
 .empty p{font-size:13px;color:var(--muted);max-width:330px;line-height:1.55;margin-bottom:20px}
@@ -378,10 +419,7 @@ h1 em{font-style:normal;color:var(--muted)}
 <!-- LANCEMENT -->
 <div id="boot">
   <div class="boot-inner">
-    <div class="boot-stage" id="bootStage" aria-hidden="true">
-      <div class="boot-grid" id="bootGrid"></div>
-      <div class="boot-blob" id="bootBlob"></div>
-    </div>
+    <div class="boot-blob" id="bootBlob" aria-hidden="true"></div>
     <div class="boot-word">Grid</div>
     <div class="boot-track"><i id="bootBar"></i></div>
     <div class="boot-status" id="bootStatus"></div>
@@ -446,6 +484,7 @@ h1 em{font-style:normal;color:var(--muted)}
         </div>
         <div class="ask-list" id="askList"></div>
       </div>
+      <div class="nudge" id="nudge"></div>
     </div>
 
     <span class="spacer"></span>
@@ -531,9 +570,7 @@ const PAGES = {};
 
 const emptyState = (title, body, cta) => `
   <div class="card empty">
-    <div class="empty-grid" aria-hidden="true">
-      <i></i><i></i><i></i><i></i><i class="key"></i><i></i><i></i><i></i><i></i>
-    </div>
+    <span class="empty-blob" style="width:62px;height:62px;display:block;margin-bottom:20px"></span>
     <h2>${title}</h2>
     <p>${body}</p>
     ${cta || ''}
@@ -608,9 +645,13 @@ function renderTabs(){
     </button>`;
   }).join('');
 }
+let VIEW_BUB = null;
 function renderView(){
   const v = $('view');
+  if(VIEW_BUB){ VIEW_BUB.destroy(); VIEW_BUB = null; }
   v.innerHTML = (PAGES[ACTIVE] || PAGES.dashboard)();
+  const host = v.querySelector('.empty-blob');
+  if(host){ VIEW_BUB = new Blob(host); LIVE.push(VIEW_BUB); VIEW_BUB.set('curious'); }
   v.classList.remove('swap'); void v.offsetWidth; v.classList.add('swap');
   v.scrollTop = 0;
 }
@@ -738,6 +779,149 @@ function paintAcc(name){
 }
 
 
+
+/* ================= Ce que Grid comprend ================= */
+const strip = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const DAYS   = {dimanche:0,lundi:1,mardi:2,mercredi:3,jeudi:4,vendredi:5,samedi:6};
+const MONTHS = {janvier:0,fevrier:1,mars:2,avril:3,mai:4,juin:5,juillet:6,aout:7,septembre:8,octobre:9,novembre:10,decembre:11};
+
+/* Repère une date/heure dans une phrase et dit ce qu'il a consommé. */
+function readWhen(raw){
+  const t = strip(raw);
+  const now = new Date();
+  const d = new Date(now); d.setSeconds(0,0);
+  let hasDay = false, hasTime = false, eaten = [];
+  const eat = re => { const m = t.match(re); if(m){ eaten.push(m[0]); return m; } return null; };
+
+  // « dans 20 min », « dans 2 h », « dans 3 jours »
+  let m = eat(/\bdans\s+(une?|\d+)\s*(min\w*|h\b|heures?|jours?|semaines?|mois)\b/);
+  if(m){
+    const n = /^une?$/.test(m[1]) ? 1 : parseInt(m[1],10);
+    const u = m[2];
+    if(/^min/.test(u))       d.setMinutes(d.getMinutes()+n);
+    else if(/^h/.test(u))    d.setHours(d.getHours()+n);
+    else if(/^jour/.test(u)) d.setDate(d.getDate()+n);
+    else if(/^sem/.test(u))  d.setDate(d.getDate()+n*7);
+    else                     d.setMonth(d.getMonth()+n);
+    return { due:d, eaten, hasTime:true };
+  }
+
+  // moments nommés
+  if((m = eat(/\bapres[- ]demain\b/)))            { d.setDate(d.getDate()+2); hasDay = true; }
+  else if((m = eat(/\bdemain\b/)))                { d.setDate(d.getDate()+1); hasDay = true; }
+  else if((m = eat(/\bce soir\b/)))               { d.setHours(20,0);  hasDay = hasTime = true; }
+  else if((m = eat(/\bce matin\b/)))              { d.setHours(9,0);   hasDay = hasTime = true; }
+  else if((m = eat(/\bcet? apres[- ]midi|\bcet aprem\b/))) { d.setHours(15,0); hasDay = hasTime = true; }
+  else if((m = eat(/\bce week[- ]?end\b/)))       { d.setDate(d.getDate() + ((6 - d.getDay() + 7) % 7 || 7)); d.setHours(10,0); hasDay = hasTime = true; }
+  else if((m = eat(/\bla semaine prochaine\b/)))  { d.setDate(d.getDate()+7); hasDay = true; }
+  else if((m = eat(/\ble mois prochain\b/)))      { d.setMonth(d.getMonth()+1); hasDay = true; }
+  else if((m = eat(/\b(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)(\s+prochain)?\b/))){
+    const target = DAYS[m[1]];
+    let gap = (target - d.getDay() + 7) % 7;
+    if(gap === 0 || m[2]) gap = gap || 7;
+    d.setDate(d.getDate() + gap); hasDay = true;
+  }
+  else if((m = eat(/\ble\s+(\d{1,2})\s+(janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)\b/))){
+    d.setMonth(MONTHS[m[2]], parseInt(m[1],10));
+    if(d < now) d.setFullYear(d.getFullYear()+1);
+    hasDay = true;
+  }
+  else if((m = eat(/\b(\d{1,2})[\/](\d{1,2})\b/))){
+    d.setMonth(parseInt(m[2],10)-1, parseInt(m[1],10));
+    if(d < now) d.setFullYear(d.getFullYear()+1);
+    hasDay = true;
+  }
+
+  // heure : « à 18h », « 18h30 », « vers 9 h »
+  if((m = eat(/\b(?:a|vers)?\s*(\d{1,2})\s*h\s*(\d{2})?\b/)) || (m = eat(/\ba\s+(\d{1,2})\s*:\s*(\d{2})\b/))){
+    d.setHours(parseInt(m[1],10), m[2] ? parseInt(m[2],10) : 0, 0, 0);
+    hasTime = true;
+  }
+
+  if(!hasDay && !hasTime) return { due:null, eaten:[], hasTime:false };
+  if(!hasTime) d.setHours(9,0,0,0);        // une date sans heure = le matin
+  if(!hasDay && d <= now) d.setDate(d.getDate()+1);  // une heure déjà passée = demain
+  return { due:d, eaten, hasTime };
+}
+
+
+/* Les verbes d'un créateur au travail. Un début de phrase qui commence
+   par l'un d'eux est une tâche, même sans date ni « rappelle-moi ». */
+const VERBS = ['fini','termin','achev','boucl','fair','fais','ref','pay','regl','rembours','factur',
+ 'envoy','envoi','transmet','soumet','publi','depos','post','partag','upload','export','import',
+ 'corrig','fix','repar','test','essay','verifi','check','relir','valid','revoir','revois',
+ 'relanc','rappel','recontact','contact','appel','ecrir','ecris','repond','demand','prevenir','previen',
+ 'achet','command','vend','negoci','renouvel','annul','resili','reserv','planifi','organis','prepar',
+ 'creer','cree','construir','construis','build','deploy','install','configur','optimis','nettoy',
+ 'ranger','trier','class','compar','analys','mesur','calcul','budget','sauvegard','backup','archiv',
+ 'ajout','retir','supprim','chang','modifi','mettre','met','met','lanc','demarr','arret','stop',
+ 'monter','mont','edit','render','rendre','uploader','streamer','filmer','film'];
+const VERB_RE = new RegExp('^(?:' + VERBS.join('|') + ')');
+const NOT_VERBS = /^(bonjour|salut|coucou|merci|oui|non|ok|hey|yo|hier|super|cher|mer|fier|leger|premier|dernier|entier|papier|metier|quartier)$/;
+
+/* Un verbe d'action en tête de phrase ? Alors c'est une tâche. */
+function looksLikeTask(raw){
+  const words = strip(raw).replace(/[^a-z0-9'\s-]/g,' ').trim().split(/\s+/).filter(Boolean);
+  if(words.length < 2) return false;
+  const w = words[0].replace(/^(re|r)(?=[a-z]{4})/, '');
+  if(NOT_VERBS.test(words[0])) return false;
+  return VERB_RE.test(w) || VERB_RE.test(words[0]) || /(?:er|ir|re|oir)$/.test(words[0]);
+}
+
+const TRIGGER = /^\s*(rappelle?[- ]?(?:moi|nous)|rappel(?:le)?|n'?oublie(?:z)? pas|pense[zr]?[- ]?y|pense[zr]?|note(?:r)? que|note(?:r)?|souviens[- ]toi)\s*(?:de\s+|d'|qu'|que\s+|[aà]\s+)?/i;
+
+/* Comprend un message. Type déduit, pas demandé. */
+function read(raw){
+  const q = raw.trim();
+  if(!q) return { kind:'vide' };
+  const asked = TRIGGER.test(strip(q));
+  const when  = readWhen(q);
+  if(!asked && !when.due){
+    // ni déclencheur ni date : il reste le sens de la phrase
+    if(looksLikeTask(q)) return { kind:'tache', what: q.trim().charAt(0).toUpperCase() + q.trim().slice(1) };
+    return { kind:'inconnu' };
+  }
+
+  // on retire le déclencheur puis les mots de temps consommés
+  let what = q.replace(new RegExp(TRIGGER.source, 'i'), '');
+  const flat = strip(what);
+  for(const bit of when.eaten){
+    const i = strip(what).indexOf(bit);
+    if(i >= 0) what = what.slice(0, i) + what.slice(i + bit.length);
+  }
+  what = what.replace(/\s+/g,' ')
+             .replace(/^\s*(de|d'|à|a|au|aux)\s+/i,'')
+             .replace(/\s+(avant|pour|d'ici|vers|jusqu'a|jusqu'à|le|la|les|du|de|à|a)\s*$/i,'')
+             .replace(/[\s,.;]+$/,'').trim();
+  if(!what) return { kind: asked ? 'incomplet' : 'inconnu' };
+  return { kind:'rappel', what: what.charAt(0).toUpperCase() + what.slice(1), due: when.due, hasTime: when.hasTime };
+}
+
+/* ---- mise en mots d'une échéance ---- */
+const HM = d => d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+function whenLabel(due, hasTime=true){
+  if(!due) return 'sans échéance';
+  const now = new Date();
+  const day = x => new Date(x.getFullYear(), x.getMonth(), x.getDate());
+  const gap = Math.round((day(due) - day(now)) / 86400000);
+  const h = hasTime ? ' à ' + HM(due) : '';
+  if(gap === 0) return "aujourd'hui" + h;
+  if(gap === 1) return 'demain' + h;
+  if(gap === -1) return 'hier' + h;
+  if(gap < 0)  return 'le ' + due.toLocaleDateString('fr-FR',{day:'numeric',month:'short'}) + h;
+  if(gap < 7)  return due.toLocaleDateString('fr-FR',{weekday:'long'}) + h;
+  return 'le ' + due.toLocaleDateString('fr-FR',{day:'numeric',month:'long'}) + h;
+}
+
+/* ================= Les rappels ================= */
+let NOTES = [];
+const notesKey = () => 'grid:notes:' + SESSION.id;
+const saveNotes = () => Store.set(notesKey(), NOTES);
+async function loadNotes(){ NOTES = (await Store.get(notesKey())) || []; }
+const pending = () => NOTES.filter(n => !n.done)
+  .sort((a,b) => (a.due ?? 8.64e15) - (b.due ?? 8.64e15));
+const overdue = () => pending().filter(n => n.due && n.due <= Date.now());
+
 /* ================= La bulle ================= */
 let BLOB_N = 0;
 function blobSVG(){
@@ -819,6 +1003,11 @@ class Blob {
     clearTimeout(this._f);
     this._f = setTimeout(()=>{ if(this.mood === m) this.set('idle'); }, ms);
   }
+  destroy(){ clearTimeout(this._b); clearTimeout(this._i); clearTimeout(this._f); const i = LIVE.indexOf(this); if(i>=0) LIVE.splice(i,1); }
+  tone(t){
+    this.el.classList.remove('tone-green','tone-orange','tone-red');
+    if(t !== 'blue') this.el.classList.add('tone-' + t);
+  }
   bounce(){
     this.el.classList.remove('bounce'); void this.el.offsetWidth;
     this.el.classList.add('bounce');
@@ -852,19 +1041,96 @@ const ACTIONS = () => [
   { label:'Revenir au tableau de bord', run:()=>go('dashboard'), done:ACTIVE==='dashboard' },
   { label:'Basculer en mode ' + (isDark()?'clair':'sombre'), run:()=>applyTheme(!isDark()) },
 ];
-let ASK_CUR = 0, ASK_HITS = [];
+let ASK_CUR = 0, ASK_HITS = [], ASK_READ = null;
+
+/* Grid travaille : orange. Grid a noté : vert. Puis il redevient lui-même. */
+async function working(){ BUB.tone('orange'); BUB.set('think'); await wait(300); }
+async function noted(){
+  BUB.tone('green'); BUB.set('happy'); BUB.bounce();
+  await wait(1500);
+  BUB.tone('blue'); BUB.set('idle');
+}
 
 function paintAsk(){
-  const q = $('askInput').value.trim().toLowerCase();
-  ASK_HITS = ACTIONS().filter(a => !q || a.label.toLowerCase().includes(q));
+  const raw = $('askInput').value;
+  ASK_READ = read(raw);
+  const list = $('askList');
+
+  /* il a compris un rappel : il le montre avant de l'enregistrer */
+  if(ASK_READ.kind === 'rappel'){
+    ASK_HITS = [];
+    list.innerHTML = `<div class="ask-sec">Rappel compris</div>
+      <div class="ask-prev">
+        <div>
+          <div class="what">${esc(ASK_READ.what)}</div>
+          <div class="when">${ASK_READ.due ? 'Je vous préviens <b>' + whenLabel(ASK_READ.due, ASK_READ.hasTime) + '</b>' : 'Aucune date repérée — je le garde de côté'}</div>
+        </div>
+        <span class="ret">↵</span>
+      </div>`;
+    return;
+  }
+  /* une tâche reconnue toute seule : il demande avant de s'en charger */
+  if(ASK_READ.kind === 'tache'){
+    const q0 = strip(raw.trim());
+    const clash = ACTIONS().filter(a => strip(a.label).includes(q0));
+    if(!clash.length){
+      ASK_HITS = [];
+      list.innerHTML = `<div class="ask-sec">On dirait une tâche</div>
+        <div class="ask-conf">
+          <div class="what">${esc(ASK_READ.what)}</div>
+          <div class="q">Je vous la rappelle ?</div>
+          <div class="acts">
+            <button class="yes" data-conf="yes">Oui, garde-la</button>
+            <button class="no" data-conf="no">Non, laisse</button>
+          </div>
+          <div class="hint">Ajoutez « demain », « vendredi », « à 18h »… et je vous préviens à l'heure.</div>
+        </div>`;
+      return;
+    }
+  }
+  if(ASK_READ.kind === 'incomplet'){
+    ASK_HITS = [];
+    list.innerHTML = `<div class="ask-none">Vous rappeler quoi ? Écrivez la suite — « rappelle-moi de payer Kenzo vendredi ».</div>`;
+    return;
+  }
+
+  const q = strip(raw.trim());
+  const notes = pending().filter(n => !q || strip(n.what).includes(q));
+  const acts  = ACTIONS().filter(a => !q || strip(a.label).includes(q));
+  ASK_HITS = [
+    ...notes.map(n => ({ note:n })),
+    ...acts.map(a => ({ act:a })),
+  ];
   if(ASK_CUR >= ASK_HITS.length) ASK_CUR = 0;
-  $('askList').innerHTML = ASK_HITS.length
-    ? ASK_HITS.map((a,i)=>`<button class="ask-row ${i===ASK_CUR?'cursor':''} ${a.done?'done':''}" data-ask="${i}">
-        <span>${a.label}</span>
+
+  if(!ASK_HITS.length){
+    list.innerHTML = raw.trim()
+      ? `<div class="ask-none">Rien ne correspond à « ${esc(raw.trim())} ». Je sais noter un rappel et ouvrir vos onglets — le reste viendra.</div>`
+      : `<div class="ask-none">Dites-moi « rappelle-moi de… » et je m'en souviens pour vous.</div>`;
+    return;
+  }
+  let html = '', sec = '';
+  ASK_HITS.forEach((h,i)=>{
+    const want = h.note ? 'Rappels' : 'Actions';
+    if(want !== sec){ sec = want; html += `<div class="ask-sec">${sec}</div>`; }
+    if(h.note){
+      const late = h.note.due && h.note.due <= Date.now();
+      html += `<button class="ask-row ${i===ASK_CUR?'cursor':''} ${late?'late':''}" data-ask="${i}">
+        <span class="tick"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l6 6L20 5"/></svg></span>
+        <span>${esc(h.note.what)}</span>
+        <span class="note-when">${h.note.due ? whenLabel(new Date(h.note.due), h.note.hasTime) : 'sans date'}</span>
+      </button>`;
+    } else {
+      html += `<button class="ask-row ${i===ASK_CUR?'cursor':''} ${h.act.done?'done':''}" data-ask="${i}">
+        <span>${esc(h.act.label)}</span>
         <svg class="go" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
-      </button>`).join('')
-    : `<div class="ask-none">Rien ne correspond à « ${$('askInput').value.trim()} ». La bulle ne sait pas encore tout faire — on lui apprendra.</div>`;
+      </button>`;
+    }
+  });
+  list.innerHTML = html;
 }
+const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
 function openAsk(){
   closeAll($('ask'));
   $('ask').classList.add('on');
@@ -874,36 +1140,137 @@ function openAsk(){
   setTimeout(()=>$('askInput').focus(), 40);
 }
 function closeAsk(){
-  if(!$('ask').classList.contains('on')) return;
+  if(!$('ask') || !$('ask').classList.contains('on')) return;
   $('ask').classList.remove('on');
   $('bubBtn').setAttribute('aria-expanded','false');
   BUB.locked = false; BUB.set('idle'); BUB.look(0,0);
 }
-function runAsk(i){
-  const a = ASK_HITS[i];
-  if(!a) return;
-  BUB.flash('happy', 1000);
-  a.run();
+
+async function keepNote(what, due, hasTime){
+  NOTES.push({
+    id: Date.now() + '-' + Math.random().toString(36).slice(2,7),
+    what, due: due ? due.getTime() : null, hasTime: !!hasTime,
+    done:false, fired:false, created: Date.now(),
+  });
   closeAsk();
+  await working();
+  await saveNotes();
+  paintBadge();
+  await noted();
 }
+async function submitAsk(){
+  /* une tâche reconnue seule : Entrée = oui */
+  if(ASK_READ && ASK_READ.kind === 'tache' && !ASK_HITS.length)
+    return keepNote(ASK_READ.what, null, false);
+  /* un rappel à noter */
+  if(ASK_READ && ASK_READ.kind === 'rappel')
+    return keepNote(ASK_READ.what, ASK_READ.due, ASK_READ.hasTime);
+  const h = ASK_HITS[ASK_CUR];
+  if(!h) return BUB.flash('wow', 800);
+  if(h.note) return finishNote(h.note.id);
+  closeAsk();
+  await working();
+  h.act.run();
+  BUB.tone('blue'); BUB.flash('happy', 900);
+}
+
+async function finishNote(id){
+  const n = NOTES.find(x => x.id === id);
+  if(!n) return;
+  n.done = true; n.doneAt = Date.now();
+  await saveNotes();
+  paintBadge(); paintAsk();
+  BUB.tone('green'); BUB.flash('happy', 1100);
+  setTimeout(()=>BUB.tone('blue'), 1200);
+}
+
+/* ================= Le mot au bon moment ================= */
+function paintBadge(){
+  const n = overdue().length;
+  const old = $('bubBtn').querySelector('.badge');
+  if(old) old.remove();
+  if(n) $('bubBtn').insertAdjacentHTML('beforeend', '<span class="badge"></span>');
+}
+function showNudge(n){
+  $('nudge').innerHTML = `
+    <div class="lab">C'est l'heure</div>
+    <div class="txt">${esc(n.what)}</div>
+    <div class="sub">Noté ${whenLabel(new Date(n.created), true)}</div>
+    <div class="acts">
+      <button class="ok" data-nudge="done" data-id="${n.id}">C'est fait</button>
+      <button class="later" data-nudge="later" data-id="${n.id}">Dans 10 min</button>
+    </div>`;
+  closeAsk();
+  NUDGING = n.id;
+  $('nudge').classList.add('on');
+  BUB.tone('red');                 // il reste rouge tant qu'on ne répond pas
+  BUB.set('wow');
+  BUB.bounce();
+}
+function closeNudge(){
+  $('nudge').classList.remove('on');
+  NUDGING = null;
+  BUB.tone('blue'); BUB.set('idle');
+}
+function insist(){
+  const el = $('nudge');
+  el.classList.remove('insist'); void el.offsetWidth; el.classList.add('insist');
+  BUB.bounce();
+}
+let NUDGING = null;
+
+$('nudge').addEventListener('click', async e=>{
+  const b = e.target.closest('[data-nudge]');
+  if(!b) return;
+  const n = NOTES.find(x => x.id === b.dataset.id);
+  closeNudge();
+  if(!n) return;
+  if(b.dataset.nudge === 'done'){ await finishNote(n.id); }
+  else {
+    n.due = Date.now() + 10*60*1000; n.fired = false;
+    await saveNotes(); paintBadge();
+    BUB.flash('curious', 900);
+  }
+  setTimeout(checkDue, 1800);   // un autre attend peut-être son tour
+});
+
+function checkDue(){
+  if(!$('shell').classList.contains('on')) return;
+  paintBadge();
+  const n = pending().find(x => x.due && x.due <= Date.now() && !x.fired);
+  if(!n || $('nudge').classList.contains('on')) return;
+  n.fired = true; saveNotes();
+  showNudge(n);
+}
+setInterval(checkDue, 15000);
 
 $('bubBtn').addEventListener('click', e=>{
   e.stopPropagation();
+  if(NUDGING) return insist();   // réponds-moi d'abord
   $('ask').classList.contains('on') ? closeAsk() : openAsk();
 });
 $('ask').addEventListener('click', e=>{
+  const c = e.target.closest('[data-conf]');
+  if(c){
+    if(c.dataset.conf === 'yes') return keepNote(ASK_READ.what, null, false);
+    closeAsk(); BUB.flash('squint', 700); return;
+  }
   const r = e.target.closest('[data-ask]');
-  if(r) runAsk(+r.dataset.ask);
+  if(r){ ASK_CUR = +r.dataset.ask; submitAsk(); }
+  if(e.target.closest('.ask-prev')) submitAsk();
 });
 $('ask').addEventListener('mousemove', e=>{
   const r = e.target.closest('[data-ask]');
   if(r && +r.dataset.ask !== ASK_CUR){ ASK_CUR = +r.dataset.ask; paintAsk(); }
 });
-$('askInput').addEventListener('input', ()=>{ ASK_CUR = 0; paintAsk(); BUB.flash('think', 700); });
+$('askInput').addEventListener('input', ()=>{
+  ASK_CUR = 0; paintAsk();
+  if(ASK_READ && ASK_READ.kind === 'rappel') BUB.set('curious'); else BUB.set('think');
+});
 $('askInput').addEventListener('keydown', e=>{
-  if(e.key === 'ArrowDown'){ e.preventDefault(); ASK_CUR = (ASK_CUR+1) % ASK_HITS.length; paintAsk(); }
-  else if(e.key === 'ArrowUp'){ e.preventDefault(); ASK_CUR = (ASK_CUR-1+ASK_HITS.length) % ASK_HITS.length; paintAsk(); }
-  else if(e.key === 'Enter'){ e.preventDefault(); ASK_HITS.length ? runAsk(ASK_CUR) : BUB.flash('wow', 800); }
+  if(e.key === 'ArrowDown' && ASK_HITS.length){ e.preventDefault(); ASK_CUR = (ASK_CUR+1) % ASK_HITS.length; paintAsk(); }
+  else if(e.key === 'ArrowUp' && ASK_HITS.length){ e.preventDefault(); ASK_CUR = (ASK_CUR-1+ASK_HITS.length) % ASK_HITS.length; paintAsk(); }
+  else if(e.key === 'Enter'){ e.preventDefault(); submitAsk(); }
   else if(e.key === 'Escape'){ closeAsk(); }
 });
 
@@ -1144,7 +1511,8 @@ async function enter(id){
   auth.classList.remove('on');
   shell.classList.add('on');
   paintAvatars();
-  setTimeout(()=>{ BUB.bounce(); BUB.flash('happy', 1200); }, 420);
+  await loadNotes(); paintBadge();
+  setTimeout(()=>{ BUB.bounce(); BUB.flash('happy', 1200); checkDue(); }, 900);
   const saved = await Store.get('grid:tabs:'+id);
   TABS = (saved?.tabs || []).filter(t=>META[t]);
   if(!TABS.includes('dashboard')) TABS.unshift('dashboard');
@@ -1163,14 +1531,7 @@ async function signOut(){
 }
 
 /* ================= Lancement ================= */
-const boot = $('boot'), bootGrid = $('bootGrid'), bootBar = $('bootBar'), bootStatus = $('bootStatus');
-const KEY_CELL = 9;
-for(let i=0;i<16;i++){
-  const b = document.createElement('b');
-  if(i===KEY_CELL) b.className = 'key';
-  b.style.animationDelay = (reduce ? 0 : 40 + i*34) + 'ms';
-  bootGrid.appendChild(b);
-}
+const boot = $('boot'), bootBar = $('bootBar'), bootStatus = $('bootStatus');
 const STEPS = [['Ouverture de Grid',18],['Lecture du profil',46],['Cycle de paiement',74],['Prêt',100]];
 
 /* les trois bulles vivantes : entrée, lancement, barre du haut */
@@ -1180,15 +1541,14 @@ const AUTH_BUB = new Blob($('authBlob'));
 LIVE.push(BUB, AUTH_BUB);
 async function runBoot(){
   boot.classList.add('on');
-  BOOT_BUB.set('sleep');           // elle dort
-  await wait(680);
-  bootGrid.classList.add('settle');
-  await wait(340);
-  $('bootStage').classList.add('morph');   // la grille devient la bulle
-  await wait(420);
-  BOOT_BUB.set('idle');            // elle ouvre les yeux
-  await wait(260);
-  BOOT_BUB.flash('wow', 700);      // elle découvre
+  BOOT_BUB.set('sleep');                 // Grid dort
+  await wait(760);
+  BOOT_BUB.set('idle');                  // il ouvre les yeux
+  await wait(200);
+  BOOT_BUB.look(-3.4, -1.6); await wait(420);
+  BOOT_BUB.look(3.4, -1.6);  await wait(420);
+  BOOT_BUB.look(0, 0);
+  BOOT_BUB.flash('wow', 700);            // il vous voit
   for(const [label, pct] of STEPS){
     bootStatus.textContent = label;
     bootBar.style.width = pct + '%';
