@@ -151,7 +151,31 @@ input{font:inherit}
 .ask-none{padding:14px 11px;font-size:12.5px;color:var(--muted);line-height:1.5}
 
 /* ---------- Lancement : la grille devient la bulle ---------- */
-.boot-blob{width:92px;height:92px}
+.boot-blob{
+  width:92px;height:92px;
+  transition:width .7s cubic-bezier(.34,1.35,.5,1),
+             height .7s cubic-bezier(.34,1.35,.5,1),
+             transform .3s cubic-bezier(.34,1.4,.5,1);
+}
+#boot.gate .boot-blob{
+  width:164px;height:164px;cursor:pointer;
+  border-radius:50%;
+}
+#boot.gate .boot-blob:hover{transform:scale(1.05)}
+#boot.gate .boot-blob:active{transform:scale(.97)}
+#boot.gate .boot-blob:focus-visible{outline:2px solid var(--ink);outline-offset:10px}
+.boot-foot{display:grid;place-items:center;min-height:34px;margin-top:-4px}
+.boot-foot > *{grid-area:1/1}
+.boot-load{display:flex;flex-direction:column;align-items:center;gap:13px;transition:opacity .3s ease}
+#boot.gate .boot-load{opacity:0;pointer-events:none}
+.boot-cta{
+  opacity:0;pointer-events:none;transition:opacity .45s ease .25s;
+  font-size:12px;color:var(--muted);letter-spacing:.02em;
+  padding:9px 18px;border-radius:99px;box-shadow:inset 0 0 0 1px var(--hair);
+}
+#boot.gate .boot-cta{opacity:1;pointer-events:auto;animation:ctaPulse 2.8s ease-in-out infinite}
+.boot-cta:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+@keyframes ctaPulse{0%,100%{opacity:1}50%{opacity:.5}}
 
 
 /* Grid parle par la couleur */
@@ -162,6 +186,8 @@ input{font:inherit}
 .blob.tone-orange .body{animation:breathe 1.1s ease-in-out infinite}
 .blob.tone-red   {--blob-1:#FFF3F2;--blob-2:#FFA79E;--blob-3:#E03A2B;--blob-eye:#FFF7F6}
 .blob.tone-red .body{animation:breathe .95s ease-in-out infinite}
+.blob.tone-purple{--blob-1:#F8F3FF;--blob-2:#C0A4FF;--blob-3:#6635DF;--blob-eye:#FBF8FF}
+.blob.ex-shut .lid{transform:scaleY(.05)}
 
 .bub-btn .badge{
   position:absolute;top:-1px;right:-1px;min-width:9px;height:9px;border-radius:99px;
@@ -244,7 +270,11 @@ input{font:inherit}
 #auth.on{display:grid}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .auth-card{width:100%;max-width:376px;background:var(--card);border-radius:22px;box-shadow:var(--shadow-lift);padding:30px 28px 26px}
-.auth-brand{margin-bottom:26px}
+.auth-brand{margin-bottom:24px}
+.auth-row{display:flex;gap:15px;align-items:center;margin-top:14px}
+.auth-mate{width:54px;height:54px;flex:none;display:block}
+.auth-fields{flex:1;min-width:0}
+.auth-fields .field:first-child{margin-top:0}
 .auth-h{font-family:var(--display);font-weight:500;font-size:24px;letter-spacing:-.03em;line-height:1.15}
 .auth-p{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.5}
 .field{margin-top:16px}
@@ -493,34 +523,42 @@ h1 em{font-style:normal;color:var(--muted)}
 <!-- LANCEMENT -->
 <div id="boot">
   <div class="boot-inner">
-    <div class="boot-blob" id="bootBlob" aria-hidden="true"></div>
+    <div class="boot-blob" id="bootBlob"></div>
     <div class="boot-word">Grid</div>
-    <div class="boot-track"><i id="bootBar"></i></div>
-    <div class="boot-status" id="bootStatus"></div>
+    <div class="boot-foot">
+      <div class="boot-load">
+        <div class="boot-track"><i id="bootBar"></i></div>
+        <div class="boot-status" id="bootStatus"></div>
+      </div>
+      <button class="boot-cta" id="bootCta">Appuyez sur Grid pour entrer</button>
+    </div>
   </div>
 </div>
 
 <!-- ENTRÉE -->
 <div id="auth">
   <div class="auth-card">
-    <div class="brand auth-brand">
-      <span id="authBlob" style="width:22px;height:22px;display:block" aria-hidden="true"></span>
-      <div class="brand-name">Grid</div>
-    </div>
+    <div class="brand auth-brand"><div class="brand-name">Grid</div></div>
     <h1 class="auth-h" id="authH">Créez votre profil</h1>
     <p class="auth-p" id="authP">Un pseudo, un mot de passe, et vos îles vous attendent.</p>
-    <div class="field">
-      <label for="pseudo">Pseudo créateur</label>
-      <div class="box"><input id="pseudo" type="text" autocomplete="username" placeholder="ron" spellcheck="false" maxlength="24"></div>
-    </div>
-    <div class="field">
-      <label for="pass">Mot de passe</label>
-      <div class="box">
-        <input id="pass" type="password" autocomplete="new-password" placeholder="••••••••">
-        <button class="reveal" id="reveal" type="button">Voir</button>
+
+    <div class="auth-row">
+      <span class="auth-mate" id="authBlob" aria-hidden="true"></span>
+      <div class="auth-fields">
+        <div class="field">
+          <label for="pseudo">Pseudo créateur</label>
+          <div class="box"><input id="pseudo" type="text" autocomplete="username" placeholder="ron" spellcheck="false" maxlength="24"></div>
+        </div>
+        <div class="field">
+          <label for="pass">Mot de passe</label>
+          <div class="box">
+            <input id="pass" type="password" autocomplete="new-password" placeholder="••••••••">
+            <button class="reveal" id="reveal" type="button">Voir</button>
+          </div>
+          <div class="strength" id="strength"><i></i><i></i><i></i><i></i></div>
+          <div class="strength-lab" id="strengthLab"></div>
+        </div>
       </div>
-      <div class="strength" id="strength"><i></i><i></i><i></i><i></i></div>
-      <div class="strength-lab" id="strengthLab"></div>
     </div>
     <button class="auth-btn" id="authBtn">Créer le profil</button>
     <div class="auth-err" id="authErr">
@@ -1048,7 +1086,7 @@ class Blob {
     }, next);
   }
   async blink(){
-    if(this.mood === 'sleep') return;
+    if(this.mood === 'sleep' || this.mood === 'shut') return;
     this.el.classList.add('blink');
     await wait(105);
     this.el.classList.remove('blink');
@@ -1068,7 +1106,7 @@ class Blob {
     this.eyes.forEach(e => e.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px)`);
   }
   set(m){
-    this.el.classList.remove('ex-happy','ex-squint','ex-wow','ex-think','ex-sleep','ex-curious');
+    this.el.classList.remove('ex-happy','ex-squint','ex-wow','ex-think','ex-sleep','ex-curious','ex-shut');
     this.mood = m;
     if(m !== 'idle') this.el.classList.add('ex-' + m);
   }
@@ -1079,7 +1117,7 @@ class Blob {
   }
   destroy(){ clearTimeout(this._b); clearTimeout(this._i); clearTimeout(this._f); const i = LIVE.indexOf(this); if(i>=0) LIVE.splice(i,1); }
   tone(t){
-    this.el.classList.remove('tone-green','tone-orange','tone-red');
+    this.el.classList.remove('tone-green','tone-orange','tone-red','tone-purple');
     if(t !== 'blue') this.el.classList.add('tone-' + t);
   }
   bounce(){
@@ -1552,6 +1590,27 @@ $('reveal').addEventListener('click', ()=>{
 });
 fPass.addEventListener('input', ()=>{ clearErr(); gaugePw(); });
 fPseudo.addEventListener('input', clearErr);
+
+/* Il ne regarde pas votre mot de passe. Il ferme les yeux et le dit en violet. */
+function eyesShut(){
+  AUTH_BUB.locked = true;
+  AUTH_BUB.look(0, 0);
+  AUTH_BUB.tone('purple');
+  AUTH_BUB.set('shut');
+}
+function eyesOpen(){
+  AUTH_BUB.locked = false;
+  AUTH_BUB.tone('blue');
+  AUTH_BUB.set('idle');
+}
+fPass.addEventListener('focus', eyesShut);
+fPass.addEventListener('blur', ()=>{ if(fPass.type === 'password') eyesOpen(); });
+fPseudo.addEventListener('focus', ()=>{ if(fPass.type === 'password') eyesOpen(); });
+/* « Voir » : s'il n'y a plus de secret, il rouvre les yeux */
+$('reveal').addEventListener('click', ()=>{
+  if(fPass.type === 'text'){ eyesOpen(); AUTH_BUB.flash('curious', 900); }
+  else if(document.activeElement === fPass) eyesShut();
+});
 [fPseudo, fPass].forEach(el => el.addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); }));
 $('authBtn').addEventListener('click', submit);
 
@@ -1601,7 +1660,7 @@ async function signOut(){
   shell.classList.remove('on');
   fPass.value = ''; fPass.type = 'password'; $('reveal').textContent = 'Voir';
   fPseudo.value = SESSION.pseudo;
-  MODE = 'login'; paintAuth();
+  MODE = 'login'; paintAuth(); eyesOpen();
   auth.classList.add('on');
   fPass.focus();
 }
@@ -1615,6 +1674,42 @@ const BUB      = new Blob($('bubBtn'));
 const BOOT_BUB = new Blob($('bootBlob'));
 const AUTH_BUB = new Blob($('authBlob'));
 LIVE.push(BUB, AUTH_BUB);
+/* Le lancement s'arrête et attend, plutôt que d'enchaîner. */
+function gateWait(){
+  boot.classList.add('gate');
+  const blob = $('bootBlob'), cta = $('bootCta');
+  blob.setAttribute('role','button');
+  blob.setAttribute('tabindex','0');
+  blob.setAttribute('aria-label','Entrer dans Grid');
+  BOOT_BUB.flash('curious', 1400);
+
+  return new Promise(res => {
+    const done = e => {
+      e.preventDefault();
+      blob.removeEventListener('click', done);
+      cta.removeEventListener('click', done);
+      blob.removeEventListener('keydown', onKey);
+      cta.removeEventListener('keydown', onKey);
+      blob.removeEventListener('pointerenter', peek);
+      blob.style.cursor = 'default';
+      BOOT_BUB.bounce(); BOOT_BUB.set('happy');
+      setTimeout(res, 380);
+    };
+    const onKey = e => { if(e.key === 'Enter' || e.key === ' ') done(e); };
+    const peek = () => BOOT_BUB.flash('wow', 800);   // il vous voit approcher
+    blob.addEventListener('click', done);
+    cta.addEventListener('click', done);
+    blob.addEventListener('keydown', onKey);
+    cta.addEventListener('keydown', onKey);
+    blob.addEventListener('pointerenter', peek);
+    blob.focus();
+  });
+}
+async function bootOut(){
+  boot.classList.add('out');
+  await wait(reduce ? 0 : 500);
+  boot.classList.remove('on','out','gate');
+}
 async function runBoot(){
   boot.classList.add('on');
   BOOT_BUB.set('sleep');                 // Grid dort
@@ -1630,22 +1725,24 @@ async function runBoot(){
     bootBar.style.width = pct + '%';
     await wait(340);
   }
-  BOOT_BUB.set('happy');           // prête
-  await wait(420);
-  boot.classList.add('out');
-  await wait(reduce ? 0 : 500);
-  boot.classList.remove('on','out');
+  BOOT_BUB.set('idle');
+  await wait(260);
 }
 
 (async function start(){
   await applyTheme((await Store.get(K_THEME)) === 'dark', false);
   await runBoot();
+
   USERS = (await Store.get(K_USERS)) || {};
-  const id = await Store.get(K_SESSION);
-  if(id && USERS[id]) return enter(id);
+  const last = await Store.get(K_SESSION);
+
+  /* Pas de reprise automatique : Grid redemande le mot de passe à chaque lancement. */
   MODE = Object.keys(USERS).length ? 'login' : 'create';
-  if(MODE === 'login') fPseudo.value = Object.values(USERS)[0].pseudo;
+  if(MODE === 'login') fPseudo.value = (USERS[last] || Object.values(USERS)[0]).pseudo;
   paintAuth();
+
+  await gateWait();          // Grid grandit et attend le clic
+  await bootOut();
   auth.classList.add('on');
   (MODE === 'login' ? fPass : fPseudo).focus();
 })();
