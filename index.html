@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Grid — Gestion de business UEFN</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22a%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2345C6FF%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%230A6BF2%22/%3E%3C/linearGradient%3E%3CradialGradient%20id%3D%22b%22%20cx%3D%2250%25%22%20cy%3D%2240%25%22%20r%3D%2264%25%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23F0FCFF%22/%3E%3Cstop%20offset%3D%22.5%22%20stop-color%3D%22%237BDBFF%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2331ABFF%22/%3E%3C/radialGradient%3E%3CclipPath%20id%3D%22c%22%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2294%22%20height%3D%2294%22%20rx%3D%2226%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23c%29%22%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2294%22%20height%3D%2294%22%20fill%3D%22url%28%23a%29%22/%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2274%22%20rx%3D%2243%22%20ry%3D%2243%22%20fill%3D%22url%28%23b%29%22/%3E%3Cellipse%20cx%3D%2239%22%20cy%3D%2267%22%20rx%3D%227%22%20ry%3D%2210%22%20fill%3D%22%23F4FCFF%22/%3E%3Cellipse%20cx%3D%2261%22%20cy%3D%2263%22%20rx%3D%227.4%22%20ry%3D%2210.7%22%20fill%3D%22%23F4FCFF%22/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -270,7 +270,7 @@ input{font:inherit}
 .auth-note b{color:var(--dim);font-weight:600}
 
 /* ---------- Shell ---------- */
-.app{display:none;flex-direction:column;height:100vh;padding:12px 16px}
+.app{display:none;flex-direction:column;height:100vh;height:100dvh;padding:12px 16px}
 .app.on{display:flex;animation:fadeUp .45s ease}
 
 /* ---------- Barre d'onglets ---------- */
@@ -404,12 +404,86 @@ h1 em{font-style:normal;color:var(--muted)}
 .btn.quiet{background:none;color:var(--muted);box-shadow:inset 0 0 0 1px var(--hair)}
 .btn.quiet:hover{color:var(--ink)}
 
+/* =========================================================
+   TÉLÉPHONE — le PC n'est pas touché.
+   ========================================================= */
+@media(hover:none){
+  /* pas de survol : ce qui n'apparaissait qu'au survol doit être là */
+  .tab[aria-selected="true"] .tab-close{opacity:1}
+  .menu-row:hover:not([disabled]){background:none;color:var(--muted);font-weight:400}
+  .menu-row:active:not([disabled]){background:var(--hover);color:var(--ink)}
+  .ask-row:active{background:var(--hover)}
+  .mini:active{background:var(--hair)}
+}
+
 @media(max-width:720px){
-  .app{padding:10px}
-  .brand-name{display:none}
+  html{-webkit-tap-highlight-color:transparent}
+
+  .app{
+    padding:10px;
+    padding-top:calc(10px + env(safe-area-inset-top, 0px));
+    padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  .brand{display:none}              /* la bulle est le logo, un seul suffit */
+  .tabbar{gap:8px;padding-bottom:12px}
+
+  /* la barre du haut : onglets qui défilent, puis les trois boutons */
+  .tabs{flex:1}
+  .tab{padding:8px 12px;font-size:12px}
   .tab span:not(.tab-close){display:none}
   .tab[aria-selected="true"] span:not(.tab-close){display:inline}
-  #account{right:-4px}
+
+  /* pouces : 34px minimum */
+  .tab-add,.av-btn,.bub-btn{width:34px;height:34px}
+  .bub-btn .blob{width:29px;height:29px}
+  .tab-add svg{width:15px;height:15px}
+  .spacer{display:none}
+
+  /* Les bulles flottantes deviennent des panneaux pleine largeur,
+     posés SOUS la barre : le clavier monte par le bas, ils restent visibles. */
+  .pop,.ask,.nudge{
+    position:fixed;
+    top:calc(56px + env(safe-area-inset-top, 0px));
+    left:10px; right:10px;
+    width:auto !important;
+    max-width:none;
+    transform-origin:top center;
+  }
+  .pop::before{display:none}
+  .ask-list{max-height:46dvh}
+  .pop-inner{max-height:72dvh;overflow-y:auto}
+
+  /* iOS zoome sur tout champ sous 16px : on ne lui laisse pas l'occasion */
+  .field input,.ask-bar input,.pin input{font-size:16px}
+  .ask-bar{height:50px}
+
+  /* respirations réduites */
+  .auth-card{padding:26px 20px 22px;border-radius:20px}
+  #auth{padding:16px}
+  .empty{padding:44px 18px}
+  .empty p{font-size:12.5px}
+  .page-head{padding-bottom:14px}
+  .view{-webkit-overflow-scrolling:touch}
+
+  /* le mot de rappel : des boutons qu'on attrape */
+  .nudge{padding:16px}
+  .nudge .acts button,.ask-conf .acts button{padding:11px;font-size:13px}
+  .ask-conf .acts{margin-top:14px}
+}
+
+/* très petits écrans */
+@media(max-width:380px){
+  .tab{padding:8px 10px}
+  .tabbar{gap:6px}
+  h1{font-size:25px}
+}
+
+/* téléphone couché : la barre mange l'écran */
+@media(max-height:480px) and (orientation:landscape){
+  .empty{padding:22px 18px}
+  .empty .empty-blob{width:44px;height:44px;margin-bottom:12px}
+  .ask-list{max-height:38dvh}
+  .pop-inner{max-height:60dvh}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -1018,7 +1092,7 @@ class Blob {
 /* --- la bulle suit le curseur --- */
 let LAST_MOVE = 0;
 const LIVE = [];
-window.addEventListener('pointermove', e=>{
+function eyesTo(e){
   LAST_MOVE = Date.now();
   if(reduce) return;
   for(const b of LIVE){
@@ -1031,7 +1105,9 @@ window.addEventListener('pointermove', e=>{
     const amp = Math.min(d/26, 4.6);
     b.look(dx/d*amp, dy/d*amp*.75);
   }
-});
+}
+window.addEventListener('pointermove', eyesTo, {passive:true});
+window.addEventListener('pointerdown', eyesTo, {passive:true});
 
 /* ================= Barre de demande ================= */
 const ACTIONS = () => [
