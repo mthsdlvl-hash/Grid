@@ -281,6 +281,65 @@ input{font:inherit}
   box-shadow:0 1px 3px rgba(0,0,0,.14);
 }
 
+
+/* ---------- Les artefacts de sa mémoire ---------- */
+.mem-wrap{display:none}
+.mem-wrap.on{display:block;animation:memBorn .55s cubic-bezier(.34,1.5,.5,1)}
+@keyframes memBorn{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:none}}
+.mem{
+  width:30px;height:30px;border-radius:50%;flex:none;position:relative;
+  display:grid;place-items:center;
+  background:var(--card);box-shadow:var(--shadow);
+  transition:transform .25s cubic-bezier(.34,1.4,.5,1),box-shadow .25s;
+}
+.mem:hover{transform:scale(1.09)}
+.mem[aria-expanded="true"]{box-shadow:var(--shadow),0 0 0 2px var(--mem-c)}
+.mem::after{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  box-shadow:inset 0 0 0 1.5px var(--mem-c);opacity:.5;
+}
+.mem svg{color:var(--mem-c);position:relative;z-index:1}
+.mem .n{
+  position:absolute;top:-3px;right:-4px;z-index:2;
+  min-width:15px;height:15px;padding:0 4px;border-radius:99px;
+  background:var(--mem-c);color:#fff;border:2px solid var(--card);
+  font-family:var(--mono);font-size:8.5px;font-weight:500;
+  display:grid;place-items:center;line-height:1;
+}
+.mem.land{animation:memLand .5s cubic-bezier(.34,1.6,.5,1)}
+@keyframes memLand{0%{transform:scale(1)}35%{transform:scale(1.3)}100%{transform:scale(1)}}
+#memTasks{--mem-c:var(--amber)}
+#memNotes{--mem-c:#7C6CF0}
+#tasksPop{--mem-c:var(--amber)}
+#notesPop{--mem-c:#7C6CF0}
+#tasksPop,#notesPop{right:-6px;width:290px;transform-origin:calc(100% - 26px) -8px}
+#tasksPop::before,#notesPop::before{right:24px}
+
+/* l'artefact en vol : X et Y bougent avec des courbes différentes → une trajectoire */
+.fly{position:fixed;left:0;top:0;z-index:60;pointer-events:none;will-change:transform}
+.fly i{display:block;border-radius:50%;will-change:transform,opacity}
+.fly.go{transition:transform .78s cubic-bezier(.55,0,.85,.42)}
+.fly.go i{transition:transform .78s cubic-bezier(.16,.9,.32,1),opacity .22s ease .56s}
+
+.mem-head{display:flex;align-items:center;gap:8px;padding:4px 6px 10px;border-bottom:1px solid var(--hair);margin-bottom:4px}
+.mem-head .t{font-family:var(--display);font-size:14px;font-weight:600;letter-spacing:-.01em}
+.mem-head .c{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.mem-row{
+  display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;
+  padding:9px 8px;border-radius:11px;font-size:13px;color:var(--dim);
+  transition:background .14s,color .14s;
+}
+.mem-row:hover{background:var(--hover);color:var(--ink)}
+.mem-row .tick{margin-top:1px}
+.mem-row .body{flex:1;min-width:0;line-height:1.4}
+.mem-row .meta{font-size:10.5px;color:var(--muted);margin-top:3px}
+.mem-row.late .meta{color:var(--coral)}
+.mem-row .kill{flex:none;color:var(--muted);opacity:0;padding:2px;border-radius:6px;transition:.15s}
+.mem-row:hover .kill{opacity:1}
+.mem-row .kill:hover{color:var(--coral)}
+.mem-empty{padding:16px 10px;font-size:12px;color:var(--muted);line-height:1.5}
+.mem-dot{width:5px;height:5px;border-radius:50%;background:var(--mem-c);flex:none;margin-top:6px}
+
 /* ---------- Marque ---------- */
 .brand{display:flex;align-items:center;gap:9px;flex:none;padding:0 6px 0 4px}
 .brand-name{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.13em;font-size:12.5px}
@@ -635,6 +694,20 @@ h1 em{font-style:normal;color:var(--muted)}
 
     <span class="spacer"></span>
 
+    <div class="pop-wrap mem-wrap" id="memTasksWrap">
+      <button class="mem" id="memTasks" aria-expanded="false" aria-haspopup="menu" aria-label="Mes tâches">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5.5 5.5L20 6"/></svg>
+      </button>
+      <div class="pop" id="tasksPop" role="menu"><div class="pop-inner"><div class="pop-pad"></div></div></div>
+    </div>
+
+    <div class="pop-wrap mem-wrap" id="memNotesWrap">
+      <button class="mem" id="memNotes" aria-expanded="false" aria-haspopup="menu" aria-label="Mes notes">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6h14M5 11h14M5 16h8"/></svg>
+      </button>
+      <div class="pop" id="notesPop" role="menu"><div class="pop-inner"><div class="pop-pad"></div></div></div>
+    </div>
+
     <div class="pop-wrap">
       <button class="av-btn" id="avBtn" aria-expanded="false" aria-haspopup="menu" aria-label="Mon compte">
         <span class="av" id="avSmall"></span>
@@ -840,6 +913,8 @@ function closeAll(except){
   if($('menu') !== except) closePop($('menu'), $('tabAdd'));
   if($('account') !== except){ closePop($('account'), $('avBtn')); ACC_VIEW = 'root'; }
   if($('ask') !== except && typeof closeAsk === 'function') closeAsk();
+  if(typeof MEM === 'object') for(const m of Object.values(MEM))
+    if($(m.pop) !== except) closePop($(m.pop), $(m.orb));
 }
 
 /* ---- Menu + ---- */
@@ -972,10 +1047,14 @@ function readWhen(raw){
     hasDay = true;
   }
 
-  // heure : « à 18h », « 18h30 », « vers 9 h »
-  if((m = eat(/\b(?:a|vers)?\s*(\d{1,2})\s*h\s*(\d{2})?\b/)) || (m = eat(/\ba\s+(\d{1,2})\s*:\s*(\d{2})\b/))){
-    d.setHours(parseInt(m[1],10), m[2] ? parseInt(m[2],10) : 0, 0, 0);
-    hasTime = true;
+  // heure : « à 18h », « 18h30 », « vers 9 h ».
+  // On vérifie que c'est une heure valide : « répond en 48h » est une durée, pas un rendez-vous.
+  const tm = t.match(/\b(?:a|vers)\s*(\d{1,2})\s*h\s*(\d{2})?\b/)
+          || t.match(/\b(\d{1,2})\s*h\s*(\d{2})\b/)
+          || t.match(/\b(?:a|vers)\s+(\d{1,2})\s*:\s*(\d{2})\b/);
+  if(tm){
+    const H = +tm[1], M = tm[2] ? +tm[2] : 0;
+    if(H <= 23 && M <= 59){ eaten.push(tm[0]); d.setHours(H, M, 0, 0); hasTime = true; }
   }
 
   if(!hasDay && !hasTime) return { due:null, eaten:[], hasTime:false };
@@ -1002,29 +1081,50 @@ const NOT_VERBS = /^(bonjour|salut|coucou|merci|oui|non|ok|hey|yo|hier|super|che
 /* Un verbe d'action en tête de phrase ? Alors c'est une tâche. */
 function looksLikeTask(raw){
   const words = strip(raw).replace(/[^a-z0-9'\s-]/g,' ').trim().split(/\s+/).filter(Boolean);
-  if(words.length < 2) return false;
-  const w = words[0].replace(/^(re|r)(?=[a-z]{4})/, '');
+  if(!words.length) return false;
   if(NOT_VERBS.test(words[0])) return false;
-  return VERB_RE.test(w) || VERB_RE.test(words[0]) || /(?:er|ir|re|oir)$/.test(words[0]);
+  const w = words[0].replace(/^(re|r)(?=[a-z]{4})/, '');
+  const known = VERB_RE.test(w) || VERB_RE.test(words[0]);
+  if(known) return true;                       // « finir », « payer » : un mot suffit
+  if(words.length < 2) return false;           // sinon il faut au moins un complément
+  return /(?:er|ir|re|oir)$/.test(words[0]);   // repli sur la terminaison
 }
 
-const TRIGGER = /^\s*(rappelle?[- ]?(?:moi|nous)|rappel(?:le)?|n'?oublie(?:z)? pas|pense[zr]?[- ]?y|pense[zr]?|note(?:r)? que|note(?:r)?|souviens[- ]toi)\s*(?:de\s+|d'|qu'|que\s+|[aà]\s+)?/i;
+const TASK_TRIG = /^\s*(rappelle?[- ]?(?:moi|nous)|rappel(?:le)?|n'?oublie(?:z)? pas|pense[zr]?[- ]?y|pense[zr]?|tache\s*:?|todo\s*:?)\s*(?:de\s+|d'|qu'|que\s+|[aà]\s+)?/i;
+const NOTE_TRIG = /^\s*(note[rz]?\s*(?:que\s+|:\s*)?|retiens?\s*(?:que\s+)?|souviens[- ]toi\s*(?:que\s+)?|pour info\s*:?\s*|info\s*:\s*|[aà] savoir\s*:?\s*)/i;
 
-/* Comprend un message. Type déduit, pas demandé. */
+/* Une phrase qui décrit un état, pas une action : c'est une note. */
+const STATE = /\b(est|sont|etait|etaient|sera|seront|ai|as|a|ont|avait|prend|prennent|coute|coutent|vaut|valent|gagne|gagnent|rapporte|rapportent|doit|doivent|fait|font|cloture|termine|commence|passe|represente|correspond|equivaut|reste|dure|contient|utilise|s'appelle|signifie)\b/;
+const DET = /^(le|la|les|l'|un|une|des|du|de|mon|ma|mes|ton|ta|tes|son|sa|ses|notre|nos|ce|cet|cette|ces|il|elle|on|ils|elles|je|j'|nous|vous|ca|cela|y)$/;
+
+function looksLikeNote(raw){
+  const t = strip(raw);
+  const words = t.replace(/[^a-z0-9'\s-]/g,' ').trim().split(/\s+/).filter(Boolean);
+  if(words.length < 3) return false;
+  if(STATE.test(t)) return true;
+  if(DET.test(words[0]) && words.length >= 4) return true;
+  return false;
+}
+
+/* Comprend un message. Le type se déduit, on ne le demande jamais. */
 function read(raw){
   const q = raw.trim();
   if(!q) return { kind:'vide' };
-  const asked = TRIGGER.test(strip(q));
-  const when  = readWhen(q);
-  if(!asked && !when.due){
-    // ni déclencheur ni date : il reste le sens de la phrase
-    if(looksLikeTask(q)) return { kind:'tache', what: q.trim().charAt(0).toUpperCase() + q.trim().slice(1) };
-    return { kind:'inconnu' };
-  }
+  const flat = strip(q);
+  const when = readWhen(q);
 
-  // on retire le déclencheur puis les mots de temps consommés
-  let what = q.replace(new RegExp(TRIGGER.source, 'i'), '');
-  const flat = strip(what);
+  const asNote = NOTE_TRIG.test(flat);
+  const asTask = !asNote && TASK_TRIG.test(flat);
+
+  let kind = null, trig = null;
+  if(asNote)       { kind = 'note'; trig = NOTE_TRIG; }
+  else if(asTask)  { kind = 'tache'; trig = TASK_TRIG; }
+  else if(looksLikeTask(q)) kind = 'tache';
+  else if(looksLikeNote(q)) kind = 'note';
+  else if(when.due)         kind = 'tache';
+  else return { kind:'inconnu' };
+
+  let what = trig ? q.replace(new RegExp(trig.source, 'i'), '') : q;
   for(const bit of when.eaten){
     const i = strip(what).indexOf(bit);
     if(i >= 0) what = what.slice(0, i) + what.slice(i + bit.length);
@@ -1033,8 +1133,14 @@ function read(raw){
              .replace(/^\s*(de|d'|à|a|au|aux)\s+/i,'')
              .replace(/\s+(avant|pour|d'ici|vers|jusqu'a|jusqu'à|le|la|les|du|de|à|a)\s*$/i,'')
              .replace(/[\s,.;]+$/,'').trim();
-  if(!what) return { kind: asked ? 'incomplet' : 'inconnu' };
-  return { kind:'rappel', what: what.charAt(0).toUpperCase() + what.slice(1), due: when.due, hasTime: when.hasTime };
+  if(!what) return { kind:'incomplet' };
+
+  return {
+    kind,
+    sure: !!(trig || when.due),         // il a un indice franc, il ne demande pas
+    what: what.charAt(0).toUpperCase() + what.slice(1),
+    due: when.due, hasTime: when.hasTime,
+  };
 }
 
 /* ---- mise en mots d'une échéance ---- */
@@ -1057,9 +1163,14 @@ function whenLabel(due, hasTime=true){
 let NOTES = [];
 const notesKey = () => 'grid:notes:' + SESSION.id;
 const saveNotes = () => Store.set(notesKey(), NOTES);
-async function loadNotes(){ NOTES = (await Store.get(notesKey())) || []; }
-const pending = () => NOTES.filter(n => !n.done)
-  .sort((a,b) => (a.due ?? 8.64e15) - (b.due ?? 8.64e15));
+async function loadNotes(){
+  NOTES = (await Store.get(notesKey())) || [];
+  NOTES.forEach(n => n.kind = n.kind || 'tache');   // les anciens sont des tâches
+}
+const byDue = (a,b) => (a.due ?? 8.64e15) - (b.due ?? 8.64e15);
+const tasks   = () => NOTES.filter(n => n.kind === 'tache' && !n.done).sort(byDue);
+const memos   = () => NOTES.filter(n => n.kind === 'note').sort((a,b) => b.created - a.created);
+const pending = () => NOTES.filter(n => !n.done).sort(byDue);
 const overdue = () => pending().filter(n => n.due && n.due <= Date.now());
 
 /* ================= La bulle ================= */
@@ -1195,49 +1306,58 @@ function paintAsk(){
   ASK_READ = read(raw);
   const list = $('askList');
 
-  /* il a compris un rappel : il le montre avant de l'enregistrer */
-  if(ASK_READ.kind === 'rappel'){
+  /* Il a un indice franc : il montre ce qu'il a compris, prêt à ranger. */
+  if((ASK_READ.kind === 'tache' || ASK_READ.kind === 'note') && ASK_READ.sure){
+    const isNote = ASK_READ.kind === 'note';
     ASK_HITS = [];
-    list.innerHTML = `<div class="ask-sec">Rappel compris</div>
-      <div class="ask-prev">
+    list.innerHTML = `<div class="ask-sec">${isNote ? 'Note comprise' : 'Tâche comprise'}</div>
+      <div class="ask-prev" style="--blob-3:${isNote ? '#7C6CF0' : 'var(--amber)'}">
         <div>
           <div class="what">${esc(ASK_READ.what)}</div>
-          <div class="when">${ASK_READ.due ? 'Je vous préviens <b>' + whenLabel(ASK_READ.due, ASK_READ.hasTime) + '</b>' : 'Aucune date repérée — je le garde de côté'}</div>
+          <div class="when">${ASK_READ.due
+            ? 'Je vous préviens <b>' + whenLabel(ASK_READ.due, ASK_READ.hasTime) + '</b>'
+            : (isNote ? 'Je le garde dans mes notes' : 'Aucune date repérée — je le garde de côté')}</div>
         </div>
         <span class="ret">↵</span>
       </div>`;
     return;
   }
-  /* une tâche reconnue toute seule : il demande avant de s'en charger */
-  if(ASK_READ.kind === 'tache'){
+
+  /* Il a deviné tout seul : il demande avant de ranger. */
+  if(ASK_READ.kind === 'tache' || ASK_READ.kind === 'note'){
     const q0 = strip(raw.trim());
     const clash = ACTIONS().filter(a => strip(a.label).includes(q0));
     if(!clash.length){
+      const isNote = ASK_READ.kind === 'note';
       ASK_HITS = [];
-      list.innerHTML = `<div class="ask-sec">On dirait une tâche</div>
+      list.innerHTML = `<div class="ask-sec">${isNote ? 'On dirait une note' : 'On dirait une tâche'}</div>
         <div class="ask-conf">
           <div class="what">${esc(ASK_READ.what)}</div>
-          <div class="q">Je vous la rappelle ?</div>
+          <div class="q">${isNote ? 'Je m\u2019en souviens ?' : 'Je la garde ?'}</div>
           <div class="acts">
-            <button class="gbtn yes" data-conf="yes">Oui, garde-la</button>
+            <button class="gbtn yes" data-conf="yes">Oui, garde${isNote ? '' : '-la'}</button>
             <button class="no" data-conf="no">Non, laisse</button>
           </div>
-          <div class="hint">Ajoutez « demain », « vendredi », « à 18h »… et je vous préviens à l'heure.</div>
+          <div class="hint">${isNote
+            ? 'Ou dites « note que\u2026 » et je ne poserai plus la question.'
+            : 'Ajoutez « demain », « vendredi », « \u00e0 18h »\u2026 et je vous pr\u00e9viens \u00e0 l\u2019heure.'}</div>
         </div>`;
       return;
     }
   }
   if(ASK_READ.kind === 'incomplet'){
     ASK_HITS = [];
-    list.innerHTML = `<div class="ask-none">Vous rappeler quoi ? Écrivez la suite — « rappelle-moi de payer Kenzo vendredi ».</div>`;
+    list.innerHTML = `<div class="ask-none">Garder quoi ? \u00c9crivez la suite \u2014 « finir les textures du lobby vendredi ».</div>`;
     return;
   }
 
   const q = strip(raw.trim());
-  const notes = pending().filter(n => !q || strip(n.what).includes(q));
-  const acts  = ACTIONS().filter(a => !q || strip(a.label).includes(q));
+  const hitT = tasks().filter(n => !q || strip(n.what).includes(q));
+  const hitN = memos().filter(n => !q || strip(n.what).includes(q));
+  const acts = ACTIONS().filter(a => !q || strip(a.label).includes(q));
   ASK_HITS = [
-    ...notes.map(n => ({ note:n })),
+    ...hitT.map(n => ({ note:n })),
+    ...hitN.map(n => ({ note:n })),
     ...acts.map(a => ({ act:a })),
   ];
   if(ASK_CUR >= ASK_HITS.length) ASK_CUR = 0;
@@ -1245,17 +1365,19 @@ function paintAsk(){
   if(!ASK_HITS.length){
     list.innerHTML = raw.trim()
       ? `<div class="ask-none">Rien ne correspond à « ${esc(raw.trim())} ». Je sais noter un rappel et ouvrir vos onglets — le reste viendra.</div>`
-      : `<div class="ask-none">Dites-moi « rappelle-moi de… » et je m'en souviens pour vous.</div>`;
+      : `<div class="ask-none">Dites-moi « finir les textures vendredi » ou « le code est 8421-… ». Je fais le tri.</div>`;
     return;
   }
   let html = '', sec = '';
   ASK_HITS.forEach((h,i)=>{
-    const want = h.note ? 'Rappels' : 'Actions';
+    const want = h.note ? (h.note.kind === 'note' ? 'Notes' : 'Tâches') : 'Actions';
     if(want !== sec){ sec = want; html += `<div class="ask-sec">${sec}</div>`; }
     if(h.note){
       const late = h.note.due && h.note.due <= Date.now();
+      const isN = h.note.kind === 'note';
       html += `<button class="ask-row ${i===ASK_CUR?'cursor':''} ${late?'late':''}" data-ask="${i}">
-        <span class="tick"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l6 6L20 5"/></svg></span>
+        ${isN ? '<span class="mem-dot" style="--mem-c:#7C6CF0;margin-top:5px"></span>'
+              : '<span class="tick"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l6 6L20 5"/></svg></span>'}
         <span>${esc(h.note.what)}</span>
         <span class="note-when">${h.note.due ? whenLabel(new Date(h.note.due), h.note.hasTime) : 'sans date'}</span>
       </button>`;
@@ -1285,43 +1407,149 @@ function closeAsk(){
   BUB.locked = false; BUB.set('idle'); BUB.look(0,0);
 }
 
-async function keepNote(what, due, hasTime){
-  NOTES.push({
-    id: Date.now() + '-' + Math.random().toString(36).slice(2,7),
-    what, due: due ? due.getTime() : null, hasTime: !!hasTime,
-    done:false, fired:false, created: Date.now(),
-  });
-  closeAsk();
-  await working();
-  await saveNotes();
-  paintBadge();
-  await noted();
-}
 async function submitAsk(){
-  /* une tâche reconnue seule : Entrée = oui */
-  if(ASK_READ && ASK_READ.kind === 'tache' && !ASK_HITS.length)
-    return keepNote(ASK_READ.what, null, false);
-  /* un rappel à noter */
-  if(ASK_READ && ASK_READ.kind === 'rappel')
-    return keepNote(ASK_READ.what, ASK_READ.due, ASK_READ.hasTime);
+  const r = ASK_READ;
+  if(r && (r.kind === 'tache' || r.kind === 'note') && !ASK_HITS.length)
+    return remember(r.kind, r.what, r.due, r.hasTime);
   const h = ASK_HITS[ASK_CUR];
   if(!h) return BUB.flash('wow', 800);
-  if(h.note) return finishNote(h.note.id);
+  if(h.note) return h.note.kind === 'note' ? closeAsk() : finishNote(h.note.id);
   closeAsk();
   await working();
   h.act.run();
   BUB.tone('blue'); BUB.flash('happy', 900);
 }
 
+
+/* ================= Les artefacts de mémoire ================= */
+const MEM = {
+  tache: { wrap:'memTasksWrap', orb:'memTasks', pop:'tasksPop', color:'var(--amber)',
+           title:'Tâches', empty:"Rien à faire pour l'instant. Dites-moi « finir les textures » et je le garde." },
+  note:  { wrap:'memNotesWrap', orb:'memNotes', pop:'notesPop', color:'#7C6CF0',
+           title:'Notes', empty:"Aucune note. Dites-moi « le code de Neon Drift est 8421-… » et je m'en souviens." },
+};
+const itemsOf = k => k === 'note' ? memos() : tasks();
+
+function paintMem(){
+  for(const [k, m] of Object.entries(MEM)){
+    const n = itemsOf(k).length;
+    const wrap = $(m.wrap), orb = $(m.orb);
+    wrap.classList.toggle('on', n > 0);
+    const old = orb.querySelector('.n');
+    if(old) old.remove();
+    if(n) orb.insertAdjacentHTML('beforeend', `<span class="n">${n}</span>`);
+  }
+}
+
+function memHTML(k){
+  const m = MEM[k], list = itemsOf(k);
+  const rows = list.length ? list.map(n => {
+    const late = n.due && n.due <= Date.now();
+    return `<div class="mem-row ${late?'late':''}" data-mem="${n.id}">
+      ${k === 'tache'
+        ? `<span class="tick" role="button" data-domem="${n.id}"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l6 6L20 5"/></svg></span>`
+        : `<span class="mem-dot"></span>`}
+      <span class="body">${esc(n.what)}
+        <span class="meta">${n.due ? whenLabel(new Date(n.due), n.hasTime) : 'noté ' + whenLabel(new Date(n.created), false)}</span>
+      </span>
+      <button class="kill" data-kill="${n.id}" aria-label="Oublier">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>`;
+  }).join('') : `<div class="mem-empty">${m.empty}</div>`;
+  return `<div class="mem-head"><span class="t">${m.title}</span><span class="c">${list.length}</span></div>${rows}`;
+}
+
+/* ---- L'artefact qui sort de Grid et va se ranger ---- */
+function flyMem(kind){
+  const from = $('bubBtn'), to = $(MEM[kind].orb);
+  if(!from || !to || !to.offsetParent) return;
+  const a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
+  if(!a.width || !b.width) return;
+
+  const size = 16;
+  const ax = a.left + a.width/2 - size/2, ay = a.top + a.height/2 - size/2;
+  const bx = b.left + b.width/2 - size/2, by = b.top + b.height/2 - size/2;
+
+  const fly = document.createElement('div');
+  fly.className = 'fly';
+  const core = document.createElement('i');
+  core.style.width = core.style.height = size + 'px';
+  core.style.background = kind === 'note'
+    ? 'radial-gradient(circle at 38% 32%, #E9E4FF, #7C6CF0)'
+    : 'radial-gradient(circle at 38% 32%, #FFF0C4, #FFB800)';
+  core.style.boxShadow = '0 0 14px ' + (kind === 'note' ? 'rgba(124,108,240,.6)' : 'rgba(255,184,0,.6)');
+  fly.appendChild(core);
+  document.body.appendChild(fly);
+
+  /* X sur l'extérieur, Y sur l'intérieur : deux courbes différentes = un arc */
+  fly.style.transform  = `translate(${ax}px, 0)`;
+  core.style.transform = `translateY(${ay}px) scale(.3)`;
+  void fly.offsetWidth;
+  fly.classList.add('go');
+  fly.style.transform  = `translate(${bx}px, 0)`;
+  core.style.transform = `translateY(${by}px) scale(.55)`;
+  core.style.opacity   = '0';
+
+  BUB.look((bx - ax) > 0 ? 4.2 : -4.2, -1.2);      // Grid le suit du regard
+  setTimeout(()=>{
+    fly.remove();
+    const orb = $(MEM[kind].orb);
+    orb.classList.remove('land'); void orb.offsetWidth; orb.classList.add('land');
+  }, 800);
+}
+
+async function remember(kind, what, due, hasTime){
+  NOTES.push({
+    id: Date.now() + '-' + Math.random().toString(36).slice(2,7),
+    kind, what, due: due ? due.getTime() : null, hasTime: !!hasTime,
+    done:false, fired:false, created: Date.now(),
+  });
+  closeAsk();
+  await working();
+  await saveNotes();
+  paintMem();                 // l'artefact apparaît d'abord…
+  await wait(60);
+  flyMem(kind);               // …puis Grid lui envoie sa bille
+  paintBadge();
+  await noted();
+  BUB.look(0, 0);
+}
+
+async function forget(id){
+  NOTES = NOTES.filter(n => n.id !== id);
+  await saveNotes(); paintMem(); paintBadge(); repaintMemPops();
+}
 async function finishNote(id){
   const n = NOTES.find(x => x.id === id);
   if(!n) return;
   n.done = true; n.doneAt = Date.now();
   await saveNotes();
-  paintBadge(); paintAsk();
+  paintMem(); paintBadge(); repaintMemPops(); paintAsk();
   BUB.tone('green'); BUB.flash('happy', 1100);
   setTimeout(()=>BUB.tone('blue'), 1200);
 }
+function repaintMemPops(){
+  for(const [k,m] of Object.entries(MEM))
+    if($(m.pop).classList.contains('on')) popSize($(m.pop), memHTML(k), 290);
+}
+
+for(const [k, m] of Object.entries(MEM)){
+  $(m.orb).addEventListener('click', e=>{
+    e.stopPropagation();
+    const pop = $(m.pop);
+    if(pop.classList.contains('on')) return closePop(pop, $(m.orb));
+    openPop(pop, $(m.orb));
+    popSize(pop, memHTML(k), 290);
+  });
+  $(m.pop).addEventListener('click', e=>{
+    const kill = e.target.closest('[data-kill]');
+    if(kill){ e.stopPropagation(); return forget(kill.dataset.kill); }
+    const done = e.target.closest('[data-domem]');
+    if(done){ e.stopPropagation(); return finishNote(done.dataset.domem); }
+  });
+}
+
 
 /* ================= Le mot au bon moment ================= */
 function paintBadge(){
@@ -1331,12 +1559,13 @@ function paintBadge(){
   if(n) $('bubBtn').insertAdjacentHTML('beforeend', '<span class="badge"></span>');
 }
 function showNudge(n){
+  const isN = n.kind === 'note';
   $('nudge').innerHTML = `
-    <div class="lab">C'est l'heure</div>
+    <div class="lab" ${isN ? 'style="color:#7C6CF0"' : ''}>${isN ? 'Pour rappel' : "C'est l'heure"}</div>
     <div class="txt">${esc(n.what)}</div>
     <div class="sub">Noté ${whenLabel(new Date(n.created), true)}</div>
     <div class="acts">
-      <button class="gbtn ok" data-nudge="done" data-id="${n.id}">C'est fait</button>
+      <button class="gbtn ok" data-nudge="done" data-id="${n.id}">${isN ? 'Vu' : "C'est fait"}</button>
       <button class="later" data-nudge="later" data-id="${n.id}">Dans 10 min</button>
     </div>`;
   closeAsk();
@@ -1364,7 +1593,10 @@ $('nudge').addEventListener('click', async e=>{
   const n = NOTES.find(x => x.id === b.dataset.id);
   closeNudge();
   if(!n) return;
-  if(b.dataset.nudge === 'done'){ await finishNote(n.id); }
+  if(b.dataset.nudge === 'done'){
+    if(n.kind === 'note'){ n.due = null; n.fired = true; await saveNotes(); paintMem(); paintBadge(); BUB.flash('happy', 900); }
+    else await finishNote(n.id);
+  }
   else {
     n.due = Date.now() + 10*60*1000; n.fired = false;
     await saveNotes(); paintBadge();
@@ -1391,7 +1623,7 @@ $('bubBtn').addEventListener('click', e=>{
 $('ask').addEventListener('click', e=>{
   const c = e.target.closest('[data-conf]');
   if(c){
-    if(c.dataset.conf === 'yes') return keepNote(ASK_READ.what, null, false);
+    if(c.dataset.conf === 'yes') return remember(ASK_READ.kind, ASK_READ.what, ASK_READ.due, ASK_READ.hasTime);
     closeAsk(); BUB.flash('squint', 700); return;
   }
   const r = e.target.closest('[data-ask]');
@@ -1671,7 +1903,7 @@ async function enter(id){
   auth.classList.remove('on');
   shell.classList.add('on');
   paintAvatars();
-  await loadNotes(); paintBadge();
+  await loadNotes(); paintMem(); paintBadge();
   setTimeout(()=>{ BUB.bounce(); BUB.flash('happy', 1200); checkDue(); }, 900);
   const saved = await Store.get('grid:tabs:'+id);
   TABS = (saved?.tabs || []).filter(t=>META[t]);
