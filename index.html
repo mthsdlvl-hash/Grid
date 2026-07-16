@@ -26,6 +26,12 @@
   --amber-soft:#FFF3D0;
   --mint:#4FBF8B;
   --coral:#F0655A;
+  --glass:rgba(255,255,255,.46);
+  --glass-hi:rgba(255,255,255,.80);
+  --glass-pop:rgba(255,255,255,.74);
+  --glass-rim:rgba(255,255,255,.72);
+  --glass-top:rgba(255,255,255,.65);
+  --glass-blur:blur(24px) saturate(180%);
   --btn-hi:#4EABFF;
   --btn-lo:#0B69F0;
   --btn-halo:rgba(45,145,255,.42);
@@ -51,6 +57,11 @@
   --key:#20242C;
   --field:#13161B;
   --amber-soft:#3A2F14;
+  --glass:rgba(255,255,255,.055);
+  --glass-hi:rgba(255,255,255,.115);
+  --glass-pop:rgba(26,30,38,.72);
+  --glass-rim:rgba(255,255,255,.10);
+  --glass-top:rgba(255,255,255,.10);
   --btn-halo:rgba(45,145,255,.34);
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
   --shadow-lift:0 2px 4px rgba(0,0,0,.45), 0 18px 48px rgba(0,0,0,.5);
@@ -120,8 +131,9 @@ input{font:inherit}
 }
 .ask.on{opacity:1;transform:none;pointer-events:auto}
 .ask-bar{
-  display:flex;align-items:center;gap:10px;
-  background:var(--card);border-radius:16px;box-shadow:var(--shadow-pop);
+  display:flex;align-items:center;gap:10px;border-radius:16px;
+  background:var(--glass-pop);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 var(--glass-top), var(--shadow-pop);
   padding:0 12px 0 14px;height:46px;
 }
 .ask-bar > svg{color:var(--muted);flex:none}
@@ -129,8 +141,9 @@ input{font:inherit}
 .ask-bar input::placeholder{color:var(--muted)}
 .kbd{font-family:var(--mono);font-size:9.5px;color:var(--muted);background:var(--key);border-radius:6px;padding:3px 5px;flex:none}
 .ask-list{
-  margin-top:8px;background:var(--card);border-radius:16px;
-  box-shadow:var(--shadow-pop);padding:7px;
+  margin-top:8px;border-radius:16px;padding:7px;
+  background:var(--glass-pop);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 var(--glass-top), var(--shadow-pop);
   max-height:238px;overflow:auto;scrollbar-width:none;
 }
 .ask-list::-webkit-scrollbar{display:none}
@@ -246,7 +259,9 @@ input{font:inherit}
 /* Le mot qu'il vous glisse quand l'heure est venue */
 .nudge{
   position:absolute;top:calc(100% + 11px);left:-10px;z-index:31;width:290px;
-  background:var(--card);border-radius:16px;box-shadow:var(--shadow-pop);padding:14px;
+  border-radius:16px;padding:14px;
+  background:var(--glass-pop);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 var(--glass-top), var(--shadow-pop);
   opacity:0;transform:translateY(-8px) scale(.96);pointer-events:none;transform-origin:26px -8px;
   transition:opacity .2s ease,transform .3s cubic-bezier(.34,1.3,.5,1);
 }
@@ -319,40 +334,45 @@ input{font:inherit}
 .grid-mid .ask.on,.grid-mid .nudge.on{transform:translate(-50%,0) scale(1)}
 
 /* ---------- Grid en haut, au centre ---------- */
-:root{--gt-bg:#15171C;--gt-fg:#F1F3F6;--gt-line:rgba(255,255,255,.09)}
-[data-theme="dark"]{--gt-bg:#272C35;--gt-fg:#EDEFF2;--gt-line:rgba(255,255,255,.07)}
-
 .grid-tab{
-  display:flex;align-items:center;gap:8px;
-  height:34px;padding:0 13px 0 5px;border-radius:99px;
-  background:var(--gt-bg);color:var(--gt-fg);
-  box-shadow:inset 0 0 0 1px var(--gt-line), 0 2px 6px rgba(20,23,30,.14), 0 10px 26px rgba(20,23,30,.12);
-  position:relative;
+  position:relative;display:flex;align-items:center;gap:8px;
+  height:34px;padding:0 13px 0 5px;border-radius:99px;color:var(--ink);
+  background:var(--glass-hi);
+  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 rgba(255,255,255,.9),
+             0 3px 10px rgba(20,23,30,.09), 0 12px 30px rgba(20,23,30,.10);
   transition:transform .25s cubic-bezier(.34,1.4,.5,1), box-shadow .25s;
 }
 .grid-tab:hover{transform:translateY(-1px) scale(1.03)}
-.grid-tab[aria-expanded="true"]{transform:scale(1.03);box-shadow:inset 0 0 0 1px var(--gt-line), 0 2px 6px rgba(20,23,30,.16), 0 12px 30px rgba(20,23,30,.18), 0 0 0 3px var(--dot-c)}
+.grid-tab[aria-expanded="true"]{
+  transform:scale(1.03);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 rgba(255,255,255,.9),
+             0 4px 12px rgba(20,23,30,.12), 0 14px 34px rgba(20,23,30,.14), 0 0 0 3px var(--dot-soft);
+}
 .gt-blob{width:24px;height:24px;flex:none;display:block}
 .gt-blob .blob{width:24px;height:24px}
 .gt-name{font-family:var(--display);font-weight:600;font-size:12.5px;letter-spacing:.01em}
 
 /* La pastille dit son état, sans un mot. */
 .gt-dot{
-  width:7px;height:7px;border-radius:50%;flex:none;
+  position:relative;width:7px;height:7px;border-radius:50%;flex:none;
   background:var(--dot-c);
-  box-shadow:0 0 0 0 var(--dot-c);
-  transition:background .5s ease;
+  /* le halo : il ne clignote pas, il est simplement allumé */
+  box-shadow:0 0 0 3px var(--dot-soft), 0 0 8px var(--dot-c), 0 0 17px var(--dot-soft);
+  transition:background .5s ease, box-shadow .5s ease;
 }
-.grid-tab{--dot-c:#2AA4FF}
-.grid-tab[data-tone="green"] {--dot-c:#25C87E}
-.grid-tab[data-tone="orange"]{--dot-c:#FF9012}
-.grid-tab[data-tone="red"]   {--dot-c:#FF5546}
-.grid-tab[data-tone="purple"]{--dot-c:#9576FF}
-.grid-tab:not([data-tone="blue"]) .gt-dot{animation:dotLive 1.4s ease-out infinite}
+.gt-dot::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 0 var(--dot-c)}
+.grid-tab              {--dot-c:#37B0FF;--dot-soft:rgba(55,176,255,.34)}
+.grid-tab[data-tone="green"] {--dot-c:#2BD489;--dot-soft:rgba(43,212,137,.34)}
+.grid-tab[data-tone="orange"]{--dot-c:#FF9A22;--dot-soft:rgba(255,154,34,.34)}
+.grid-tab[data-tone="red"]   {--dot-c:#FF5F4F;--dot-soft:rgba(255,95,79,.34)}
+.grid-tab[data-tone="purple"]{--dot-c:#9C7BFF;--dot-soft:rgba(156,123,255,.34)}
+/* quand il n'est pas au repos, le halo respire par-dessus */
+.grid-tab:not([data-tone="blue"]) .gt-dot::after{animation:dotLive 1.5s ease-out infinite}
 @keyframes dotLive{
-  0%{box-shadow:0 0 0 0 var(--dot-c)}
-  70%{box-shadow:0 0 0 6px transparent}
-  100%{box-shadow:0 0 0 0 transparent}
+  0%{box-shadow:0 0 0 0 var(--dot-c);opacity:.7}
+  75%{box-shadow:0 0 0 7px var(--dot-c);opacity:0}
+  100%{box-shadow:0 0 0 7px var(--dot-c);opacity:0}
 }
 .grid-tab .badge{
   position:absolute;top:-2px;right:-3px;min-width:9px;height:9px;border-radius:99px;
@@ -361,167 +381,6 @@ input{font:inherit}
 }
 
 
-/* ---------- Le + de création, collé à Grid ---------- */
-.new-wrap{position:relative;flex:none}
-.new-btn{
-  width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
-  background:var(--card);color:var(--muted);box-shadow:var(--shadow);
-  transition:transform .25s cubic-bezier(.34,1.4,.5,1),color .18s;
-}
-.new-btn:hover{color:var(--ink);transform:scale(1.12)}
-.new-btn[aria-expanded="true"]{color:var(--ink);transform:rotate(45deg)}
-#newPop{left:50%;width:242px;transform-origin:top center}
-#newPop.on{transform:translateX(-50%)}
-#newPop{transform:translate(-50%,-8px) scale(.96)}
-#newPop::before{left:50%;margin-left:-6px}
-
-/* ---------- Les fichiers ---------- */
-.files{columns:2;column-gap:14px}
-@media(max-width:820px){.files{columns:1}}
-.files > *{break-inside:avoid;margin-bottom:14px;display:block;width:100%;text-align:left}
-
-/* Un dossier : sa languette, ses feuilles, sa couleur. */
-.fold{
-  position:relative;border-radius:22px;padding:60px 16px 16px;
-  background:linear-gradient(160deg,var(--f1),var(--f2));
-  box-shadow:0 2px 6px rgba(20,23,30,.10), 0 14px 34px var(--f3);
-  transition:transform .25s cubic-bezier(.34,1.3,.5,1),box-shadow .25s;
-  overflow:hidden;
-}
-.fold::before{
-  content:"";position:absolute;top:-11px;left:0;width:46%;height:24px;
-  border-radius:12px 12px 0 0;background:var(--f1);
-}
-.fold:hover{transform:translateY(-3px);box-shadow:0 3px 8px rgba(20,23,30,.12), 0 20px 44px var(--f3)}
-.fold-paper{position:absolute;top:12px;left:16px;right:16px;height:62px;display:flex;gap:6px;align-items:flex-end}
-.fold-paper i{
-  flex:1;background:#fff;border-radius:6px 6px 0 0;
-  box-shadow:0 -2px 10px rgba(0,0,0,.10);
-  background-image:repeating-linear-gradient(180deg,transparent 0 9px,#E8EAEE 9px 11px);
-  background-position:0 8px;background-repeat:no-repeat;background-size:70% 60%;
-}
-.fold-paper i:nth-child(1){height:46px;transform:rotate(-1.5deg)}
-.fold-paper i:nth-child(2){height:56px}
-.fold-paper i:nth-child(3){height:44px;transform:rotate(1.5deg)}
-.fold-n{position:relative;font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.02em;color:#fff}
-.fold-c{position:relative;font-size:12px;color:rgba(255,255,255,.72);margin-top:2px}
-.fold-m{position:absolute;right:14px;bottom:18px;color:rgba(255,255,255,.85);padding:4px;border-radius:8px}
-.fold-m:hover{background:rgba(255,255,255,.18)}
-
-/* Un document : le texte s'efface en bas. */
-.doc{
-  position:relative;background:var(--card);border-radius:22px;padding:18px;
-  box-shadow:0 1px 2px rgba(20,23,30,.04), 0 10px 28px rgba(20,23,30,.07);
-  transition:transform .25s cubic-bezier(.34,1.3,.5,1),box-shadow .25s;
-}
-.doc:hover{transform:translateY(-3px);box-shadow:0 2px 5px rgba(20,23,30,.06), 0 18px 44px rgba(20,23,30,.11)}
-.doc-t{font-family:var(--display);font-size:19px;font-weight:600;letter-spacing:-.025em;line-height:1.2}
-.doc-b{
-  font-size:11.5px;color:var(--muted);line-height:1.65;margin-top:11px;
-  max-height:118px;overflow:hidden;white-space:pre-wrap;
-  -webkit-mask-image:linear-gradient(180deg,#000 45%,transparent 100%);
-          mask-image:linear-gradient(180deg,#000 45%,transparent 100%);
-}
-.doc-f{display:flex;align-items:center;margin-top:14px}
-.doc-d{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-.doc-m{margin-left:auto;color:var(--muted);padding:4px;border-radius:8px}
-.doc-m:hover{background:var(--hover);color:var(--ink)}
-.doc-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);margin-top:9px}
-.doc-tag i{width:5px;height:5px;border-radius:50%;flex:none}
-.doc-ic{width:26px;height:26px;border-radius:8px;background:var(--key);display:grid;place-items:center;color:var(--muted);margin-bottom:11px}
-
-/* Grid reçoit un fichier */
-.drop-veil{
-  position:fixed;inset:0;z-index:45;pointer-events:none;
-  background:radial-gradient(600px 300px at 50% 0%, rgba(42,164,255,.14), transparent 70%);
-  opacity:0;transition:opacity .25s ease;
-}
-body.dropping .drop-veil{opacity:1}
-body.dropping .grid-tab{transform:scale(1.14);box-shadow:inset 0 0 0 1px var(--gt-line), 0 14px 40px rgba(20,23,30,.2), 0 0 0 5px rgba(42,164,255,.35)}
-.drop-word{
-  position:fixed;left:50%;top:56px;transform:translateX(-50%);z-index:46;
-  font-size:12px;color:var(--muted);background:var(--card);
-  border-radius:99px;padding:7px 14px;box-shadow:var(--shadow);
-  opacity:0;transition:opacity .25s ease;pointer-events:none;
-}
-body.dropping .drop-word{opacity:1}
-
-/* Sa proposition de rangement */
-.sort-h{display:flex;align-items:flex-start;gap:11px;padding:2px 2px 12px}
-.sort-ic{width:34px;height:34px;border-radius:11px;flex:none;display:grid;place-items:center;background:var(--key);color:var(--muted)}
-.sort-n{font-size:13.5px;font-weight:500;line-height:1.3;word-break:break-all}
-.sort-s{font-size:10.5px;color:var(--muted);margin-top:3px;font-family:var(--mono)}
-.sort-box{background:var(--soft);border-radius:12px;padding:12px;box-shadow:inset 0 0 0 1px var(--hair)}
-.sort-lab{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.sort-to{display:flex;align-items:center;gap:9px;margin-top:8px}
-.sort-chip{width:20px;height:20px;border-radius:6px;flex:none;background:linear-gradient(160deg,var(--f1),var(--f2))}
-.sort-to b{font-family:var(--display);font-size:15px;font-weight:600;letter-spacing:-.02em}
-.sort-to .new{font-size:10px;color:var(--muted);background:var(--key);border-radius:5px;padding:2px 6px;margin-left:auto}
-.sort-why{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:9px}
-.sort-why b{color:var(--dim);font-weight:600}
-.sort-acts{display:flex;gap:6px;margin-top:12px}
-.sort-acts button{flex:1;padding:9px;border-radius:9px;font-size:12.5px;font-weight:500;transition:.15s}
-.sort-no{background:var(--key);color:var(--muted)}
-.sort-no:hover{background:var(--hair);color:var(--ink)}
-
-/* Nommer un dossier */
-.mk{padding:4px 4px 2px}
-.mk-h{display:flex;align-items:center;gap:8px;padding:2px 2px 10px;margin-bottom:6px;border-bottom:1px solid var(--hair)}
-.mk-t{font-family:var(--display);font-size:14px;font-weight:600}
-.cols{display:flex;gap:7px;margin:11px 0 3px}
-.cols button{width:24px;height:24px;border-radius:50%;background:linear-gradient(160deg,var(--f1),var(--f2));transition:transform .18s}
-.cols button:hover{transform:scale(1.15)}
-.cols button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--ink)}
-
-/* L'éditeur */
-.sheet{
-  position:fixed;inset:0;z-index:70;display:none;place-items:center;padding:24px;
-  background:rgba(20,23,30,.34);backdrop-filter:blur(3px);
-}
-.sheet.on{display:grid;animation:fadeUp .3s ease}
-.sheet-card{
-  width:100%;max-width:660px;max-height:82vh;display:flex;flex-direction:column;
-  background:var(--card);border-radius:24px;box-shadow:var(--shadow-pop);overflow:hidden;
-}
-.sheet-top{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--hair)}
-.sheet-top .where{font-size:11px;color:var(--muted);margin-left:auto;display:flex;align-items:center;gap:6px}
-.sheet-x{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:var(--muted);background:var(--key)}
-.sheet-x:hover{background:var(--hair);color:var(--ink)}
-.sheet-body{flex:1;overflow:auto;padding:20px 22px 24px}
-.sheet-title{
-  width:100%;border:none;background:none;outline:none;color:var(--ink);
-  font-family:var(--display);font-size:26px;font-weight:600;letter-spacing:-.03em;
-}
-.sheet-title::placeholder{color:var(--muted);opacity:.5}
-.sheet-text{
-  width:100%;min-height:280px;border:none;background:none;outline:none;resize:none;
-  color:var(--dim);font-family:var(--body);font-size:14px;line-height:1.75;margin-top:12px;
-}
-.sheet-text::placeholder{color:var(--muted);opacity:.6}
-.sheet-save{font-size:10.5px;color:var(--muted);font-family:var(--mono)}
-
-
-/* La carte mentale */
-.map-wrap{position:relative;overflow:auto;padding:4px 0}
-.mn{
-  position:absolute;width:148px;min-height:34px;
-  display:flex;align-items:center;gap:5px;
-  background:var(--card);border-radius:10px;padding:6px 8px;
-  box-shadow:inset 0 0 0 1px var(--hair);
-  transition:box-shadow .15s;
-}
-.mn:hover{box-shadow:inset 0 0 0 1px var(--muted)}
-.mn.root{background:var(--ink);color:var(--card);box-shadow:none;font-weight:500}
-.mn-t{flex:1;min-width:0;font-size:12.5px;line-height:1.35;outline:none;word-break:break-word}
-.mn-a,.mn-k{
-  width:17px;height:17px;border-radius:50%;flex:none;display:grid;place-items:center;
-  font-size:12px;line-height:1;color:var(--muted);background:var(--key);opacity:0;transition:.15s;
-}
-.mn.root .mn-a{background:rgba(255,255,255,.16);color:#fff}
-.mn:hover .mn-a,.mn:hover .mn-k{opacity:1}
-.mn-a:hover{background:var(--btn-lo);color:#fff}
-.mn-k:hover{background:var(--coral);color:#fff}
-
 /* ---------- Les artefacts de sa mémoire ---------- */
 .mem-wrap{display:none}
 .mem-wrap.on{display:block;animation:memBorn .55s cubic-bezier(.34,1.5,.5,1)}
@@ -529,7 +388,8 @@ body.dropping .drop-word{opacity:1}
 .mem{
   width:30px;height:30px;border-radius:50%;flex:none;position:relative;
   display:grid;place-items:center;
-  background:var(--card);box-shadow:var(--shadow);
+  background:var(--glass-hi);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 var(--glass-top), 0 3px 10px rgba(20,23,30,.08);
   transition:transform .25s cubic-bezier(.34,1.4,.5,1),box-shadow .25s;
 }
 .mem:hover{transform:scale(1.09)}
@@ -699,7 +559,12 @@ body.dropping .drop-word{opacity:1}
 
 /* ---------- Barre d'onglets ---------- */
 .tabbar{display:flex;align-items:center;gap:10px;padding:2px 0 16px;flex:none;position:relative;z-index:20}
-.tabs{display:flex;align-items:center;gap:2px;background:var(--track);border-radius:99px;padding:3px;min-width:0;overflow-x:auto;scrollbar-width:none}
+.tabs{
+  display:flex;align-items:center;gap:2px;border-radius:99px;padding:3px;
+  min-width:0;overflow-x:auto;scrollbar-width:none;
+  background:var(--glass);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 var(--glass-top);
+}
 .tabs::-webkit-scrollbar{display:none}
 .tab{
   display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:99px;
@@ -710,7 +575,11 @@ body.dropping .drop-word{opacity:1}
 .tab.out{animation:tabOut .2s ease forwards;pointer-events:none}
 @keyframes tabOut{to{opacity:0;transform:scale(.85);margin-left:-6px}}
 .tab:hover{color:var(--ink)}
-.tab[aria-selected="true"]{background:var(--card);color:var(--ink);font-weight:500;box-shadow:var(--shadow)}
+.tab[aria-selected="true"]{
+  color:var(--ink);font-weight:500;
+  background:var(--glass-hi);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 rgba(255,255,255,.8), 0 2px 8px rgba(20,23,30,.10);
+}
 .tab svg{flex:none;opacity:.65;transition:opacity .18s}
 .tab[aria-selected="true"] svg{opacity:1;animation:pop .42s cubic-bezier(.34,1.5,.5,1)}
 @keyframes pop{0%{transform:scale(.6) rotate(-12deg);opacity:.3}60%{transform:scale(1.14) rotate(3deg)}100%{transform:none;opacity:1}}
@@ -718,7 +587,12 @@ body.dropping .drop-word{opacity:1}
 .tab:hover .tab-close,.tab[aria-selected="true"] .tab-close{opacity:1}
 .tab-close:hover{background:var(--track);color:var(--coral)}
 .tab.pinned .tab-close{display:none}
-.tab-add{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;color:var(--muted);background:var(--card);box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.34,1.4,.5,1),color .18s}
+.tab-add{
+  width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;color:var(--muted);
+  background:var(--glass-hi);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 var(--glass-top), 0 3px 10px rgba(20,23,30,.08);
+  transition:transform .25s cubic-bezier(.34,1.4,.5,1),color .18s;
+}
 .tab-add:hover{color:var(--ink);transform:scale(1.08)}
 .tab-add[aria-expanded="true"]{color:var(--ink);transform:rotate(45deg)}
 .spacer{flex:1;min-width:8px}
@@ -727,12 +601,14 @@ body.dropping .drop-word{opacity:1}
 .pop-wrap{position:relative;flex:none}
 .pop{
   position:absolute;top:calc(100% + 11px);z-index:30;
-  background:var(--card);border-radius:20px;box-shadow:var(--shadow-pop);
+  border-radius:20px;
+  background:var(--glass-pop);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 var(--glass-top), var(--shadow-pop);
   opacity:0;transform:translateY(-8px) scale(.96);pointer-events:none;
   transition:opacity .2s ease, transform .28s cubic-bezier(.34,1.3,.5,1), width .3s cubic-bezier(.4,0,.2,1);
 }
 .pop.on{opacity:1;transform:none;pointer-events:auto}
-.pop::before{content:"";position:absolute;top:-5px;width:12px;height:12px;background:var(--card);border-radius:3px;transform:rotate(45deg)}
+.pop::before{content:"";position:absolute;top:-5px;width:12px;height:12px;background:var(--glass-pop);border-radius:3px;transform:rotate(45deg);box-shadow:inset 1px 1px 0 var(--glass-rim)}
 .pop-inner{overflow:hidden;transition:height .3s cubic-bezier(.4,0,.2,1)}
 .pop-pad{padding:8px}
 .pop-view{animation:viewFade .26s ease}
@@ -773,6 +649,8 @@ body.dropping .drop-word{opacity:1}
 .pan-back:hover{background:var(--hover);color:var(--ink)}
 .pan-title{font-family:var(--display);font-size:14px;font-weight:600;letter-spacing:-.01em}
 .pan-body{padding:6px 4px 2px}
+.pan-hint{font-size:10.5px;color:var(--muted);margin-top:9px;line-height:1.45}
+.pan-hint b{color:var(--dim);font-weight:600}
 .pan-lab{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:14px 0 7px}
 .pan-lab:first-child{margin-top:4px}
 
@@ -845,7 +723,6 @@ h1 em{font-style:normal;color:var(--muted)}
     padding-top:calc(10px + env(safe-area-inset-top, 0px));
     padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px));
   }
-  .brand{display:none}              /* la bulle est le logo, un seul suffit */
   .tabbar{gap:8px;padding-bottom:12px}
 
   /* la barre du haut : onglets qui défilent, puis les trois boutons */
@@ -977,8 +854,6 @@ h1 em{font-style:normal;color:var(--muted)}
 <!-- APP -->
 <div class="app" id="shell">
   <div class="tabbar">
-    <div class="brand"><div class="brand-name">Grid</div></div>
-
     <div class="tabs" id="tabs" role="tablist"></div>
 
     <div class="pop-wrap menu-holder">
@@ -1027,13 +902,6 @@ h1 em{font-style:normal;color:var(--muted)}
         <div class="ask-list" id="askList"></div>
       </div>
       <div class="nudge" id="nudge"></div>
-
-      <div class="new-wrap">
-        <button class="new-btn" id="newBtn" aria-expanded="false" aria-haspopup="menu" aria-label="Créer">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
-        <div class="pop" id="newPop" role="menu"><div class="pop-inner"><div class="pop-pad"></div></div></div>
-      </div>
     </div>
   </div>
 
@@ -1041,9 +909,6 @@ h1 em{font-style:normal;color:var(--muted)}
 </div>
 
 <input type="file" id="picker" accept="image/*" hidden>
-<div class="drop-veil"></div>
-<div class="drop-word">Lâchez — Grid s'en occupe</div>
-<div class="sheet" id="sheet"><div class="sheet-card" id="sheetCard"></div></div>
 
 <script>
 /* ================= Stockage ================= */
@@ -1123,124 +988,6 @@ const emptyState = (title, body, cta) => `
 
 
 
-/* ================= Les fichiers ================= */
-let FILES = { folders: [], docs: [] };
-const filesKey = () => 'grid:files:' + SESSION.id;
-const saveFiles = () => Store.set(filesKey(), FILES);
-async function loadFiles(){ FILES = (await Store.get(filesKey())) || { folders: [], docs: [] }; }
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
-
-const PALETTE = [
-  { f1:'#FF4D6D', f2:'#F0154A', f3:'rgba(240,21,74,.30)' },
-  { f1:'#B15CF5', f2:'#8A2BE0', f3:'rgba(138,43,224,.28)' },
-  { f1:'#FFAE22', f2:'#F58200', f3:'rgba(245,130,0,.28)' },
-  { f1:'#3FC9FF', f2:'#0A84FF', f3:'rgba(10,132,255,.28)' },
-  { f1:'#4FD98B', f2:'#10A25C', f3:'rgba(16,162,92,.26)' },
-  { f1:'#FF7A5C', f2:'#E8412A', f3:'rgba(232,65,42,.28)' },
-];
-const paint = i => PALETTE[i % PALETTE.length];
-const folderOf = id => FILES.folders.find(f => f.id === id);
-const inFolder = id => FILES.docs.filter(d => d.folder === id).length;
-
-/* ---- Ce que Grid sait reconnaître dans un fichier ---- */
-const SORTERS = [
-  { cat:'Factures',  ext:/^(pdf|docx?|odt)$/,                  kw:/factur|invoice|devis|contrat|paiement|recu|quittance|paye|honoraire/ },
-  { cat:'Revenus',   ext:/^(csv|xlsx?|tsv)$/,                   kw:/revenu|revenue|payout|gain|analytics|engagement|retention|ccu|epic|earning|releve/ },
-  { cat:'Assets',    ext:/^(fbx|obj|blend|psd|ai|uasset|umap|tga|mat|glb|gltf)$/, kw:/asset|texture|mesh|model|prop|material|kit|pack/ },
-  { cat:'Captures',  ext:/^(png|jpe?g|webp|gif|mp4|mov|webm)$/, kw:/capture|screenshot|thumbnail|vignette|trailer|clip|teaser|apercu/ },
-  { cat:'Code',      ext:/^(verse|json|ya?ml|js|ts|log)$/,      kw:/verse|device|script|config|build|patch/ },
-  { cat:'Documents', ext:/^(txt|md|rtf)$/,                      kw:/note|doc|brief|plan|roadmap|idee|design/ },
-];
-const TEXTY = /^(txt|md|csv|tsv|json|ya?ml|js|ts|verse|log|html|css)$/;
-const CODE_RE = /\b\d{4}-\d{4}-\d{4}\b/;
-
-function readFileText(file){
-  return new Promise(res => {
-    const fr = new FileReader();
-    fr.onerror = () => res('');
-    fr.onload = () => res(String(fr.result || '').slice(0, 4000));
-    fr.readAsText(file.slice(0, 20000));
-  });
-}
-
-/* Il regarde le nom, l'extension, puis le contenu. Et il dit pourquoi. */
-function classify(name, ext, text){
-  const n = strip(name), t = strip(text || '');
-  let best = null;
-  for(const r of SORTERS){
-    let sc = 0; const why = [];
-    if(r.ext.test(ext)){ sc += 2; why.push(['l\u2019extension <b>.' + ext + '</b>', 2]); }
-    const mn = n.match(r.kw);
-    if(mn){ sc += 3; why.push(['<b>« ' + mn[0] + ' »</b> dans le nom', 3]); }
-    const mt = t && t.match(r.kw);
-    if(mt && (!mn || mt[0] !== mn[0])){ sc += 2; why.push(['<b>« ' + mt[0] + ' »</b> dans le contenu', 2]); }
-    if(sc && (!best || sc > best.sc)) best = { cat:r.cat, sc, why: why.sort((a,b)=>b[1]-a[1]).map(x=>x[0]) };
-  }
-  const code = (text || '').match(CODE_RE);
-  if(code) (best ||= { cat:'Documents', sc:1, why:[] }).why.unshift('un code d\u2019île <b>' + code[0] + '</b>');
-  return best || { cat:'Divers', sc:0, why:[] };
-}
-
-const KB = b => b < 1024 ? b + ' o' : b < 1048576 ? (b/1024).toFixed(0) + ' Ko' : (b/1048576).toFixed(1) + ' Mo';
-const DATE_UP = ts => new Date(ts).toLocaleDateString('fr-FR',{weekday:'short', day:'numeric', month:'short', year:'2-digit'}).replace('.','').toUpperCase();
-
-/* ---- La page ---- */
-const DOC_IC = {
-  note:'<path d="M5 6h14M5 11h14M5 16h8"/>',
-  map:'<circle cx="5" cy="12" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="19" cy="18" r="2.2"/><path d="M7.2 11L16.8 6.8M7.2 13l9.6 4.2"/>',
-  file:'<path d="M13 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V9l-6-6z"/><path d="M13 3v6h6"/>',
-};
-const docIcon = k => `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${DOC_IC[k] || DOC_IC.file}</svg>`;
-
-PAGES.files = () => {
-  const items = [];
-  FILES.folders.forEach((f,i) => {
-    const c = f.color != null ? PALETTE[f.color % PALETTE.length] : paint(i);
-    items.push({ at:f.created, html:`
-      <button class="fold" data-fold="${f.id}" style="--f1:${c.f1};--f2:${c.f2};--f3:${c.f3}">
-        <span class="fold-paper"><i></i><i></i><i></i></span>
-        <span class="fold-n">${esc(f.name)}</span>
-        <span class="fold-c">${inFolder(f.id)}</span>
-        <span class="fold-m" role="button" data-foldkill="${f.id}" aria-label="Supprimer">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>
-        </span>
-      </button>` });
-  });
-  FILES.docs.forEach(dd => {
-    const f = folderOf(dd.folder);
-    const c = f ? PALETTE[(f.color ?? 0) % PALETTE.length] : null;
-    const body = dd.kind === 'map' ? mapPreview(dd) : (dd.body || '');
-    items.push({ at:dd.updated || dd.created, html:`
-      <button class="doc" data-doc="${dd.id}">
-        <span class="doc-ic">${docIcon(dd.kind)}</span>
-        <span class="doc-t">${esc(dd.title || 'Sans titre')}</span>
-        ${body ? `<span class="doc-b">${esc(body)}</span>` : ''}
-        ${f ? `<span class="doc-tag"><i style="background:${c.f2}"></i>${esc(f.name)}</span>` : ''}
-        <span class="doc-f">
-          <span class="doc-d">${DATE_UP(dd.updated || dd.created)}</span>
-          <span class="doc-m" role="button" data-dockill="${dd.id}" aria-label="Supprimer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>
-          </span>
-        </span>
-      </button>` });
-  });
-  items.sort((a,b) => b.at - a.at);
-
-  return `
-  <div class="page-head" style="padding-top:4px">
-    <h1>Fichiers. <em>${items.length ? '' : 'Déposez-en un sur Grid.'}</em></h1>
-  </div>
-  ${items.length
-    ? `<div class="files">${items.map(i=>i.html).join('')}</div>`
-    : `<div class="card empty">
-         <span class="empty-blob" style="width:62px;height:62px;display:block;margin-bottom:20px"></span>
-         <h2>Rien à ranger</h2>
-         <p>Glissez un fichier n'importe où : Grid le lit, devine où il va, et vous demande confirmation. Ou créez quelque chose avec le <b>+</b> à côté de lui.</p>
-       </div>`}`;
-};
-const mapPreview = d => (d.nodes || []).slice(1).map(n => '• ' + n.text).join('\n');
-const refreshFiles = () => { if(ACTIVE === 'files') renderView(); };
-
 /* ================= Le bureau ================= */
 const ago = ts => {
   const s = Math.round((Date.now() - ts) / 1000);
@@ -1316,7 +1063,6 @@ PAGES.dashboard = () => {
 /* ================= Onglets ================= */
 const ICON = {
   dashboard:'<path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/>',
-  files:'<path d="M3 8V6.5A1.5 1.5 0 014.5 5h4L11 7.5h8A1.5 1.5 0 0120.5 9v8.5A1.5 1.5 0 0119 19H5a2 2 0 01-2-2V8z"/>',
   left:'<path d="M15 6l-6 6 6 6"/>',
   right:'<path d="M9 6l6 6-6 6"/>',
   user:'<circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/>',
@@ -1330,7 +1076,6 @@ const svg = (k, size=14) =>
 
 const META = {
   dashboard:{ label:'Tableau de bord', key:'D', pinned:true },
-  files:    { label:'Fichiers',        key:'F' },
 };
 const MAC = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
 const MOD = MAC ? '⌥' : 'Alt';
@@ -1406,7 +1151,6 @@ function closeAll(except){
   if($('ask') !== except && typeof closeAsk === 'function') closeAsk();
   if(typeof MEM === 'object') for(const m of Object.values(MEM))
     if($(m.pop) !== except) closePop($(m.pop), $(m.orb));
-  if($('newPop') !== except) closePop($('newPop'), $('newBtn'));
 }
 
 /* ---- Menu + ---- */
@@ -1418,7 +1162,7 @@ function menuHTML(){
       ${open ? '<span class="open-flag">Ouvert</span>' : `<span class="keys"><span>${MOD}</span><span>${m.key}</span></span>`}
     </button>`;
   }).join('');
-  return rows + `<div class="menu-sep"></div>
+  return (rows || `<div class="ask-none" style="padding:12px 10px">Aucune page pour l'instant. On les construira une par une.</div>`) + `<div class="menu-sep"></div>
     <div class="menu-foot">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
       ${MOD} W ferme l'onglet ouvert
@@ -1450,6 +1194,7 @@ const ACC = {
           <button class="mini quiet" data-act="nophoto" ${SESSION.photo?'':'style="display:none"'}>Retirer</button>
         </div>
       </div>
+      <div class="pan-hint">JPG, PNG, ou <b>GIF animé</b> jusqu'à 1,6 Mo.</div>
 
       <div class="pan-lab">Nom du compte</div>
       <div class="pin"><input id="pName" type="text" value="${SESSION.pseudo}" maxlength="24" spellcheck="false"></div>
@@ -2362,304 +2107,6 @@ $('askInput').addEventListener('keydown', e=>{
 });
 
 
-/* ================= Créer, et déposer ================= */
-let MK_COLOR = 0, PENDING = null;
-
-const NEW_MENU = () => `
-  <button class="menu-row" data-new="note">${docIcon('note').replace('14','16').replace('14','16')}<span>Document texte</span><span class="keys"><span>${MOD}</span><span>T</span></span></button>
-  <button class="menu-row" data-new="map">${docIcon('map').replace('14','16').replace('14','16')}<span>Carte mentale</span><span class="keys"><span>${MOD}</span><span>M</span></span></button>
-  <div class="menu-sep"></div>
-  <button class="menu-row" data-new="folder">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V6.5A1.5 1.5 0 014.5 5h4L11 7.5h8A1.5 1.5 0 0120.5 9v8.5A1.5 1.5 0 0119 19H5a2 2 0 01-2-2V8z"/></svg>
-    <span>Nouveau dossier</span>
-  </button>`;
-
-const MK_FOLDER = () => `
-  <div class="mk-h">
-    <button class="pan-back" data-new="back" aria-label="Retour">${svg('back',15)}</button>
-    <span class="mk-t">Nouveau dossier</span>
-  </div>
-  <div class="mk">
-    <div class="pin"><input id="mkName" placeholder="Factures" maxlength="28" spellcheck="false"></div>
-    <div class="cols">${PALETTE.map((c,i)=>
-      `<button data-col="${i}" aria-pressed="${i===MK_COLOR}" style="--f1:${c.f1};--f2:${c.f2}" aria-label="Couleur ${i+1}"></button>`).join('')}</div>
-    <button class="gbtn pan-btn" data-new="mk">Créer</button>
-  </div>`;
-
-/* La fiche que Grid vous montre avant de ranger */
-const SORT_CARD = () => {
-  const p = PENDING, f = p.folder;
-  const c = PALETTE[(f.color ?? 0) % PALETTE.length];
-  return `
-  <div class="sort-h">
-    <span class="sort-ic">${docIcon('file')}</span>
-    <span style="min-width:0">
-      <span class="sort-n">${esc(p.name)}</span>
-      <span class="sort-s">${p.ext ? '.' + p.ext + ' · ' : ''}${KB(p.size)}</span>
-    </span>
-  </div>
-  <div class="sort-box" style="--f1:${c.f1};--f2:${c.f2}">
-    <div class="sort-lab">Je le range dans</div>
-    <div class="sort-to">
-      <span class="sort-chip"></span><b>${esc(f.name)}</b>
-      ${p.isNew ? '<span class="new">nouveau dossier</span>' : ''}
-    </div>
-    <div class="sort-why">${p.why.length ? 'Parce que j\u2019ai vu ' + p.why.slice(0,2).join(' et ') + '.' : 'Je n\u2019ai rien reconnu — je le mets de côté.'}</div>
-  </div>
-  <div class="sort-acts">
-    <button class="gbtn ok" data-sort="ok">Range-le</button>
-    <button class="sort-no" data-sort="no">Non</button>
-  </div>`;
-};
-
-/* ---- Le dépôt ---- */
-let DRAGS = 0;
-const veil = on => document.body.classList.toggle('dropping', on);
-window.addEventListener('dragenter', e=>{
-  if(!$('shell').classList.contains('on') || !e.dataTransfer?.types.includes('Files')) return;
-  e.preventDefault(); DRAGS++; veil(true); BUB.set('wow');
-});
-window.addEventListener('dragover', e=>{ if(e.dataTransfer?.types.includes('Files')) e.preventDefault(); });
-window.addEventListener('dragleave', ()=>{ if(--DRAGS <= 0){ DRAGS = 0; veil(false); BUB.set('idle'); } });
-window.addEventListener('drop', async e=>{
-  if(!$('shell').classList.contains('on') || !e.dataTransfer?.files.length) return;
-  e.preventDefault(); DRAGS = 0; veil(false);
-  await takeFile(e.dataTransfer.files[0]);
-});
-
-async function takeFile(file){
-  closeAll();
-  BUB.tone('orange'); BUB.set('think'); BUB.bounce();
-  const ext  = (file.name.split('.').pop() || '').toLowerCase();
-  const text = TEXTY.test(ext) ? await readFileText(file) : '';
-  await wait(520);                                   // on le voit réfléchir
-  const guess = classify(file.name, ext, text);
-
-  let folder = FILES.folders.find(f => strip(f.name) === strip(guess.cat));
-  let isNew = false;
-  if(!folder){
-    folder = { id:uid(), name:guess.cat, color:FILES.folders.length % PALETTE.length, created:Date.now() };
-    isNew = true;
-  }
-  PENDING = { name:file.name, ext, size:file.size, text:text.slice(0,600), folder, isNew, why:guess.why };
-  BUB.tone('blue'); BUB.set('curious');
-  openPop($('newPop'), $('newBtn'));
-  popSize($('newPop'), SORT_CARD(), 280);
-}
-
-async function fileIt(){
-  const p = PENDING; if(!p) return;
-  if(p.isNew) FILES.folders.push(p.folder);
-  FILES.docs.push({
-    id:uid(), kind:'file', title:p.name, body:p.text,
-    folder:p.folder.id, size:p.size, ext:p.ext,
-    created:Date.now(), updated:Date.now(),
-  });
-  PENDING = null;
-  closePop($('newPop'), $('newBtn'));
-  await working();
-  await saveFiles();
-  refreshFiles();
-  await noted();
-}
-
-/* ---- Créer ---- */
-async function makeDoc(kind){
-  const d = kind === 'map'
-    ? { id:uid(), kind:'map', title:'Carte sans titre', nodes:[{ id:'r', text:'Idée centrale', parent:null }], folder:null, created:Date.now(), updated:Date.now() }
-    : { id:uid(), kind:'note', title:'', body:'', folder:null, created:Date.now(), updated:Date.now() };
-  FILES.docs.push(d);
-  await saveFiles();
-  closePop($('newPop'), $('newBtn'));
-  if(ACTIVE !== 'files') go('files'); else refreshFiles();
-  BUB.flash('happy', 900);
-  openSheet(d.id);
-}
-async function makeFolder(){
-  const name = $('mkName').value.trim();
-  if(!name) return $('mkName').focus();
-  FILES.folders.push({ id:uid(), name, color:MK_COLOR, created:Date.now() });
-  await saveFiles();
-  closePop($('newPop'), $('newBtn'));
-  if(ACTIVE !== 'files') go('files'); else refreshFiles();
-  BUB.tone('green'); BUB.flash('happy', 1000);
-  setTimeout(()=>BUB.tone('blue'), 1100);
-}
-
-$('newBtn').addEventListener('click', e=>{
-  e.stopPropagation();
-  if($('newPop').classList.contains('on')) return closePop($('newPop'), $('newBtn'));
-  PENDING = null;
-  openPop($('newPop'), $('newBtn'));
-  popSize($('newPop'), NEW_MENU(), 242);
-});
-$('newPop').addEventListener('click', e=>{
-  const c = e.target.closest('[data-col]');
-  if(c){ MK_COLOR = +c.dataset.col; popSize($('newPop'), MK_FOLDER(), 258); return; }
-  const s = e.target.closest('[data-sort]');
-  if(s){
-    if(s.dataset.sort === 'ok') return fileIt();
-    PENDING = null; closePop($('newPop'), $('newBtn')); BUB.flash('squint', 800); return;
-  }
-  const n = e.target.closest('[data-new]');
-  if(!n) return;
-  const k = n.dataset.new;
-  if(k === 'folder'){ MK_COLOR = FILES.folders.length % PALETTE.length; popSize($('newPop'), MK_FOLDER(), 258); setTimeout(()=>$('mkName')?.focus(), 60); return; }
-  if(k === 'back'){ popSize($('newPop'), NEW_MENU(), 242); return; }
-  if(k === 'mk') return makeFolder();
-  makeDoc(k);
-});
-$('newPop').addEventListener('keydown', e=>{ if(e.key === 'Enter' && e.target.id === 'mkName') makeFolder(); });
-
-
-/* ================= L'éditeur ================= */
-let SHEET_ID = null, SAVE_T = null;
-const docOf = id => FILES.docs.find(d => d.id === id);
-
-function sheetHTML(d){
-  const f = folderOf(d.folder);
-  const c = f ? PALETTE[(f.color ?? 0) % PALETTE.length] : null;
-  return `
-  <div class="sheet-top">
-    <span class="doc-ic" style="margin:0">${docIcon(d.kind)}</span>
-    <span class="sheet-save" id="sheetSave"></span>
-    <span class="where">
-      ${f ? `<span class="sort-chip" style="width:14px;height:14px;border-radius:4px;--f1:${c.f1};--f2:${c.f2}"></span>${esc(f.name)}` : 'Aucun dossier'}
-    </span>
-    <button class="sheet-x" id="sheetX" aria-label="Fermer">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-    </button>
-  </div>
-  <div class="sheet-body">
-    <input class="sheet-title" id="shTitle" value="${esc(d.title||'')}" placeholder="${d.kind==='map'?'Titre de la carte':'Sans titre'}" maxlength="80">
-    ${d.kind === 'map'
-      ? `<div id="shMap" style="margin-top:16px"></div>`
-      : `<textarea class="sheet-text" id="shBody" placeholder="Écrivez…">${esc(d.body||'')}</textarea>`}
-  </div>`;
-}
-
-function openSheet(id){
-  const d = docOf(id); if(!d) return;
-  if(d.kind === 'file') return;              // un fichier déposé n'est pas éditable
-  SHEET_ID = id;
-  $('sheetCard').innerHTML = sheetHTML(d);
-  $('sheet').classList.add('on');
-  $('sheetX').addEventListener('click', closeSheet);
-  $('shTitle').addEventListener('input', touch);
-  $('shBody')?.addEventListener('input', touch);
-  if(d.kind === 'map') paintMap();
-  setTimeout(()=> $('shTitle').focus(), 60);
-}
-function closeSheet(){
-  flush();
-  $('sheet').classList.remove('on');
-  SHEET_ID = null;
-  refreshFiles();
-}
-function touch(){
-  clearTimeout(SAVE_T);
-  $('sheetSave').textContent = '…';
-  SAVE_T = setTimeout(flush, 500);
-}
-async function flush(){
-  const d = docOf(SHEET_ID); if(!d) return;
-  const t = $('shTitle'); if(!t) return;
-  d.title = t.value.trim();
-  if($('shBody')) d.body = $('shBody').value;
-  d.updated = Date.now();
-  await saveFiles();
-  if($('sheetSave')) $('sheetSave').textContent = 'enregistré';
-}
-$('sheet').addEventListener('click', e=>{ if(e.target.id === 'sheet') closeSheet(); });
-document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && SHEET_ID) closeSheet(); });
-
-/* ---- La carte mentale : un arbre, des courbes ---- */
-const NODE_W = 148, NODE_H = 34, GAP_X = 58, GAP_Y = 12;
-function layout(nodes){
-  const kids = p => nodes.filter(n => n.parent === p);
-  const pos = {};
-  let cursor = 0;
-  const walk = (n, depth) => {
-    const cs = kids(n.id);
-    if(!cs.length){ pos[n.id] = { x: depth, y: cursor }; cursor += NODE_H + GAP_Y; return pos[n.id]; }
-    const ys = cs.map(c => walk(c, depth+1).y);
-    pos[n.id] = { x: depth, y: (ys[0] + ys[ys.length-1]) / 2 };
-    return pos[n.id];
-  };
-  const root = nodes.find(n => !n.parent);
-  if(root) walk(root, 0);
-  return pos;
-}
-function paintMap(){
-  const d = docOf(SHEET_ID); if(!d) return;
-  const pos = layout(d.nodes);
-  const H = Math.max(...Object.values(pos).map(p=>p.y)) + NODE_H + 10;
-  const depth = Math.max(...Object.values(pos).map(p=>p.x));
-  const W = (depth+1) * (NODE_W + GAP_X);
-  const X = p => p.x * (NODE_W + GAP_X);
-
-  const links = d.nodes.filter(n => n.parent).map(n => {
-    const a = pos[n.parent], b = pos[n.id];
-    const x1 = X(a) + NODE_W, y1 = a.y + NODE_H/2, x2 = X(b), y2 = b.y + NODE_H/2;
-    const m = (x1 + x2) / 2;
-    return `<path d="M${x1} ${y1} C${m} ${y1}, ${m} ${y2}, ${x2} ${y2}" fill="none" stroke="var(--hair)" stroke-width="1.6"/>`;
-  }).join('');
-
-  const boxes = d.nodes.map(n => `
-    <div class="mn ${n.parent?'':'root'}" data-node="${n.id}"
-         style="left:${X(pos[n.id])}px;top:${pos[n.id].y}px">
-      <span class="mn-t" contenteditable="plaintext-only" data-edit="${n.id}">${esc(n.text)}</span>
-      <button class="mn-a" data-addnode="${n.id}" aria-label="Ajouter une branche">+</button>
-      ${n.parent ? `<button class="mn-k" data-delnode="${n.id}" aria-label="Supprimer">×</button>` : ''}
-    </div>`).join('');
-
-  $('shMap').innerHTML = `
-    <div class="map-wrap" style="height:${H}px;min-width:${W}px">
-      <svg style="position:absolute;inset:0;overflow:visible" width="${W}" height="${H}">${links}</svg>
-      ${boxes}
-    </div>`;
-}
-document.addEventListener('click', async e=>{
-  const add = e.target.closest('[data-addnode]');
-  if(add){
-    const d = docOf(SHEET_ID);
-    d.nodes.push({ id:uid(), text:'Nouvelle branche', parent:add.dataset.addnode });
-    d.updated = Date.now(); await saveFiles(); paintMap();
-    return;
-  }
-  const del = e.target.closest('[data-delnode]');
-  if(del){
-    const d = docOf(SHEET_ID);
-    const drop = new Set([del.dataset.delnode]);
-    let n; do { n = d.nodes.length; d.nodes.forEach(x => { if(drop.has(x.parent)) drop.add(x.id); }); } while(d.nodes.length !== n && false);
-    d.nodes.forEach(x => { if(drop.has(x.parent)) drop.add(x.id); });
-    d.nodes = d.nodes.filter(x => !drop.has(x.id));
-    d.updated = Date.now(); await saveFiles(); paintMap();
-  }
-});
-document.addEventListener('input', e=>{
-  const ed = e.target.closest('[data-edit]');
-  if(!ed || !SHEET_ID) return;
-  const d = docOf(SHEET_ID);
-  const n = d.nodes.find(x => x.id === ed.dataset.edit);
-  if(n){ n.text = ed.textContent.trim(); touch(); }
-});
-
-/* ---- Ouvrir / jeter depuis la page ---- */
-$('view').addEventListener('click', async e=>{
-  const dk = e.target.closest('[data-dockill]');
-  if(dk){ e.stopPropagation(); FILES.docs = FILES.docs.filter(d => d.id !== dk.dataset.dockill); await saveFiles(); return renderView(); }
-  const fk = e.target.closest('[data-foldkill]');
-  if(fk){
-    e.stopPropagation();
-    FILES.docs.forEach(d => { if(d.folder === fk.dataset.foldkill) d.folder = null; });
-    FILES.folders = FILES.folders.filter(f => f.id !== fk.dataset.foldkill);
-    await saveFiles(); return renderView();
-  }
-  const doc = e.target.closest('[data-doc]');
-  if(doc) return openSheet(doc.dataset.doc);
-});
-
 /* ================= Écoutes ================= */
 $('tabs').addEventListener('click', e=>{
   const c = e.target.closest('[data-close]');
@@ -2731,8 +2178,6 @@ document.addEventListener('keydown', e=>{
   if(!e.altKey || e.ctrlKey || e.metaKey) return;
   const k = (e.key || '').toUpperCase();
   if(k === 'W'){ e.preventDefault(); return closeTab(ACTIVE); }
-  if(k === 'T'){ e.preventDefault(); return makeDoc('note'); }
-  if(k === 'M'){ e.preventDefault(); return makeDoc('map'); }
   const hit = Object.entries(META).find(([,m]) => m.key === k);
   if(hit){ e.preventDefault(); go(hit[0]); }
 });
@@ -2800,12 +2245,18 @@ $('account').addEventListener('click', async e=>{
 });
 
 /* ---- Photo ---- */
+const GIF_MAX = 1.6e6;   // au-delà, le stockage du navigateur sature
 $('picker').addEventListener('change', async e=>{
   const f = e.target.files?.[0];
   e.target.value = '';
   if(!f) return;
+  const say = t => { const m = $('pMsg'); if(m){ m.textContent = t; m.className = 'pan-msg err'; } };
   try{
-    const url = await downscale(f, 256);
+    /* Un GIF redimensionné sur un canvas perd son animation : on le garde intact. */
+    const anim = f.type === 'image/gif' || f.type === 'image/webp';
+    if(anim && f.size > GIF_MAX)
+      return say(`GIF trop lourd (${(f.size/1048576).toFixed(1)} Mo). Maximum 1,6 Mo — sinon il ne tient pas.`);
+    const url = anim ? await asDataURL(f) : await downscale(f, 256);
     SESSION.photo = url;
     USERS[SESSION.id].photo = url;
     await Store.set(K_USERS, USERS);
@@ -2814,6 +2265,12 @@ $('picker').addEventListener('change', async e=>{
   }catch(err){
     if(ACC_VIEW === 'profile'){ const m = $('pMsg'); if(m){ m.textContent = 'Image illisible. Essayez un JPG ou un PNG.'; m.className='pan-msg err'; } }
   }
+});
+const asDataURL = file => new Promise((res, rej)=>{
+  const fr = new FileReader();
+  fr.onerror = rej;
+  fr.onload = () => res(String(fr.result));
+  fr.readAsDataURL(file);
 });
 function downscale(file, max){
   return new Promise((res, rej)=>{
@@ -2943,7 +2400,7 @@ async function enter(id){
   auth.classList.remove('on');
   shell.classList.add('on');
   paintAvatars();
-  await loadNotes(); await loadFiles(); paintMem(); paintBadge();
+  await loadNotes(); paintMem(); paintBadge();
   setTimeout(()=>{ BUB.bounce(); BUB.flash('happy', 1200); checkDue(); }, 900);
   const saved = await Store.get('grid:tabs:'+id);
   TABS = (saved?.tabs || []).filter(t=>META[t]);
