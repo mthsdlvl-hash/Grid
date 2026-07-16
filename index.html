@@ -111,15 +111,6 @@ input{font:inherit}
   55%{transform:scale(.92,1.1)} 78%{transform:scale(1.05,.96)} 100%{transform:scale(1,1)}
 }
 
-.bub-btn{
-  width:30px;height:30px;border-radius:50%;flex:none;padding:0;
-  background:var(--card);box-shadow:var(--shadow);
-  display:grid;place-items:center;position:relative;
-  transition:transform .25s cubic-bezier(.34,1.4,.5,1),box-shadow .25s;
-}
-.bub-btn:hover{transform:scale(1.09)}
-.bub-btn[aria-expanded="true"]{box-shadow:var(--shadow),0 0 0 2px var(--blob-3)}
-.bub-btn .blob{width:26px;height:26px}
 
 /* ---------- Barre de demande ---------- */
 .ask{
@@ -193,13 +184,33 @@ input{font:inherit}
 .blob.tone-purple{--blob-1:#F8F3FF;--blob-2:#C0A4FF;--blob-3:#6635DF;--blob-eye:#FBF8FF}
 .blob.ex-shut .lid{transform:scaleY(.05)}
 
-.bub-btn .badge{
-  position:absolute;top:-1px;right:-1px;min-width:9px;height:9px;border-radius:99px;
-  background:var(--coral);border:2px solid var(--card);
-  animation:pulseDot 1.8s ease-in-out infinite;
+
+/* Il dort : les Z montent. Par défaut ils n'existent pas. */
+.blob .zzz{opacity:0;pointer-events:none;transition:opacity .5s ease}
+.blob.night.ex-sleep .zzz{opacity:1}
+.blob .zzz text{
+  font-family:var(--display);font-weight:600;fill:var(--blob-3);
+  transform-box:fill-box;transform-origin:center;
+  animation:zzz 3.4s ease-in-out infinite;
 }
+.blob .zzz text:nth-child(2){animation-delay:1.1s}
+.blob .zzz text:nth-child(3){animation-delay:2.2s}
+@keyframes zzz{
+  0%{opacity:0;transform:translate(0,4px) scale(.7)}
+  30%{opacity:.9;transform:none}
+  70%{opacity:.55;transform:translate(-3px,-9px) scale(1.05)}
+  100%{opacity:0;transform:translate(-6px,-16px) scale(1.15)}
+}
+
 @keyframes pulseDot{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
 
+.skill{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  padding:9px 10px;border-radius:11px;font-size:12.5px;color:var(--dim);transition:background .14s,color .14s}
+.skill{cursor:default}
+.skill .ex{margin-left:auto;flex:none;font-family:var(--mono);font-size:9px;color:var(--muted);
+  background:var(--key);border-radius:6px;padding:3px 6px;max-width:132px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.skill i{width:5px;height:5px;border-radius:50%;flex:none;background:var(--sk-c)}
 .ask-sec{padding:9px 11px 5px;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
 .ask-prev{
   display:flex;align-items:flex-start;gap:11px;width:100%;text-align:left;
@@ -209,6 +220,14 @@ input{font:inherit}
 .ask-prev .what{font-size:13px;color:var(--ink);font-weight:500;line-height:1.35}
 .ask-prev .when{font-size:11.5px;color:var(--muted);margin-top:3px}
 .ask-prev .when b{color:var(--blob-3);font-weight:600}
+.ask-ans{padding:12px 11px 4px}
+.ask-ans .said{font-size:13.5px;font-weight:500;line-height:1.4}
+.ask-ans .none{font-size:12.5px;color:var(--muted);line-height:1.5}
+.ask-ans .list{margin-top:10px;display:flex;flex-direction:column;gap:7px}
+.ask-ans .list div{font-size:12.5px;color:var(--dim);display:flex;gap:8px;line-height:1.35}
+.ask-ans .list b{color:var(--muted);font-family:var(--mono);font-size:9px;margin-top:3px;flex:none}
+.urg{color:var(--coral);font-weight:600;margin-right:5px}
+.rep{display:inline-flex;align-items:center;gap:3px}
 .ask-conf{padding:12px 11px 11px;border-radius:12px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--hair)}
 .ask-conf .what{font-size:13.5px;font-weight:500;line-height:1.35}
 .ask-conf .q{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.45}
@@ -282,6 +301,227 @@ input{font:inherit}
 }
 
 
+
+/* ---------- Grid, centré en haut ----------
+   .pop-wrap est déclaré plus bas dans la feuille et impose position:relative.
+   À poids égal, c'est le dernier qui gagne : il faut donc un sélecteur plus fort. */
+.tabbar .grid-mid{
+  position:absolute;left:50%;top:2px;bottom:16px;
+  transform:translateX(-50%);
+  display:flex;align-items:center;gap:7px;z-index:25;
+}
+.tabbar .tabs{max-width:calc(50% - 156px)}
+.grid-mid .ask,.grid-mid .nudge{
+  left:50%;right:auto;top:calc(100% + 8px);
+  transform:translate(-50%,-8px) scale(.96);
+  transform-origin:top center;
+}
+.grid-mid .ask.on,.grid-mid .nudge.on{transform:translate(-50%,0) scale(1)}
+
+/* ---------- Grid en haut, au centre ---------- */
+:root{--gt-bg:#15171C;--gt-fg:#F1F3F6;--gt-line:rgba(255,255,255,.09)}
+[data-theme="dark"]{--gt-bg:#272C35;--gt-fg:#EDEFF2;--gt-line:rgba(255,255,255,.07)}
+
+.grid-tab{
+  display:flex;align-items:center;gap:8px;
+  height:34px;padding:0 13px 0 5px;border-radius:99px;
+  background:var(--gt-bg);color:var(--gt-fg);
+  box-shadow:inset 0 0 0 1px var(--gt-line), 0 2px 6px rgba(20,23,30,.14), 0 10px 26px rgba(20,23,30,.12);
+  position:relative;
+  transition:transform .25s cubic-bezier(.34,1.4,.5,1), box-shadow .25s;
+}
+.grid-tab:hover{transform:translateY(-1px) scale(1.03)}
+.grid-tab[aria-expanded="true"]{transform:scale(1.03);box-shadow:inset 0 0 0 1px var(--gt-line), 0 2px 6px rgba(20,23,30,.16), 0 12px 30px rgba(20,23,30,.18), 0 0 0 3px var(--dot-c)}
+.gt-blob{width:24px;height:24px;flex:none;display:block}
+.gt-blob .blob{width:24px;height:24px}
+.gt-name{font-family:var(--display);font-weight:600;font-size:12.5px;letter-spacing:.01em}
+
+/* La pastille dit son état, sans un mot. */
+.gt-dot{
+  width:7px;height:7px;border-radius:50%;flex:none;
+  background:var(--dot-c);
+  box-shadow:0 0 0 0 var(--dot-c);
+  transition:background .5s ease;
+}
+.grid-tab{--dot-c:#2AA4FF}
+.grid-tab[data-tone="green"] {--dot-c:#25C87E}
+.grid-tab[data-tone="orange"]{--dot-c:#FF9012}
+.grid-tab[data-tone="red"]   {--dot-c:#FF5546}
+.grid-tab[data-tone="purple"]{--dot-c:#9576FF}
+.grid-tab:not([data-tone="blue"]) .gt-dot{animation:dotLive 1.4s ease-out infinite}
+@keyframes dotLive{
+  0%{box-shadow:0 0 0 0 var(--dot-c)}
+  70%{box-shadow:0 0 0 6px transparent}
+  100%{box-shadow:0 0 0 0 transparent}
+}
+.grid-tab .badge{
+  position:absolute;top:-2px;right:-3px;min-width:9px;height:9px;border-radius:99px;
+  background:var(--coral);border:2px solid var(--paper);
+  animation:pulseDot 1.8s ease-in-out infinite;
+}
+
+
+/* ---------- Le + de création, collé à Grid ---------- */
+.new-wrap{position:relative;flex:none}
+.new-btn{
+  width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  background:var(--card);color:var(--muted);box-shadow:var(--shadow);
+  transition:transform .25s cubic-bezier(.34,1.4,.5,1),color .18s;
+}
+.new-btn:hover{color:var(--ink);transform:scale(1.12)}
+.new-btn[aria-expanded="true"]{color:var(--ink);transform:rotate(45deg)}
+#newPop{left:50%;width:242px;transform-origin:top center}
+#newPop.on{transform:translateX(-50%)}
+#newPop{transform:translate(-50%,-8px) scale(.96)}
+#newPop::before{left:50%;margin-left:-6px}
+
+/* ---------- Les fichiers ---------- */
+.files{columns:2;column-gap:14px}
+@media(max-width:820px){.files{columns:1}}
+.files > *{break-inside:avoid;margin-bottom:14px;display:block;width:100%;text-align:left}
+
+/* Un dossier : sa languette, ses feuilles, sa couleur. */
+.fold{
+  position:relative;border-radius:22px;padding:60px 16px 16px;
+  background:linear-gradient(160deg,var(--f1),var(--f2));
+  box-shadow:0 2px 6px rgba(20,23,30,.10), 0 14px 34px var(--f3);
+  transition:transform .25s cubic-bezier(.34,1.3,.5,1),box-shadow .25s;
+  overflow:hidden;
+}
+.fold::before{
+  content:"";position:absolute;top:-11px;left:0;width:46%;height:24px;
+  border-radius:12px 12px 0 0;background:var(--f1);
+}
+.fold:hover{transform:translateY(-3px);box-shadow:0 3px 8px rgba(20,23,30,.12), 0 20px 44px var(--f3)}
+.fold-paper{position:absolute;top:12px;left:16px;right:16px;height:62px;display:flex;gap:6px;align-items:flex-end}
+.fold-paper i{
+  flex:1;background:#fff;border-radius:6px 6px 0 0;
+  box-shadow:0 -2px 10px rgba(0,0,0,.10);
+  background-image:repeating-linear-gradient(180deg,transparent 0 9px,#E8EAEE 9px 11px);
+  background-position:0 8px;background-repeat:no-repeat;background-size:70% 60%;
+}
+.fold-paper i:nth-child(1){height:46px;transform:rotate(-1.5deg)}
+.fold-paper i:nth-child(2){height:56px}
+.fold-paper i:nth-child(3){height:44px;transform:rotate(1.5deg)}
+.fold-n{position:relative;font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.02em;color:#fff}
+.fold-c{position:relative;font-size:12px;color:rgba(255,255,255,.72);margin-top:2px}
+.fold-m{position:absolute;right:14px;bottom:18px;color:rgba(255,255,255,.85);padding:4px;border-radius:8px}
+.fold-m:hover{background:rgba(255,255,255,.18)}
+
+/* Un document : le texte s'efface en bas. */
+.doc{
+  position:relative;background:var(--card);border-radius:22px;padding:18px;
+  box-shadow:0 1px 2px rgba(20,23,30,.04), 0 10px 28px rgba(20,23,30,.07);
+  transition:transform .25s cubic-bezier(.34,1.3,.5,1),box-shadow .25s;
+}
+.doc:hover{transform:translateY(-3px);box-shadow:0 2px 5px rgba(20,23,30,.06), 0 18px 44px rgba(20,23,30,.11)}
+.doc-t{font-family:var(--display);font-size:19px;font-weight:600;letter-spacing:-.025em;line-height:1.2}
+.doc-b{
+  font-size:11.5px;color:var(--muted);line-height:1.65;margin-top:11px;
+  max-height:118px;overflow:hidden;white-space:pre-wrap;
+  -webkit-mask-image:linear-gradient(180deg,#000 45%,transparent 100%);
+          mask-image:linear-gradient(180deg,#000 45%,transparent 100%);
+}
+.doc-f{display:flex;align-items:center;margin-top:14px}
+.doc-d{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+.doc-m{margin-left:auto;color:var(--muted);padding:4px;border-radius:8px}
+.doc-m:hover{background:var(--hover);color:var(--ink)}
+.doc-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);margin-top:9px}
+.doc-tag i{width:5px;height:5px;border-radius:50%;flex:none}
+.doc-ic{width:26px;height:26px;border-radius:8px;background:var(--key);display:grid;place-items:center;color:var(--muted);margin-bottom:11px}
+
+/* Grid reçoit un fichier */
+.drop-veil{
+  position:fixed;inset:0;z-index:45;pointer-events:none;
+  background:radial-gradient(600px 300px at 50% 0%, rgba(42,164,255,.14), transparent 70%);
+  opacity:0;transition:opacity .25s ease;
+}
+body.dropping .drop-veil{opacity:1}
+body.dropping .grid-tab{transform:scale(1.14);box-shadow:inset 0 0 0 1px var(--gt-line), 0 14px 40px rgba(20,23,30,.2), 0 0 0 5px rgba(42,164,255,.35)}
+.drop-word{
+  position:fixed;left:50%;top:56px;transform:translateX(-50%);z-index:46;
+  font-size:12px;color:var(--muted);background:var(--card);
+  border-radius:99px;padding:7px 14px;box-shadow:var(--shadow);
+  opacity:0;transition:opacity .25s ease;pointer-events:none;
+}
+body.dropping .drop-word{opacity:1}
+
+/* Sa proposition de rangement */
+.sort-h{display:flex;align-items:flex-start;gap:11px;padding:2px 2px 12px}
+.sort-ic{width:34px;height:34px;border-radius:11px;flex:none;display:grid;place-items:center;background:var(--key);color:var(--muted)}
+.sort-n{font-size:13.5px;font-weight:500;line-height:1.3;word-break:break-all}
+.sort-s{font-size:10.5px;color:var(--muted);margin-top:3px;font-family:var(--mono)}
+.sort-box{background:var(--soft);border-radius:12px;padding:12px;box-shadow:inset 0 0 0 1px var(--hair)}
+.sort-lab{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sort-to{display:flex;align-items:center;gap:9px;margin-top:8px}
+.sort-chip{width:20px;height:20px;border-radius:6px;flex:none;background:linear-gradient(160deg,var(--f1),var(--f2))}
+.sort-to b{font-family:var(--display);font-size:15px;font-weight:600;letter-spacing:-.02em}
+.sort-to .new{font-size:10px;color:var(--muted);background:var(--key);border-radius:5px;padding:2px 6px;margin-left:auto}
+.sort-why{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:9px}
+.sort-why b{color:var(--dim);font-weight:600}
+.sort-acts{display:flex;gap:6px;margin-top:12px}
+.sort-acts button{flex:1;padding:9px;border-radius:9px;font-size:12.5px;font-weight:500;transition:.15s}
+.sort-no{background:var(--key);color:var(--muted)}
+.sort-no:hover{background:var(--hair);color:var(--ink)}
+
+/* Nommer un dossier */
+.mk{padding:4px 4px 2px}
+.mk-h{display:flex;align-items:center;gap:8px;padding:2px 2px 10px;margin-bottom:6px;border-bottom:1px solid var(--hair)}
+.mk-t{font-family:var(--display);font-size:14px;font-weight:600}
+.cols{display:flex;gap:7px;margin:11px 0 3px}
+.cols button{width:24px;height:24px;border-radius:50%;background:linear-gradient(160deg,var(--f1),var(--f2));transition:transform .18s}
+.cols button:hover{transform:scale(1.15)}
+.cols button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--ink)}
+
+/* L'éditeur */
+.sheet{
+  position:fixed;inset:0;z-index:70;display:none;place-items:center;padding:24px;
+  background:rgba(20,23,30,.34);backdrop-filter:blur(3px);
+}
+.sheet.on{display:grid;animation:fadeUp .3s ease}
+.sheet-card{
+  width:100%;max-width:660px;max-height:82vh;display:flex;flex-direction:column;
+  background:var(--card);border-radius:24px;box-shadow:var(--shadow-pop);overflow:hidden;
+}
+.sheet-top{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--hair)}
+.sheet-top .where{font-size:11px;color:var(--muted);margin-left:auto;display:flex;align-items:center;gap:6px}
+.sheet-x{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:var(--muted);background:var(--key)}
+.sheet-x:hover{background:var(--hair);color:var(--ink)}
+.sheet-body{flex:1;overflow:auto;padding:20px 22px 24px}
+.sheet-title{
+  width:100%;border:none;background:none;outline:none;color:var(--ink);
+  font-family:var(--display);font-size:26px;font-weight:600;letter-spacing:-.03em;
+}
+.sheet-title::placeholder{color:var(--muted);opacity:.5}
+.sheet-text{
+  width:100%;min-height:280px;border:none;background:none;outline:none;resize:none;
+  color:var(--dim);font-family:var(--body);font-size:14px;line-height:1.75;margin-top:12px;
+}
+.sheet-text::placeholder{color:var(--muted);opacity:.6}
+.sheet-save{font-size:10.5px;color:var(--muted);font-family:var(--mono)}
+
+
+/* La carte mentale */
+.map-wrap{position:relative;overflow:auto;padding:4px 0}
+.mn{
+  position:absolute;width:148px;min-height:34px;
+  display:flex;align-items:center;gap:5px;
+  background:var(--card);border-radius:10px;padding:6px 8px;
+  box-shadow:inset 0 0 0 1px var(--hair);
+  transition:box-shadow .15s;
+}
+.mn:hover{box-shadow:inset 0 0 0 1px var(--muted)}
+.mn.root{background:var(--ink);color:var(--card);box-shadow:none;font-weight:500}
+.mn-t{flex:1;min-width:0;font-size:12.5px;line-height:1.35;outline:none;word-break:break-word}
+.mn-a,.mn-k{
+  width:17px;height:17px;border-radius:50%;flex:none;display:grid;place-items:center;
+  font-size:12px;line-height:1;color:var(--muted);background:var(--key);opacity:0;transition:.15s;
+}
+.mn.root .mn-a{background:rgba(255,255,255,.16);color:#fff}
+.mn:hover .mn-a,.mn:hover .mn-k{opacity:1}
+.mn-a:hover{background:var(--btn-lo);color:#fff}
+.mn-k:hover{background:var(--coral);color:#fff}
+
 /* ---------- Les artefacts de sa mémoire ---------- */
 .mem-wrap{display:none}
 .mem-wrap.on{display:block;animation:memBorn .55s cubic-bezier(.34,1.5,.5,1)}
@@ -315,11 +555,13 @@ input{font:inherit}
 #tasksPop,#notesPop{right:-6px;width:290px;transform-origin:calc(100% - 26px) -8px}
 #tasksPop::before,#notesPop::before{right:24px}
 
-/* l'artefact en vol : X et Y bougent avec des courbes différentes → une trajectoire */
+/* L'artefact en vol. X sur l'extérieur, Y sur l'intérieur :
+   deux courbes différentes = une vraie trajectoire, pas une ligne. */
 .fly{position:fixed;left:0;top:0;z-index:60;pointer-events:none;will-change:transform}
-.fly i{display:block;border-radius:50%;will-change:transform,opacity}
-.fly.go{transition:transform .78s cubic-bezier(.55,0,.85,.42)}
-.fly.go i{transition:transform .78s cubic-bezier(.16,.9,.32,1),opacity .22s ease .56s}
+.fly i{display:block;border-radius:50%;will-change:transform,opacity;transition:opacity .2s ease}
+.fly.pop i{transition:transform .36s cubic-bezier(.34,1.75,.5,1)}
+.fly.go{transition:transform .74s cubic-bezier(.6,0,.85,.45)}
+.fly.go i{transition:transform .74s cubic-bezier(.18,.92,.32,1)}
 
 .mem-head{display:flex;align-items:center;gap:8px;padding:4px 6px 10px;border-bottom:1px solid var(--hair);margin-bottom:4px}
 .mem-head .t{font-family:var(--display);font-size:14px;font-weight:600;letter-spacing:-.01em}
@@ -339,6 +581,62 @@ input{font:inherit}
 .mem-row .kill:hover{color:var(--coral)}
 .mem-empty{padding:16px 10px;font-size:12px;color:var(--muted);line-height:1.5}
 .mem-dot{width:5px;height:5px;border-radius:50%;background:var(--mem-c);flex:none;margin-top:6px}
+
+
+/* ---------- Le bureau et ses widgets ---------- */
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;align-items:start}
+
+/* Le widget des rappels : ils attendent les uns derrière les autres. */
+.stack{position:relative;margin-bottom:22px}
+.stk-back{
+  position:absolute;background:var(--card);border-radius:22px;
+  box-shadow:0 1px 2px rgba(20,23,30,.05), 0 10px 26px rgba(20,23,30,.07);
+  height:70px;transition:all .4s cubic-bezier(.34,1.3,.5,1);
+}
+.stk-back.b1{left:11px;right:11px;bottom:-10px;z-index:2}
+.stk-back.b2{left:23px;right:23px;bottom:-19px;z-index:1}
+.stk-card{
+  position:relative;z-index:3;background:var(--card);border-radius:22px;padding:17px 17px 15px;
+  box-shadow:0 1px 2px rgba(20,23,30,.05), 0 14px 36px rgba(20,23,30,.10);
+}
+.stk-card.gone{animation:stkGone .38s cubic-bezier(.5,0,.75,.4) forwards}
+@keyframes stkGone{to{opacity:0;transform:translateY(-14px) scale(.94)}}
+.stk-card.arrive{animation:stkIn .42s cubic-bezier(.34,1.4,.5,1)}
+@keyframes stkIn{from{opacity:0;transform:translateY(10px) scale(.96)}}
+.stk-top{display:flex;align-items:flex-start;gap:12px}
+.stk-ic{
+  width:34px;height:34px;border-radius:11px;flex:none;display:grid;place-items:center;
+  background:var(--key);color:var(--stk-c);
+}
+.stk-lab{font-size:11px;color:var(--muted);letter-spacing:.01em}
+.stk-lab b{color:var(--stk-c);font-weight:600}
+.stk-title{
+  font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.03em;
+  line-height:1.15;margin-top:4px;
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+}
+.stk-x{
+  margin-left:auto;flex:none;width:24px;height:24px;border-radius:50%;
+  display:grid;place-items:center;color:var(--muted);background:var(--key);
+  transition:.15s;
+}
+.stk-x:hover{background:var(--hair);color:var(--ink)}
+.stk-acts{display:flex;gap:8px;margin-top:15px}
+.stk-acts button{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:7px;
+  padding:11px;border-radius:99px;font-size:13px;font-weight:500;transition:.18s;
+}
+.stk-later{background:var(--key);color:var(--muted)}
+.stk-later:hover{background:var(--hair);color:var(--ink)}
+.stk-done{
+  color:#fff;
+  background:linear-gradient(180deg,#54DC90 0%,#10A25C 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.34), 0 6px 16px rgba(18,160,92,.36), 0 0 22px rgba(18,160,92,.28);
+}
+.stk-done:hover{filter:brightness(1.06);transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 9px 22px rgba(18,160,92,.42), 0 0 34px rgba(18,160,92,.32)}
+.stk-done:active{transform:translateY(0) scale(.985)}
+.stk-count{font-size:11px;color:var(--muted);text-align:center;margin-top:11px;font-family:var(--mono)}
+
 
 /* ---------- Marque ---------- */
 .brand{display:flex;align-items:center;gap:9px;flex:none;padding:0 6px 0 4px}
@@ -557,10 +855,21 @@ h1 em{font-style:normal;color:var(--muted)}
   .tab[aria-selected="true"] span:not(.tab-close){display:inline}
 
   /* pouces : 34px minimum */
-  .tab-add,.av-btn,.bub-btn{width:34px;height:34px}
-  .bub-btn .blob{width:29px;height:29px}
+  .tab-add,.av-btn{width:34px;height:34px}
   .tab-add svg{width:15px;height:15px}
   .spacer{display:none}
+
+  /* Au centre, Grid écraserait les onglets sur 360px : il retourne dans la file. */
+  .tabbar .tabs{order:1;max-width:none}
+  .menu-holder{order:2}
+  .tabbar .grid-mid{position:static;transform:none;order:3;height:auto;bottom:auto;top:auto;display:block}
+  .mem-wrap{order:4}
+  .av-holder{order:5}
+  .grid-tab{height:32px;padding:0 5px 0 4px}
+  .gt-name{display:none}
+  .grid-tab .gt-dot{margin-right:3px}
+  .grid-mid .ask,.grid-mid .nudge{left:10px;right:10px;top:calc(56px + env(safe-area-inset-top, 0px));transform:translateY(-8px) scale(.96)}
+  .grid-mid .ask.on,.grid-mid .nudge.on{transform:none}
 
   /* Les bulles flottantes deviennent des panneaux pleine largeur,
      posés SOUS la barre : le clavier monte par le bas, ils restent visibles. */
@@ -672,24 +981,11 @@ h1 em{font-style:normal;color:var(--muted)}
 
     <div class="tabs" id="tabs" role="tablist"></div>
 
-    <div class="pop-wrap">
+    <div class="pop-wrap menu-holder">
       <button class="tab-add" id="tabAdd" aria-expanded="false" aria-haspopup="menu" aria-label="Ouvrir un onglet">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
       </button>
       <div class="pop" id="menu" role="menu"><div class="pop-inner"><div class="pop-pad" id="menuBody"></div></div></div>
-    </div>
-
-    <div class="pop-wrap">
-      <button class="bub-btn" id="bubBtn" aria-expanded="false" aria-label="Parler à la bulle"></button>
-      <div class="ask" id="ask">
-        <div class="ask-bar">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-          <input id="askInput" placeholder="Demandez quelque chose à Grid" autocomplete="off" spellcheck="false">
-          <span class="kbd">↵</span>
-        </div>
-        <div class="ask-list" id="askList"></div>
-      </div>
-      <div class="nudge" id="nudge"></div>
     </div>
 
     <span class="spacer"></span>
@@ -708,11 +1004,36 @@ h1 em{font-style:normal;color:var(--muted)}
       <div class="pop" id="notesPop" role="menu"><div class="pop-inner"><div class="pop-pad"></div></div></div>
     </div>
 
-    <div class="pop-wrap">
+    <div class="pop-wrap av-holder">
       <button class="av-btn" id="avBtn" aria-expanded="false" aria-haspopup="menu" aria-label="Mon compte">
         <span class="av" id="avSmall"></span>
       </button>
       <div class="pop" id="account" role="menu"><div class="pop-inner"><div class="pop-pad" id="accountBody"></div></div></div>
+    </div>
+
+    <!-- Grid est au centre, seul, au-dessus de tout le reste -->
+    <div class="pop-wrap grid-mid">
+      <button class="grid-tab" id="bubBtn" data-tone-host data-tone="blue" aria-expanded="false" aria-label="Parler à Grid">
+        <span class="gt-blob" id="gtBlob"></span>
+        <span class="gt-name">Grid</span>
+        <span class="gt-dot"></span>
+      </button>
+      <div class="ask" id="ask">
+        <div class="ask-bar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="askInput" placeholder="Demandez quelque chose à Grid" autocomplete="off" spellcheck="false">
+          <span class="kbd">↵</span>
+        </div>
+        <div class="ask-list" id="askList"></div>
+      </div>
+      <div class="nudge" id="nudge"></div>
+
+      <div class="new-wrap">
+        <button class="new-btn" id="newBtn" aria-expanded="false" aria-haspopup="menu" aria-label="Créer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <div class="pop" id="newPop" role="menu"><div class="pop-inner"><div class="pop-pad"></div></div></div>
+      </div>
     </div>
   </div>
 
@@ -720,6 +1041,9 @@ h1 em{font-style:normal;color:var(--muted)}
 </div>
 
 <input type="file" id="picker" accept="image/*" hidden>
+<div class="drop-veil"></div>
+<div class="drop-word">Lâchez — Grid s'en occupe</div>
+<div class="sheet" id="sheet"><div class="sheet-card" id="sheetCard"></div></div>
 
 <script>
 /* ================= Stockage ================= */
@@ -795,34 +1119,206 @@ const emptyState = (title, body, cta) => `
     ${cta || ''}
   </div>`;
 
-PAGES.dashboard = () => `
-  <div class="page-head" style="padding-top:4px">
-    <h1>Bonjour ${SESSION.pseudo}. <em>Rien à piloter pour l'instant.</em></h1>
-  </div>`;
 
-const soon = (eyebrow, title, desc) => () => `
+
+
+
+/* ================= Les fichiers ================= */
+let FILES = { folders: [], docs: [] };
+const filesKey = () => 'grid:files:' + SESSION.id;
+const saveFiles = () => Store.set(filesKey(), FILES);
+async function loadFiles(){ FILES = (await Store.get(filesKey())) || { folders: [], docs: [] }; }
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+
+const PALETTE = [
+  { f1:'#FF4D6D', f2:'#F0154A', f3:'rgba(240,21,74,.30)' },
+  { f1:'#B15CF5', f2:'#8A2BE0', f3:'rgba(138,43,224,.28)' },
+  { f1:'#FFAE22', f2:'#F58200', f3:'rgba(245,130,0,.28)' },
+  { f1:'#3FC9FF', f2:'#0A84FF', f3:'rgba(10,132,255,.28)' },
+  { f1:'#4FD98B', f2:'#10A25C', f3:'rgba(16,162,92,.26)' },
+  { f1:'#FF7A5C', f2:'#E8412A', f3:'rgba(232,65,42,.28)' },
+];
+const paint = i => PALETTE[i % PALETTE.length];
+const folderOf = id => FILES.folders.find(f => f.id === id);
+const inFolder = id => FILES.docs.filter(d => d.folder === id).length;
+
+/* ---- Ce que Grid sait reconnaître dans un fichier ---- */
+const SORTERS = [
+  { cat:'Factures',  ext:/^(pdf|docx?|odt)$/,                  kw:/factur|invoice|devis|contrat|paiement|recu|quittance|paye|honoraire/ },
+  { cat:'Revenus',   ext:/^(csv|xlsx?|tsv)$/,                   kw:/revenu|revenue|payout|gain|analytics|engagement|retention|ccu|epic|earning|releve/ },
+  { cat:'Assets',    ext:/^(fbx|obj|blend|psd|ai|uasset|umap|tga|mat|glb|gltf)$/, kw:/asset|texture|mesh|model|prop|material|kit|pack/ },
+  { cat:'Captures',  ext:/^(png|jpe?g|webp|gif|mp4|mov|webm)$/, kw:/capture|screenshot|thumbnail|vignette|trailer|clip|teaser|apercu/ },
+  { cat:'Code',      ext:/^(verse|json|ya?ml|js|ts|log)$/,      kw:/verse|device|script|config|build|patch/ },
+  { cat:'Documents', ext:/^(txt|md|rtf)$/,                      kw:/note|doc|brief|plan|roadmap|idee|design/ },
+];
+const TEXTY = /^(txt|md|csv|tsv|json|ya?ml|js|ts|verse|log|html|css)$/;
+const CODE_RE = /\b\d{4}-\d{4}-\d{4}\b/;
+
+function readFileText(file){
+  return new Promise(res => {
+    const fr = new FileReader();
+    fr.onerror = () => res('');
+    fr.onload = () => res(String(fr.result || '').slice(0, 4000));
+    fr.readAsText(file.slice(0, 20000));
+  });
+}
+
+/* Il regarde le nom, l'extension, puis le contenu. Et il dit pourquoi. */
+function classify(name, ext, text){
+  const n = strip(name), t = strip(text || '');
+  let best = null;
+  for(const r of SORTERS){
+    let sc = 0; const why = [];
+    if(r.ext.test(ext)){ sc += 2; why.push(['l\u2019extension <b>.' + ext + '</b>', 2]); }
+    const mn = n.match(r.kw);
+    if(mn){ sc += 3; why.push(['<b>« ' + mn[0] + ' »</b> dans le nom', 3]); }
+    const mt = t && t.match(r.kw);
+    if(mt && (!mn || mt[0] !== mn[0])){ sc += 2; why.push(['<b>« ' + mt[0] + ' »</b> dans le contenu', 2]); }
+    if(sc && (!best || sc > best.sc)) best = { cat:r.cat, sc, why: why.sort((a,b)=>b[1]-a[1]).map(x=>x[0]) };
+  }
+  const code = (text || '').match(CODE_RE);
+  if(code) (best ||= { cat:'Documents', sc:1, why:[] }).why.unshift('un code d\u2019île <b>' + code[0] + '</b>');
+  return best || { cat:'Divers', sc:0, why:[] };
+}
+
+const KB = b => b < 1024 ? b + ' o' : b < 1048576 ? (b/1024).toFixed(0) + ' Ko' : (b/1048576).toFixed(1) + ' Mo';
+const DATE_UP = ts => new Date(ts).toLocaleDateString('fr-FR',{weekday:'short', day:'numeric', month:'short', year:'2-digit'}).replace('.','').toUpperCase();
+
+/* ---- La page ---- */
+const DOC_IC = {
+  note:'<path d="M5 6h14M5 11h14M5 16h8"/>',
+  map:'<circle cx="5" cy="12" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="19" cy="18" r="2.2"/><path d="M7.2 11L16.8 6.8M7.2 13l9.6 4.2"/>',
+  file:'<path d="M13 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V9l-6-6z"/><path d="M13 3v6h6"/>',
+};
+const docIcon = k => `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${DOC_IC[k] || DOC_IC.file}</svg>`;
+
+PAGES.files = () => {
+  const items = [];
+  FILES.folders.forEach((f,i) => {
+    const c = f.color != null ? PALETTE[f.color % PALETTE.length] : paint(i);
+    items.push({ at:f.created, html:`
+      <button class="fold" data-fold="${f.id}" style="--f1:${c.f1};--f2:${c.f2};--f3:${c.f3}">
+        <span class="fold-paper"><i></i><i></i><i></i></span>
+        <span class="fold-n">${esc(f.name)}</span>
+        <span class="fold-c">${inFolder(f.id)}</span>
+        <span class="fold-m" role="button" data-foldkill="${f.id}" aria-label="Supprimer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>
+        </span>
+      </button>` });
+  });
+  FILES.docs.forEach(dd => {
+    const f = folderOf(dd.folder);
+    const c = f ? PALETTE[(f.color ?? 0) % PALETTE.length] : null;
+    const body = dd.kind === 'map' ? mapPreview(dd) : (dd.body || '');
+    items.push({ at:dd.updated || dd.created, html:`
+      <button class="doc" data-doc="${dd.id}">
+        <span class="doc-ic">${docIcon(dd.kind)}</span>
+        <span class="doc-t">${esc(dd.title || 'Sans titre')}</span>
+        ${body ? `<span class="doc-b">${esc(body)}</span>` : ''}
+        ${f ? `<span class="doc-tag"><i style="background:${c.f2}"></i>${esc(f.name)}</span>` : ''}
+        <span class="doc-f">
+          <span class="doc-d">${DATE_UP(dd.updated || dd.created)}</span>
+          <span class="doc-m" role="button" data-dockill="${dd.id}" aria-label="Supprimer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>
+          </span>
+        </span>
+      </button>` });
+  });
+  items.sort((a,b) => b.at - a.at);
+
+  return `
   <div class="page-head" style="padding-top:4px">
-    <div class="eyebrow">${eyebrow}</div>
-    <h1>${title}</h1>
+    <h1>Fichiers. <em>${items.length ? '' : 'Déposez-en un sur Grid.'}</em></h1>
   </div>
-  ${emptyState('Pas encore construit', desc, '<button class="gbtn btn quiet" data-goto="dashboard">Retour au tableau de bord</button>')}`;
+  ${items.length
+    ? `<div class="files">${items.map(i=>i.html).join('')}</div>`
+    : `<div class="card empty">
+         <span class="empty-blob" style="width:62px;height:62px;display:block;margin-bottom:20px"></span>
+         <h2>Rien à ranger</h2>
+         <p>Glissez un fichier n'importe où : Grid le lit, devine où il va, et vous demande confirmation. Ou créez quelque chose avec le <b>+</b> à côté de lui.</p>
+       </div>`}`;
+};
+const mapPreview = d => (d.nodes || []).slice(1).map(n => '• ' + n.text).join('\n');
+const refreshFiles = () => { if(ACTIVE === 'files') renderView(); };
 
-PAGES.maps     = soon('Portefeuille',  'Mes îles',       'Ici vivront la fiche de chaque île, ses versions publiées et son historique de joueurs.');
-PAGES.revenue  = soon('Argent',        'Revenus',        'Relevés Epic par cycle, projections et rapprochement avec vos versements réels.');
-PAGES.players  = soon('Audience',      'Joueurs',        'Rétention par cohorte, provenance des sessions et courbes de fidélisation.');
-PAGES.pipeline = soon('Production',    'Publications',   'Suivi des soumissions Epic, relectures, et calendrier de sortie de vos mises à jour.');
-PAGES.team     = soon('Répartition',   'Équipe & parts', 'Répartition des parts entre collaborateurs et calcul automatique de chaque versement.');
-PAGES.costs    = soon('Argent',        'Charges',        'Assets achetés, sous-traitance, outils : ce qui part avant que la marge n\u2019arrive.');
+/* ================= Le bureau ================= */
+const ago = ts => {
+  const s = Math.round((Date.now() - ts) / 1000);
+  if(s < 60) return "à l'instant";
+  if(s < 3600) return 'il y a ' + Math.round(s/60) + ' min';
+  if(s < 86400) return 'il y a ' + Math.round(s/3600) + ' h';
+  const j = Math.round(s/86400);
+  return j === 1 ? 'hier' : 'il y a ' + j + ' j';
+};
+/* Ce qui attend vraiment quelque chose de vous. */
+const waiting = () => NOTES.filter(n => !n.done && (n.kind !== 'note' || n.due)).sort(byDue);
+let STK_I = 0;
+
+function stackWidget(){
+  const list = waiting();
+  if(!list.length) return '';        // rien à rappeler : pas de widget
+
+  if(STK_I >= list.length) STK_I = 0;
+  const n = list[STK_I];
+  const isN = n.kind === 'note';
+  const late = n.due && n.due <= Date.now();
+  const col = n.urgent ? 'var(--coral)' : isN ? '#7C6CF0' : 'var(--amber)';
+
+  const lab = n.urgent ? '<b>Urgent</b> · ' : isN ? '<b>Note</b> · ' : '<b>Tâche</b> · ';
+  const when = n.due
+    ? (late ? 'à faire depuis ' + whenLabel(new Date(n.due), n.hasTime, n.repeat) : whenLabel(new Date(n.due), n.hasTime, n.repeat))
+    : 'notée ' + ago(n.created);
+
+  return `
+  <section class="stack" style="--stk-c:${col}">
+    ${list.length > 2 ? '<div class="stk-back b2"></div>' : ''}
+    ${list.length > 1 ? '<div class="stk-back b1"></div>' : ''}
+    <article class="stk-card arrive" data-stk="${n.id}">
+      <div class="stk-top">
+        <span class="stk-ic">
+          ${isN ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6h14M5 11h14M5 16h8"/></svg>'
+                : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5.5 5.5L20 6"/></svg>'}
+        </span>
+        <div style="min-width:0">
+          <div class="stk-lab">${lab}${esc(when)}</div>
+          <div class="stk-title">${esc(n.what)}</div>
+        </div>
+        ${list.length > 1 ? `<button class="stk-x" data-stknext="1" aria-label="Voir le suivant">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>` : ''}
+      </div>
+      <div class="stk-acts">
+        <button class="stk-later" data-stklater="${n.id}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M10.3 21a2 2 0 003.4 0"/></svg>
+          Plus tard
+        </button>
+        <button class="stk-done" data-stkdone="${n.id}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5.5 5.5L20 6"/></svg>
+          ${isN ? 'Vu' : "C'est fait"}
+        </button>
+      </div>
+    </article>
+    ${list.length > 1 ? `<div class="stk-count">${STK_I+1} / ${list.length}</div>` : ''}
+  </section>`;
+}
+
+PAGES.dashboard = () => {
+  const n = waiting().length;
+  return `
+  <div class="page-head" style="padding-top:4px">
+    <h1>Bonjour ${SESSION.pseudo}. <em>${n ? n + (n>1 ? ' choses vous attendent.' : ' chose vous attend.') : 'Rien à piloter pour l\u2019instant.'}</em></h1>
+  </div>
+  ${n ? `<div class="wall">${stackWidget()}</div>` : ''}`;
+};
+
+
 
 /* ================= Onglets ================= */
 const ICON = {
   dashboard:'<path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/>',
-  maps:'<path d="M9 4L3 7v13l6-3 6 3 6-3V4l-6 3-6-3z"/><path d="M9 4v13M15 7v13"/>',
-  revenue:'<path d="M4 19V9M10 19V5M16 19v-6M22 19H2"/>',
-  players:'<circle cx="9" cy="8" r="3.2"/><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5"/><path d="M16 5.2a3.2 3.2 0 010 5.6M18 14c2.4.6 3.9 2.3 3.9 5"/>',
-  pipeline:'<circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="12" r="2.5"/><path d="M6 8.5v7M8.5 6h4a3 3 0 013 3v.5M8.5 18h4a3 3 0 003-3v-.5"/>',
-  team:'<path d="M12 3v18M4 8h16M4 16h16"/>',
-  costs:'<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 15h4"/>',
+  files:'<path d="M3 8V6.5A1.5 1.5 0 014.5 5h4L11 7.5h8A1.5 1.5 0 0120.5 9v8.5A1.5 1.5 0 0119 19H5a2 2 0 01-2-2V8z"/>',
+  left:'<path d="M15 6l-6 6 6 6"/>',
+  right:'<path d="M9 6l6 6-6 6"/>',
   user:'<circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/>',
   settings:'<rect x="2.5" y="7" width="19" height="10" rx="5"/><circle cx="8" cy="12" r="2.6"/>',
   out:'<path d="M15 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3"/><path d="M10 17l-5-5 5-5M5 12h11"/>',
@@ -834,12 +1330,7 @@ const svg = (k, size=14) =>
 
 const META = {
   dashboard:{ label:'Tableau de bord', key:'D', pinned:true },
-  maps:     { label:'Mes îles',        key:'I' },
-  revenue:  { label:'Revenus',         key:'R' },
-  players:  { label:'Joueurs',         key:'J' },
-  pipeline: { label:'Publications',    key:'P' },
-  team:     { label:'Équipe & parts',  key:'E' },
-  costs:    { label:'Charges',         key:'C' },
+  files:    { label:'Fichiers',        key:'F' },
 };
 const MAC = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
 const MOD = MAC ? '⌥' : 'Alt';
@@ -915,6 +1406,7 @@ function closeAll(except){
   if($('ask') !== except && typeof closeAsk === 'function') closeAsk();
   if(typeof MEM === 'object') for(const m of Object.values(MEM))
     if($(m.pop) !== except) closePop($(m.pop), $(m.orb));
+  if($('newPop') !== except) closePop($('newPop'), $('newBtn'));
 }
 
 /* ---- Menu + ---- */
@@ -999,129 +1491,210 @@ function paintAcc(name){
 const strip = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const DAYS   = {dimanche:0,lundi:1,mardi:2,mercredi:3,jeudi:4,vendredi:5,samedi:6};
 const MONTHS = {janvier:0,fevrier:1,mars:2,avril:3,mai:4,juin:5,juillet:6,aout:7,septembre:8,octobre:9,novembre:10,decembre:11};
+/* Les moments de la journée, tels qu'on les dit vraiment. */
+const PART = {matin:9, matinee:10, midi:12, aprem:15, 'apres-midi':15, 'apres midi':15, soir:20, soiree:20, nuit:22, minuit:0};
 
-/* Repère une date/heure dans une phrase et dit ce qu'il a consommé. */
+/* Repère une date, une heure, une récurrence. Dit ce qu'il a consommé. */
 function readWhen(raw){
   const t = strip(raw);
   const now = new Date();
   const d = new Date(now); d.setSeconds(0,0);
-  let hasDay = false, hasTime = false, eaten = [];
-  const eat = re => { const m = t.match(re); if(m){ eaten.push(m[0]); return m; } return null; };
+  let hasDay = false, hasTime = false, repeat = null, before = false, past = false;
+  const eaten = [];
+  const eat = re => { const m = t.match(re); if(m) eaten.push(m[0]); return m; };
+  const done = () => {
+    if(!hasDay && !hasTime) return { due:null, eaten:[], hasTime:false, repeat:null, before:false, past:false };
+    if(!hasTime) d.setHours(9,0,0,0);
+    if(!hasDay && d <= now) d.setDate(d.getDate()+1);
+    return { due:d, eaten, hasTime, repeat, before, past: d < now };
+  };
+  let m;
 
-  // « dans 20 min », « dans 2 h », « dans 3 jours »
-  let m = eat(/\bdans\s+(une?|\d+)\s*(min\w*|h\b|heures?|jours?|semaines?|mois)\b/);
-  if(m){
-    const n = /^une?$/.test(m[1]) ? 1 : parseInt(m[1],10);
-    const u = m[2];
-    if(/^min/.test(u))       d.setMinutes(d.getMinutes()+n);
-    else if(/^h/.test(u))    d.setHours(d.getHours()+n);
-    else if(/^jour/.test(u)) d.setDate(d.getDate()+n);
-    else if(/^sem/.test(u))  d.setDate(d.getDate()+n*7);
-    else                     d.setMonth(d.getMonth()+n);
-    return { due:d, eaten, hasTime:true };
-  }
-
-  // moments nommés
-  if((m = eat(/\bapres[- ]demain\b/)))            { d.setDate(d.getDate()+2); hasDay = true; }
-  else if((m = eat(/\bdemain\b/)))                { d.setDate(d.getDate()+1); hasDay = true; }
-  else if((m = eat(/\bce soir\b/)))               { d.setHours(20,0);  hasDay = hasTime = true; }
-  else if((m = eat(/\bce matin\b/)))              { d.setHours(9,0);   hasDay = hasTime = true; }
-  else if((m = eat(/\bcet? apres[- ]midi|\bcet aprem\b/))) { d.setHours(15,0); hasDay = hasTime = true; }
-  else if((m = eat(/\bce week[- ]?end\b/)))       { d.setDate(d.getDate() + ((6 - d.getDay() + 7) % 7 || 7)); d.setHours(10,0); hasDay = hasTime = true; }
-  else if((m = eat(/\bla semaine prochaine\b/)))  { d.setDate(d.getDate()+7); hasDay = true; }
-  else if((m = eat(/\ble mois prochain\b/)))      { d.setMonth(d.getMonth()+1); hasDay = true; }
-  else if((m = eat(/\b(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)(\s+prochain)?\b/))){
-    const target = DAYS[m[1]];
-    let gap = (target - d.getDay() + 7) % 7;
-    if(gap === 0 || m[2]) gap = gap || 7;
-    d.setDate(d.getDate() + gap); hasDay = true;
-  }
-  else if((m = eat(/\ble\s+(\d{1,2})\s+(janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)\b/))){
-    d.setMonth(MONTHS[m[2]], parseInt(m[1],10));
-    if(d < now) d.setFullYear(d.getFullYear()+1);
+  /* --- récurrence : « tous les jours », « chaque lundi » --- */
+  if((m = eat(/\b(?:tous les|toutes les|chaque)\s+(jours?|matins?|soirs?|semaines?|mois|lundis?|mardis?|mercredis?|jeudis?|vendredis?|samedis?|dimanches?)\b/))){
+    const u = m[1];
     hasDay = true;
-  }
-  else if((m = eat(/\b(\d{1,2})[\/](\d{1,2})\b/))){
-    d.setMonth(parseInt(m[2],10)-1, parseInt(m[1],10));
-    if(d < now) d.setFullYear(d.getFullYear()+1);
-    hasDay = true;
+    if(/^jour|^matin|^soir/.test(u)){
+      repeat = 'jour';
+      if(/matin/.test(u)){ d.setHours(9,0); hasTime = true; }
+      if(/soir/.test(u)){ d.setHours(20,0); hasTime = true; }
+    } else if(/^semaine/.test(u)) repeat = 'semaine';
+    else if(/^mois/.test(u))      repeat = 'mois';
+    else {
+      repeat = 'semaine';
+      const gap = (DAYS[u.replace(/s$/,'')] - d.getDay() + 7) % 7 || 7;
+      d.setDate(d.getDate() + gap);
+    }
   }
 
-  // heure : « à 18h », « 18h30 », « vers 9 h ».
-  // On vérifie que c'est une heure valide : « répond en 48h » est une durée, pas un rendez-vous.
+  /* --- échéance : « avant vendredi », « d'ici lundi » --- */
+  if(eat(/\b(avant|d'?ici)\s+(?=[a-z0-9])/)) before = true;
+
+  /* --- durées : « dans une demi-heure », « dans 1h30 », « dans 3 jours » --- */
+  if(!repeat){
+    if(eat(/\bdans\s+(?:une?\s+)?demi[- ]heure\b/)){ d.setMinutes(d.getMinutes()+30); hasDay = hasTime = true; return done(); }
+    if(eat(/\bdans\s+(?:un\s+)?quart\s+d'?heure\b/)){ d.setMinutes(d.getMinutes()+15); hasDay = hasTime = true; return done(); }
+    if((m = eat(/\bdans\s+(\d+)\s*h\s*(\d{2})\b/))){
+      d.setHours(d.getHours() + +m[1]); d.setMinutes(d.getMinutes() + +m[2]);
+      hasDay = hasTime = true; return done();
+    }
+    if((m = eat(/\bdans\s+(une?|\d+)\s*(min\w*|h\b|heures?|jours?|semaines?|mois|ans?)\b/))){
+      const n = /^une?$/.test(m[1]) ? 1 : parseInt(m[1],10), u = m[2];
+      if(/^min/.test(u))       d.setMinutes(d.getMinutes()+n);
+      else if(/^h/.test(u))    d.setHours(d.getHours()+n);
+      else if(/^jour/.test(u)) d.setDate(d.getDate()+n);
+      else if(/^sem/.test(u))  d.setDate(d.getDate()+n*7);
+      else if(/^mois/.test(u)) d.setMonth(d.getMonth()+n);
+      else                     d.setFullYear(d.getFullYear()+n);
+      hasDay = hasTime = true; return done();
+    }
+  }
+
+  /* --- le jour --- */
+  if(!hasDay){
+    if(eat(/\bapres[- ]demain\b/))                     { d.setDate(d.getDate()+2); hasDay = true; }
+    else if(eat(/\bdemain\b/))                         { d.setDate(d.getDate()+1); hasDay = true; }
+    else if(eat(/\bhier\b/))                           { d.setDate(d.getDate()-1); hasDay = past = true; }
+    else if(eat(/\baujourd'?hui\b/))                   { hasDay = true; }
+    else if(eat(/\bce week[- ]?end\b/))                { d.setDate(d.getDate() + ((6 - d.getDay() + 7) % 7 || 7)); d.setHours(10,0); hasDay = hasTime = true; }
+    else if(eat(/\bla semaine prochaine\b/))           { d.setDate(d.getDate()+7); hasDay = true; }
+    else if(eat(/\ble mois prochain\b/))               { d.setMonth(d.getMonth()+1); hasDay = true; }
+    else if((m = eat(/\b(?:ce\s+)?(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)(\s+prochain)?\b/))){
+      let gap = (DAYS[m[1]] - d.getDay() + 7) % 7;
+      if(gap === 0 || m[2]) gap = gap || 7;
+      d.setDate(d.getDate() + gap); hasDay = true;
+    }
+    else if((m = eat(/\b(?:le\s+)?(\d{1,2})\s+(janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)\b/))){
+      d.setMonth(MONTHS[m[2]], +m[1]);
+      if(d < now) d.setFullYear(d.getFullYear()+1);
+      hasDay = true;
+    }
+    else if((m = eat(/\b(\d{1,2})[\/](\d{1,2})\b/))){
+      d.setMonth(+m[2]-1, +m[1]);
+      if(d < now) d.setFullYear(d.getFullYear()+1);
+      hasDay = true;
+    }
+    else if((m = eat(/\b(debut|mi|fin)[- ](janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)\b/))){
+      d.setMonth(MONTHS[m[2]], m[1]==='debut' ? 3 : m[1]==='mi' ? 15 : 27);
+      if(d < now) d.setFullYear(d.getFullYear()+1);
+      hasDay = true;
+    }
+  }
+
+  /* --- l'heure au cadran : « à 18h », « 18h30 », « à 8h du soir » --- */
   const tm = t.match(/\b(?:a|vers)\s*(\d{1,2})\s*h\s*(\d{2})?\b/)
           || t.match(/\b(\d{1,2})\s*h\s*(\d{2})\b/)
           || t.match(/\b(?:a|vers)\s+(\d{1,2})\s*:\s*(\d{2})\b/);
   if(tm){
-    const H = +tm[1], M = tm[2] ? +tm[2] : 0;
-    if(H <= 23 && M <= 59){ eaten.push(tm[0]); d.setHours(H, M, 0, 0); hasTime = true; }
+    let H = +tm[1]; const M = tm[2] ? +tm[2] : 0;
+    if(H <= 23 && M <= 59){
+      const pm = t.match(/\bdu soir\b|\bde l'?apres[- ]midi\b/);
+      if(pm && H < 12){ H += 12; eaten.push(pm[0]); }
+      const am = t.match(/\bdu matin\b/);
+      if(am) eaten.push(am[0]);
+      eaten.push(tm[0]); d.setHours(H, M, 0, 0); hasTime = true;
+    }
   }
 
-  if(!hasDay && !hasTime) return { due:null, eaten:[], hasTime:false };
-  if(!hasTime) d.setHours(9,0,0,0);        // une date sans heure = le matin
-  if(!hasDay && d <= now) d.setDate(d.getDate()+1);  // une heure déjà passée = demain
-  return { due:d, eaten, hasTime };
+  /* --- le moment de la journée : « demain matin », « vendredi soir », « à midi » --- */
+  if(!hasTime && (m = eat(/\b(?:ce |cet |cette |le |la |a |de la )?(matinee|matin|midi|minuit|apres[- ]midi|aprem|soiree|soir|nuit)\b/))){
+    const key = m[1].replace('apres-midi','apres-midi').replace('apres midi','apres-midi');
+    const h = PART[key] ?? PART[key.replace('-',' ')];
+    if(h !== undefined){
+      d.setHours(h, 0, 0, 0); hasTime = true;
+      if(!hasDay){ hasDay = true; if(d <= now) d.setDate(d.getDate()+1); }
+    }
+  }
+
+  return done();
 }
 
-
-/* Les verbes d'un créateur au travail. Un début de phrase qui commence
-   par l'un d'eux est une tâche, même sans date ni « rappelle-moi ». */
-const VERBS = ['fini','termin','achev','boucl','fair','fais','ref','pay','regl','rembours','factur',
+/* --- Les verbes d'un créateur au travail. --- */
+const VERBS = ['fini','termin','achev','boucl','fair','fais','fass','ref','pay','regl','rembours','factur',
  'envoy','envoi','transmet','soumet','publi','depos','post','partag','upload','export','import',
  'corrig','fix','repar','test','essay','verifi','check','relir','valid','revoir','revois',
- 'relanc','rappel','recontact','contact','appel','ecrir','ecris','repond','demand','prevenir','previen',
+ 'relanc','recontact','contact','appel','ecrir','ecris','repond','demand','prevenir','previen',
  'achet','command','vend','negoci','renouvel','annul','resili','reserv','planifi','organis','prepar',
  'creer','cree','construir','construis','build','deploy','install','configur','optimis','nettoy',
- 'ranger','trier','class','compar','analys','mesur','calcul','budget','sauvegard','backup','archiv',
- 'ajout','retir','supprim','chang','modifi','mettre','met','met','lanc','demarr','arret','stop',
- 'monter','mont','edit','render','rendre','uploader','streamer','filmer','film'];
+ 'rang','tri','class','compar','analys','mesur','calcul','budget','sauvegard','backup','archiv',
+ 'ajout','retir','supprim','chang','modifi','mettre','met','lanc','demarr','arret','stop',
+ 'mont','edit','rendre','stream','film','regarder','regard','lire','lis','suivre','suiv','boost','promouvoir'];
 const VERB_RE = new RegExp('^(?:' + VERBS.join('|') + ')');
-const NOT_VERBS = /^(bonjour|salut|coucou|merci|oui|non|ok|hey|yo|hier|super|cher|mer|fier|leger|premier|dernier|entier|papier|metier|quartier)$/;
+const NOT_VERBS = /^(bonjour|salut|coucou|merci|oui|non|ok|hey|yo|hier|super|cher|mer|fier|leger|premier|dernier|entier|papier|metier|quartier|hiver|amer|clair|noir|soir|faire-part)$/;
 
-/* Un verbe d'action en tête de phrase ? Alors c'est une tâche. */
 function looksLikeTask(raw){
   const words = strip(raw).replace(/[^a-z0-9'\s-]/g,' ').trim().split(/\s+/).filter(Boolean);
   if(!words.length) return false;
   if(NOT_VERBS.test(words[0])) return false;
   const w = words[0].replace(/^(re|r)(?=[a-z]{4})/, '');
-  const known = VERB_RE.test(w) || VERB_RE.test(words[0]);
-  if(known) return true;                       // « finir », « payer » : un mot suffit
-  if(words.length < 2) return false;           // sinon il faut au moins un complément
-  return /(?:er|ir|re|oir)$/.test(words[0]);   // repli sur la terminaison
+  if(VERB_RE.test(w) || VERB_RE.test(words[0])) return true;   // « finir », « payer » : un mot suffit
+  if(words.length < 2) return false;
+  return /(?:er|ir|re|oir)$/.test(words[0]);
 }
 
-const TASK_TRIG = /^\s*(rappelle?[- ]?(?:moi|nous)|rappel(?:le)?|n'?oublie(?:z)? pas|pense[zr]?[- ]?y|pense[zr]?|tache\s*:?|todo\s*:?)\s*(?:de\s+|d'|qu'|que\s+|[aà]\s+)?/i;
-const NOTE_TRIG = /^\s*(note[rz]?\s*(?:que\s+|:\s*)?|retiens?\s*(?:que\s+)?|souviens[- ]toi\s*(?:que\s+)?|pour info\s*:?\s*|info\s*:\s*|[aà] savoir\s*:?\s*)/i;
-
 /* Une phrase qui décrit un état, pas une action : c'est une note. */
-const STATE = /\b(est|sont|etait|etaient|sera|seront|ai|as|a|ont|avait|prend|prennent|coute|coutent|vaut|valent|gagne|gagnent|rapporte|rapportent|doit|doivent|fait|font|cloture|termine|commence|passe|represente|correspond|equivaut|reste|dure|contient|utilise|s'appelle|signifie)\b/;
-const DET = /^(le|la|les|l'|un|une|des|du|de|mon|ma|mes|ton|ta|tes|son|sa|ses|notre|nos|ce|cet|cette|ces|il|elle|on|ils|elles|je|j'|nous|vous|ca|cela|y)$/;
+const STATE = /\b(est|sont|etait|etaient|sera|seront|ai|as|ont|avait|prend|prennent|coute|coutent|vaut|valent|gagne|gagnent|rapporte|rapportent|fait|font|cloture|termine|commence|passe|represente|correspond|equivaut|reste|dure|contient|utilise|s'appelle|signifie|sort|sortent|paie|paient|repond|repondent)\b/;
+const DET   = /^(le|la|les|l'|un|une|des|du|de|mon|ma|mes|ton|ta|tes|son|sa|ses|notre|nos|ce|cet|cette|ces|il|elle|on|ils|elles|nous|vous|ca|cela)$/;
 
 function looksLikeNote(raw){
   const t = strip(raw);
   const words = t.replace(/[^a-z0-9'\s-]/g,' ').trim().split(/\s+/).filter(Boolean);
   if(words.length < 3) return false;
   if(STATE.test(t)) return true;
-  if(DET.test(words[0]) && words.length >= 4) return true;
-  return false;
+  return DET.test(words[0]) && words.length >= 4;
 }
+
+/* --- Les portes d'entrée, tolérantes aux fautes --- */
+const TASK_TRIG = /^\s*(rap+el+e?z?[- ]?(?:moi|nous)|rap+el+e?z?\b|n'?oubli[ez]+\s+pas|pense[zr]?[- ]?y|pense[zr]?|tache\s*:?|todo\s*:?)\s*(?:de\s+|d'|qu'|que\s+|[aà]\s+)?/i;
+const DUTY_TRIG = /^\s*(je\s+dois|j'?ai\s+[aà]\s|il\s+faut(?:\s+que\s+je|\s+que\s+j'|\s+qu'on)?|faut(?:\s+que\s+je|\s+qu'on)?|j'?ai\s+besoin\s+d[e']|[aà]\s+faire\s*:?)\s*(?:de\s+|d')?/i;
+const NOTE_TRIG = /^\s*(note[rz]?\s*(?:que\s+|:\s*)?|retiens?\s*(?:que\s+)?|souviens[- ]toi\s*(?:que\s+)?|pour\s+info\s*:?\s*|info\s*:\s*|[aà]\s+savoir\s*:?\s*)/i;
+const FORGET    = /^\s*(annule[rz]?|oublie[rz]?|supprime[rz]?|efface[rz]?|enleve[rz]?|retire[rz]?|vire[rz]?)\s+/i;
+const QUESTION  = /^\s*(combien|comment|quand|pourquoi|qui\s|quoi|quel|quelle|quels|quelles|ou\s+(est|sont)|est-ce|qu'est-ce|c'est\s+quoi|y\s+a-t-il)/i;
+const URGENT    = /\b(urgent(?:e|es|s)?|asap|au plus vite|en urgence|tres important|important)\b/;
+
+const clean = w => w.replace(/\s+/g,' ')
+  .replace(/^\s*[:,\-–]\s*/,'')
+  .replace(/^\s*(de|d'|à|a|au|aux|que|qu')\s+/i,'')
+  .replace(/\s+(avant|pour|d'ici|vers|jusqu'a|jusqu'à|le|la|les|du|de|à|a|et)\s*$/i,'')
+  .replace(/[\s,.;:–-]+$/,'').trim();
 
 /* Comprend un message. Le type se déduit, on ne le demande jamais. */
 function read(raw){
-  const q = raw.trim();
-  if(!q) return { kind:'vide' };
+  const q0 = raw.trim();
+  if(!q0) return { kind:'vide' };
+  const flat0 = strip(q0);
+
+  /* 1. Une question ? Il répondra avec ce qu'il sait. */
+  if(QUESTION.test(flat0) || /\?\s*$/.test(q0)) return { kind:'question', what:q0, sure:true };
+
+  /* 2. Un ordre d'oublier ? */
+  const fm = flat0.match(FORGET);
+  if(fm){
+    const target = clean(q0.slice(fm[0].length).replace(/^(le\s+|la\s+|les\s+|mon\s+|ma\s+)?(rappel|tache|tâche|note|truc)\s*(de\s+|sur\s+|du\s+|d')?/i,''));
+    return target ? { kind:'oubli', what:target, sure:true } : { kind:'incomplet' };
+  }
+
+  /* 3. L'urgence se retire avant tout : elle qualifie, elle ne classe pas. */
+  let q = q0, urgent = false;
+  const um = strip(q).match(URGENT);
+  if(um){
+    urgent = true;
+    const i = strip(q).indexOf(um[0]);
+    q = (q.slice(0, i) + q.slice(i + um[0].length)).replace(/\s+/g,' ').trim();
+    q = q.replace(/^\s*[:,\-–]\s*/,'').replace(/\s*[:,\-–]\s*$/,'').trim();
+  }
+  if(!q) return { kind:'incomplet' };
+
   const flat = strip(q);
   const when = readWhen(q);
 
-  const asNote = NOTE_TRIG.test(flat);
-  const asTask = !asNote && TASK_TRIG.test(flat);
-
   let kind = null, trig = null;
-  if(asNote)       { kind = 'note'; trig = NOTE_TRIG; }
-  else if(asTask)  { kind = 'tache'; trig = TASK_TRIG; }
-  else if(looksLikeTask(q)) kind = 'tache';
-  else if(looksLikeNote(q)) kind = 'note';
-  else if(when.due)         kind = 'tache';
+  if(NOTE_TRIG.test(flat))       { kind = 'note';  trig = NOTE_TRIG; }
+  else if(TASK_TRIG.test(flat))  { kind = 'tache'; trig = TASK_TRIG; }
+  else if(DUTY_TRIG.test(flat))  { kind = 'tache'; trig = DUTY_TRIG; }
+  else if(looksLikeTask(q))      { kind = 'tache'; }
+  else if(looksLikeNote(q))      { kind = 'note';  }
+  else if(when.due)              { kind = 'tache'; }
   else return { kind:'inconnu' };
 
   let what = trig ? q.replace(new RegExp(trig.source, 'i'), '') : q;
@@ -1129,33 +1702,34 @@ function read(raw){
     const i = strip(what).indexOf(bit);
     if(i >= 0) what = what.slice(0, i) + what.slice(i + bit.length);
   }
-  what = what.replace(/\s+/g,' ')
-             .replace(/^\s*(de|d'|à|a|au|aux)\s+/i,'')
-             .replace(/\s+(avant|pour|d'ici|vers|jusqu'a|jusqu'à|le|la|les|du|de|à|a)\s*$/i,'')
-             .replace(/[\s,.;]+$/,'').trim();
-  if(!what) return { kind:'incomplet' };
+  what = clean(what);
+  if(!what) return { kind: trig ? 'incomplet' : 'inconnu' };
 
   return {
-    kind,
-    sure: !!(trig || when.due),         // il a un indice franc, il ne demande pas
+    kind, urgent,
+    sure: !!(trig || when.due || urgent),
     what: what.charAt(0).toUpperCase() + what.slice(1),
     due: when.due, hasTime: when.hasTime,
+    repeat: when.repeat, before: when.before, past: when.past,
   };
 }
 
 /* ---- mise en mots d'une échéance ---- */
 const HM = d => d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-function whenLabel(due, hasTime=true){
+function whenLabel(due, hasTime=true, repeat=null){
   if(!due) return 'sans échéance';
+  const h = hasTime ? ' à ' + HM(due) : '';
+  if(repeat === 'jour')    return 'tous les jours' + h;
+  if(repeat === 'semaine') return 'chaque ' + due.toLocaleDateString('fr-FR',{weekday:'long'}) + h;
+  if(repeat === 'mois')    return 'chaque mois le ' + due.getDate() + h;
   const now = new Date();
   const day = x => new Date(x.getFullYear(), x.getMonth(), x.getDate());
   const gap = Math.round((day(due) - day(now)) / 86400000);
-  const h = hasTime ? ' à ' + HM(due) : '';
-  if(gap === 0) return "aujourd'hui" + h;
-  if(gap === 1) return 'demain' + h;
+  if(gap === 0)  return "aujourd'hui" + h;
+  if(gap === 1)  return 'demain' + h;
   if(gap === -1) return 'hier' + h;
-  if(gap < 0)  return 'le ' + due.toLocaleDateString('fr-FR',{day:'numeric',month:'short'}) + h;
-  if(gap < 7)  return due.toLocaleDateString('fr-FR',{weekday:'long'}) + h;
+  if(gap < 0)    return 'le ' + due.toLocaleDateString('fr-FR',{day:'numeric',month:'short'}) + h;
+  if(gap < 7)    return due.toLocaleDateString('fr-FR',{weekday:'long'}) + h;
   return 'le ' + due.toLocaleDateString('fr-FR',{day:'numeric',month:'long'}) + h;
 }
 
@@ -1167,7 +1741,16 @@ async function loadNotes(){
   NOTES = (await Store.get(notesKey())) || [];
   NOTES.forEach(n => n.kind = n.kind || 'tache');   // les anciens sont des tâches
 }
-const byDue = (a,b) => (a.due ?? 8.64e15) - (b.due ?? 8.64e15);
+const byDue = (a,b) => (b.urgent?1:0) - (a.urgent?1:0) || (a.due ?? 8.64e15) - (b.due ?? 8.64e15);
+const bestMatch = q => {
+  const ks = strip(q).split(/\s+/).filter(w => w.length >= 3);
+  if(!ks.length) return null;
+  const scored = NOTES.filter(n => !n.done).map(n => {
+    const h = strip(n.what);
+    return { n, s: ks.filter(k => h.includes(k)).length };
+  }).filter(x => x.s > 0).sort((a,b) => b.s - a.s);
+  return scored.length ? scored[0].n : null;
+};
 const tasks   = () => NOTES.filter(n => n.kind === 'tache' && !n.done).sort(byDue);
 const memos   = () => NOTES.filter(n => n.kind === 'note').sort((a,b) => b.created - a.created);
 const pending = () => NOTES.filter(n => !n.done).sort(byDue);
@@ -1201,6 +1784,11 @@ function blobSVG(){
       <ellipse class="e-open" rx="7.4" ry="10.8"/>
       <path class="e-arc" d="M-7.8 3.4 Q0 -6.8 7.8 3.4"/>
     </g></g></g></g>
+  </g>
+  <g class="zzz" aria-hidden="true">
+    <text x="6" y="34" font-size="11">z</text>
+    <text x="0" y="24" font-size="14">z</text>
+    <text x="-8" y="11" font-size="17">z</text>
   </g>
 </svg>`;
 }
@@ -1255,9 +1843,12 @@ class Blob {
     this._f = setTimeout(()=>{ if(this.mood === m) this.set('idle'); }, ms);
   }
   destroy(){ clearTimeout(this._b); clearTimeout(this._i); clearTimeout(this._f); const i = LIVE.indexOf(this); if(i>=0) LIVE.splice(i,1); }
+  night(on){ this.el.classList.toggle('night', !!on); }
   tone(t){
     this.el.classList.remove('tone-green','tone-orange','tone-red','tone-purple');
     if(t !== 'blue') this.el.classList.add('tone-' + t);
+    const host = this.el.closest('[data-tone-host]');   // la pastille suit
+    if(host) host.dataset.tone = t;
   }
   bounce(){
     this.el.classList.remove('bounce'); void this.el.offsetWidth;
@@ -1287,6 +1878,18 @@ window.addEventListener('pointermove', eyesTo, {passive:true});
 window.addEventListener('pointerdown', eyesTo, {passive:true});
 
 /* ================= Barre de demande ================= */
+
+/* Tout ce que Grid sait faire. Il ne devine pas encore : il vous montre. */
+const SKILLS = [
+  { c:'var(--amber)', t:'Noter une tâche',            ex:'finir les textures vendredi' },
+  { c:'var(--amber)', t:'Un rappel à une heure',      ex:'rappelle-moi de payer Kenzo demain à 18h' },
+  { c:'var(--amber)', t:'Quelque chose qui revient',  ex:'tous les lundis faire le point revenus' },
+  { c:'var(--coral)', t:'Marquer urgent',             ex:'urgent : corriger le spawn' },
+  { c:'#7C6CF0',      t:'Garder une info',            ex:'le code de Neon Drift est 8421-9037-1156' },
+  { c:'var(--coral)', t:'Oublier quelque chose',      ex:'oublie payer Kenzo' },
+  { c:'var(--mint)',  t:'Me poser une question',      ex:'combien de tâches il me reste ?' },
+];
+
 /* Les onglets, c'est le rôle du « + ». Grid, lui, s'occupe de ce que vous lui dites. */
 const ACTIONS = () => [
   { label:'Basculer en mode ' + (isDark()?'clair':'sombre'), run:()=>applyTheme(!isDark()) },
@@ -1306,6 +1909,38 @@ function paintAsk(){
   ASK_READ = read(raw);
   const list = $('askList');
 
+  /* Une question : il répond avec ce qu'il a, ou il dit qu'il ne sait pas. */
+  if(ASK_READ.kind === 'question'){
+    ASK_HITS = [];
+    const a = answerQ(raw);
+    list.innerHTML = `<div class="ask-sec">Grid répond</div>
+      <div class="ask-ans">
+        ${a.text
+          ? `<div class="said">${esc(a.text)}</div>` +
+            (a.items && a.items.length ? `<div class="list">${a.items.map(n =>
+              `<div><b>${n.kind === 'note' ? '▤' : '✓'}</b><span>${esc(n.what)}${n.due ? ' — ' + whenLabel(new Date(n.due), n.hasTime, n.repeat) : ''}</span></div>`).join('')}</div>` : '')
+          : `<div class="none">Je ne sais pas encore. Je ne connais que ce que vous m'avez dit — vos tâches et vos notes. Le jour où vos îles seront dans Grid, je saurai.</div>`}
+      </div>`;
+    return;
+  }
+
+  /* Un ordre d'oublier : il montre ce qu'il s'apprête à jeter. */
+  if(ASK_READ.kind === 'oubli'){
+    ASK_HITS = [];
+    const hit = bestMatch(ASK_READ.what);
+    list.innerHTML = hit
+      ? `<div class="ask-sec">À oublier</div>
+         <div class="ask-prev" style="--blob-3:var(--coral)">
+           <div>
+             <div class="what">${esc(hit.what)}</div>
+             <div class="when">${hit.kind === 'note' ? 'Note' : 'Tâche'} — <b>je l\u2019efface</b></div>
+           </div>
+           <span class="ret">↵</span>
+         </div>`
+      : `<div class="ask-none">Je n\u2019ai rien qui ressemble à « ${esc(ASK_READ.what)} ».</div>`;
+    return;
+  }
+
   /* Il a un indice franc : il montre ce qu'il a compris, prêt à ranger. */
   if((ASK_READ.kind === 'tache' || ASK_READ.kind === 'note') && ASK_READ.sure){
     const isNote = ASK_READ.kind === 'note';
@@ -1314,9 +1949,12 @@ function paintAsk(){
       <div class="ask-prev" style="--blob-3:${isNote ? '#7C6CF0' : 'var(--amber)'}">
         <div>
           <div class="what">${esc(ASK_READ.what)}</div>
-          <div class="when">${ASK_READ.due
-            ? 'Je vous préviens <b>' + whenLabel(ASK_READ.due, ASK_READ.hasTime) + '</b>'
-            : (isNote ? 'Je le garde dans mes notes' : 'Aucune date repérée — je le garde de côté')}</div>
+          <div class="when">${
+            ASK_READ.past ? 'C\u2019était <b>' + whenLabel(ASK_READ.due, ASK_READ.hasTime) + '</b> — je le garde quand même'
+            : ASK_READ.due ? (ASK_READ.repeat ? 'Je vous préviens <b>' + whenLabel(ASK_READ.due, ASK_READ.hasTime, ASK_READ.repeat) + '</b>'
+                                              : 'Je vous préviens <b>' + whenLabel(ASK_READ.due, ASK_READ.hasTime) + '</b>')
+            : (isNote ? 'Je le garde dans mes notes' : 'Aucune date repérée — je le garde de côté')
+          }${ASK_READ.urgent ? ' · <span class="urg">Urgent</span>' : ''}${ASK_READ.before && ASK_READ.due ? ' <span style="opacity:.7">(échéance)</span>' : ''}</div>
         </div>
         <span class="ret">↵</span>
       </div>`;
@@ -1362,10 +2000,8 @@ function paintAsk(){
   ];
   if(ASK_CUR >= ASK_HITS.length) ASK_CUR = 0;
 
-  if(!ASK_HITS.length){
-    list.innerHTML = raw.trim()
-      ? `<div class="ask-none">Rien ne correspond à « ${esc(raw.trim())} ». Je sais noter un rappel et ouvrir vos onglets — le reste viendra.</div>`
-      : `<div class="ask-none">Dites-moi « finir les textures vendredi » ou « le code est 8421-… ». Je fais le tri.</div>`;
+  if(!ASK_HITS.length && raw.trim()){
+    list.innerHTML = `<div class="ask-none">Rien ne correspond à « ${esc(raw.trim())} », et je ne sais pas encore le faire. Voici ce que je comprends :</div>${skillsHTML()}`;
     return;
   }
   let html = '', sec = '';
@@ -1379,7 +2015,7 @@ function paintAsk(){
         ${isN ? '<span class="mem-dot" style="--mem-c:#7C6CF0;margin-top:5px"></span>'
               : '<span class="tick"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l6 6L20 5"/></svg></span>'}
         <span>${esc(h.note.what)}</span>
-        <span class="note-when">${h.note.due ? whenLabel(new Date(h.note.due), h.note.hasTime) : 'sans date'}</span>
+        <span class="note-when">${h.note.urgent ? '<span class="urg">!</span>' : ''}${h.note.due ? whenLabel(new Date(h.note.due), h.note.hasTime, h.note.repeat) : 'sans date'}</span>
       </button>`;
     } else {
       html += `<button class="ask-row ${i===ASK_CUR?'cursor':''} ${h.act.done?'done':''}" data-ask="${i}">
@@ -1388,8 +2024,15 @@ function paintAsk(){
       </button>`;
     }
   });
+  /* Au repos, il ouvre son vocabulaire : il ne comprend pas encore tout, autant le dire. */
+  if(!q) html += `<div class="ask-sec">Ce que je comprends</div>` + skillsHTML();
   list.innerHTML = html;
 }
+/* Une légende, pas des boutons : il montre son vocabulaire, il ne l'écrit pas à votre place. */
+const skillsHTML = () => SKILLS.map(s =>
+  `<div class="skill" style="--sk-c:${s.c}">
+    <i></i><span>${s.t}</span><span class="ex">${esc(s.ex)}</span>
+  </div>`).join('');
 const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 function openAsk(){
@@ -1409,8 +2052,16 @@ function closeAsk(){
 
 async function submitAsk(){
   const r = ASK_READ;
+  if(r && r.kind === 'question'){ BUB.flash('think', 900); return; }
+  if(r && r.kind === 'oubli'){
+    const hit = bestMatch(r.what);
+    if(!hit) return BUB.flash('wow', 800);
+    closeAsk(); await working(); await forget(hit.id);
+    BUB.tone('blue'); BUB.flash('squint', 900);
+    return;
+  }
   if(r && (r.kind === 'tache' || r.kind === 'note') && !ASK_HITS.length)
-    return remember(r.kind, r.what, r.due, r.hasTime);
+    return remember(r.kind, r.what, r.due, r.hasTime, r.repeat, r.urgent);
   const h = ASK_HITS[ASK_CUR];
   if(!h) return BUB.flash('wow', 800);
   if(h.note) return h.note.kind === 'note' ? closeAsk() : finishNote(h.note.id);
@@ -1421,6 +2072,40 @@ async function submitAsk(){
 }
 
 
+
+/* ================= Ce qu'il sait répondre ================= */
+const STOP = /^(que|qui|quoi|quel|quelle|dans|pour|avec|sans|mais|donc|est|sont|les|des|une|mon|ma|mes|ce|cette|il|elle|sur|the|and|moi|nous|vous|ai|as|a|de|du|la|le|en|au)$/;
+const keywords = q => strip(q).replace(/[^a-z0-9'\s-]/g,' ').split(/\s+/)
+  .filter(w => w.length >= 3 && !STOP.test(w));
+
+function answerQ(q){
+  const t = strip(q);
+  const T = tasks(), N = memos();
+
+  if(/\b(tache|taches|faire|todo)\b/.test(t) && /\b(combien|quoi|qu'est-ce|que|reste|quelle)\b/.test(t)){
+    if(/aujourd/.test(t)){
+      const end = new Date(); end.setHours(23,59,59);
+      const now = Date.now();
+      const day = T.filter(n => n.due && n.due <= +end);
+      return { text: day.length ? `${day.length} tâche${day.length>1?'s':''} pour aujourd'hui.` : "Rien de daté pour aujourd'hui.", items: day };
+    }
+    return { text: T.length ? `${T.length} tâche${T.length>1?'s':''} en attente.` : "Aucune tâche. Vous êtes à jour.", items: T.slice(0,4) };
+  }
+  if(/\bnotes?\b/.test(t) && /\b(combien|quelle|quelles)\b/.test(t))
+    return { text: N.length ? `${N.length} note${N.length>1?'s':''} en mémoire.` : 'Aucune note.', items: N.slice(0,4) };
+
+  /* recherche dans tout ce qu'il connaît */
+  const ks = keywords(q);
+  if(ks.length){
+    const scored = [...N, ...T].map(n => {
+      const h = strip(n.what);
+      return { n, s: ks.filter(k => h.includes(k)).length };
+    }).filter(x => x.s > 0).sort((a,b) => b.s - a.s);
+    if(scored.length) return { text: scored.length === 1 ? 'Voilà ce que j\u2019ai :' : 'Voilà ce que j\u2019ai là-dessus :', items: scored.slice(0,4).map(x => x.n) };
+  }
+  return { text: null };
+}
+
 /* ================= Les artefacts de mémoire ================= */
 const MEM = {
   tache: { wrap:'memTasksWrap', orb:'memTasks', pop:'tasksPop', color:'var(--amber)',
@@ -1430,6 +2115,7 @@ const MEM = {
 };
 const itemsOf = k => k === 'note' ? memos() : tasks();
 
+const refreshCal = () => { if(ACTIVE === 'dashboard') renderView(); };
 function paintMem(){
   for(const [k, m] of Object.entries(MEM)){
     const n = itemsOf(k).length;
@@ -1450,7 +2136,7 @@ function memHTML(k){
         ? `<span class="tick" role="button" data-domem="${n.id}"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l6 6L20 5"/></svg></span>`
         : `<span class="mem-dot"></span>`}
       <span class="body">${esc(n.what)}
-        <span class="meta">${n.due ? whenLabel(new Date(n.due), n.hasTime) : 'noté ' + whenLabel(new Date(n.created), false)}</span>
+        <span class="meta">${n.urgent ? '<span class="urg">Urgent</span>' : ''}${n.due ? whenLabel(new Date(n.due), n.hasTime, n.repeat) : 'noté ' + whenLabel(new Date(n.created), false)}</span>
       </span>
       <button class="kill" data-kill="${n.id}" aria-label="Oublier">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -1462,53 +2148,70 @@ function memHTML(k){
 
 /* ---- L'artefact qui sort de Grid et va se ranger ---- */
 function flyMem(kind){
-  const from = $('bubBtn'), to = $(MEM[kind].orb);
+  const from = $('gtBlob'), to = $(MEM[kind].orb);
   if(!from || !to || !to.offsetParent) return;
   const a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
   if(!a.width || !b.width) return;
 
-  const size = 16;
-  const ax = a.left + a.width/2 - size/2, ay = a.top + a.height/2 - size/2;
-  const bx = b.left + b.width/2 - size/2, by = b.top + b.height/2 - size/2;
+  const S = 20;
+  const ax = a.left + a.width/2 - S/2, ay = a.top + a.height/2 - S/2;
+  const bx = b.left + b.width/2 - S/2, by = b.top + b.height/2 - S/2;
 
   const fly = document.createElement('div');
   fly.className = 'fly';
   const core = document.createElement('i');
-  core.style.width = core.style.height = size + 'px';
+  core.style.width = core.style.height = S + 'px';
   core.style.background = kind === 'note'
-    ? 'radial-gradient(circle at 38% 32%, #E9E4FF, #7C6CF0)'
-    : 'radial-gradient(circle at 38% 32%, #FFF0C4, #FFB800)';
-  core.style.boxShadow = '0 0 14px ' + (kind === 'note' ? 'rgba(124,108,240,.6)' : 'rgba(255,184,0,.6)');
+    ? 'radial-gradient(circle at 38% 32%, #EFEAFF, #7C6CF0)'
+    : 'radial-gradient(circle at 38% 32%, #FFF3CE, #FFB800)';
+  core.style.boxShadow = '0 0 18px ' + (kind === 'note' ? 'rgba(124,108,240,.7)' : 'rgba(255,184,0,.7)');
   fly.appendChild(core);
   document.body.appendChild(fly);
 
-  /* X sur l'extérieur, Y sur l'intérieur : deux courbes différentes = un arc */
   fly.style.transform  = `translate(${ax}px, 0)`;
-  core.style.transform = `translateY(${ay}px) scale(.3)`;
+  core.style.transform = `translateY(${ay}px) scale(0)`;
   void fly.offsetWidth;
-  fly.classList.add('go');
-  fly.style.transform  = `translate(${bx}px, 0)`;
-  core.style.transform = `translateY(${by}px) scale(.55)`;
-  core.style.opacity   = '0';
 
-  BUB.look((bx - ax) > 0 ? 4.2 : -4.2, -1.2);      // Grid le suit du regard
+  /* 1 — la bulle naît à côté de Grid, et on la voit naître */
+  fly.classList.add('pop');
+  core.style.transform = `translateY(${ay}px) scale(1)`;
+  BUB.bounce();
+
   setTimeout(()=>{
-    fly.remove();
-    const orb = $(MEM[kind].orb);
-    orb.classList.remove('land'); void orb.offsetWidth; orb.classList.add('land');
-  }, 800);
+    /* 2 — elle part vers la droite, en arc */
+    fly.classList.remove('pop');
+    fly.classList.add('go');
+    fly.style.transform  = `translate(${bx}px, 0)`;
+    core.style.transform = `translateY(${by}px) scale(.5)`;
+    BUB.look(bx > ax ? 4.6 : -4.6, -1.2);          // Grid la suit du regard
+
+    setTimeout(()=>{
+      core.style.opacity = '0';                     // elle ne s'efface qu'en arrivant
+      const orb = $(MEM[kind].orb);
+      orb.classList.remove('land'); void orb.offsetWidth; orb.classList.add('land');
+      setTimeout(()=> fly.remove(), 260);
+    }, 700);
+  }, 480);
 }
 
-async function remember(kind, what, due, hasTime){
+async function remember(kind, what, due, hasTime, repeat, urgent){
+  /* Il ne note pas deux fois la même chose. */
+  const twin = NOTES.find(n => !n.done && n.kind === kind && strip(n.what) === strip(what));
+  if(twin){
+    closeAsk();
+    BUB.flash('curious', 1200);
+    return;
+  }
   NOTES.push({
     id: Date.now() + '-' + Math.random().toString(36).slice(2,7),
     kind, what, due: due ? due.getTime() : null, hasTime: !!hasTime,
+    repeat: repeat || null, urgent: !!urgent,
     done:false, fired:false, created: Date.now(),
   });
   closeAsk();
   await working();
   await saveNotes();
-  paintMem();                 // l'artefact apparaît d'abord…
+  paintMem(); refreshCal();   // l'artefact apparaît d'abord…
   await wait(60);
   flyMem(kind);               // …puis Grid lui envoie sa bille
   paintBadge();
@@ -1518,14 +2221,27 @@ async function remember(kind, what, due, hasTime){
 
 async function forget(id){
   NOTES = NOTES.filter(n => n.id !== id);
-  await saveNotes(); paintMem(); paintBadge(); repaintMemPops();
+  await saveNotes(); paintMem(); paintBadge(); repaintMemPops(); refreshCal();
 }
+const PERIOD = { jour:1, semaine:7, mois:0 };
 async function finishNote(id){
   const n = NOTES.find(x => x.id === id);
   if(!n) return;
+  if(n.repeat && n.due){
+    /* Une tâche qui revient ne se termine pas : elle se rejoue. */
+    const d = new Date(n.due);
+    if(n.repeat === 'mois') d.setMonth(d.getMonth()+1);
+    else d.setDate(d.getDate() + PERIOD[n.repeat]);
+    while(d <= Date.now()){ n.repeat === 'mois' ? d.setMonth(d.getMonth()+1) : d.setDate(d.getDate() + PERIOD[n.repeat]); }
+    n.due = +d; n.fired = false;
+    await saveNotes(); paintMem(); paintBadge(); repaintMemPops(); refreshCal(); paintAsk();
+    BUB.tone('green'); BUB.flash('happy', 1100);
+    setTimeout(()=>BUB.tone('blue'), 1200);
+    return;
+  }
   n.done = true; n.doneAt = Date.now();
   await saveNotes();
-  paintMem(); paintBadge(); repaintMemPops(); paintAsk();
+  paintMem(); paintBadge(); repaintMemPops(); paintAsk(); refreshCal();
   BUB.tone('green'); BUB.flash('happy', 1100);
   setTimeout(()=>BUB.tone('blue'), 1200);
 }
@@ -1623,7 +2339,7 @@ $('bubBtn').addEventListener('click', e=>{
 $('ask').addEventListener('click', e=>{
   const c = e.target.closest('[data-conf]');
   if(c){
-    if(c.dataset.conf === 'yes') return remember(ASK_READ.kind, ASK_READ.what, ASK_READ.due, ASK_READ.hasTime);
+    if(c.dataset.conf === 'yes') return remember(ASK_READ.kind, ASK_READ.what, ASK_READ.due, ASK_READ.hasTime, ASK_READ.repeat, ASK_READ.urgent);
     closeAsk(); BUB.flash('squint', 700); return;
   }
   const r = e.target.closest('[data-ask]');
@@ -1643,6 +2359,305 @@ $('askInput').addEventListener('keydown', e=>{
   else if(e.key === 'ArrowUp' && ASK_HITS.length){ e.preventDefault(); ASK_CUR = (ASK_CUR-1+ASK_HITS.length) % ASK_HITS.length; paintAsk(); }
   else if(e.key === 'Enter'){ e.preventDefault(); submitAsk(); }
   else if(e.key === 'Escape'){ closeAsk(); }
+});
+
+
+/* ================= Créer, et déposer ================= */
+let MK_COLOR = 0, PENDING = null;
+
+const NEW_MENU = () => `
+  <button class="menu-row" data-new="note">${docIcon('note').replace('14','16').replace('14','16')}<span>Document texte</span><span class="keys"><span>${MOD}</span><span>T</span></span></button>
+  <button class="menu-row" data-new="map">${docIcon('map').replace('14','16').replace('14','16')}<span>Carte mentale</span><span class="keys"><span>${MOD}</span><span>M</span></span></button>
+  <div class="menu-sep"></div>
+  <button class="menu-row" data-new="folder">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V6.5A1.5 1.5 0 014.5 5h4L11 7.5h8A1.5 1.5 0 0120.5 9v8.5A1.5 1.5 0 0119 19H5a2 2 0 01-2-2V8z"/></svg>
+    <span>Nouveau dossier</span>
+  </button>`;
+
+const MK_FOLDER = () => `
+  <div class="mk-h">
+    <button class="pan-back" data-new="back" aria-label="Retour">${svg('back',15)}</button>
+    <span class="mk-t">Nouveau dossier</span>
+  </div>
+  <div class="mk">
+    <div class="pin"><input id="mkName" placeholder="Factures" maxlength="28" spellcheck="false"></div>
+    <div class="cols">${PALETTE.map((c,i)=>
+      `<button data-col="${i}" aria-pressed="${i===MK_COLOR}" style="--f1:${c.f1};--f2:${c.f2}" aria-label="Couleur ${i+1}"></button>`).join('')}</div>
+    <button class="gbtn pan-btn" data-new="mk">Créer</button>
+  </div>`;
+
+/* La fiche que Grid vous montre avant de ranger */
+const SORT_CARD = () => {
+  const p = PENDING, f = p.folder;
+  const c = PALETTE[(f.color ?? 0) % PALETTE.length];
+  return `
+  <div class="sort-h">
+    <span class="sort-ic">${docIcon('file')}</span>
+    <span style="min-width:0">
+      <span class="sort-n">${esc(p.name)}</span>
+      <span class="sort-s">${p.ext ? '.' + p.ext + ' · ' : ''}${KB(p.size)}</span>
+    </span>
+  </div>
+  <div class="sort-box" style="--f1:${c.f1};--f2:${c.f2}">
+    <div class="sort-lab">Je le range dans</div>
+    <div class="sort-to">
+      <span class="sort-chip"></span><b>${esc(f.name)}</b>
+      ${p.isNew ? '<span class="new">nouveau dossier</span>' : ''}
+    </div>
+    <div class="sort-why">${p.why.length ? 'Parce que j\u2019ai vu ' + p.why.slice(0,2).join(' et ') + '.' : 'Je n\u2019ai rien reconnu — je le mets de côté.'}</div>
+  </div>
+  <div class="sort-acts">
+    <button class="gbtn ok" data-sort="ok">Range-le</button>
+    <button class="sort-no" data-sort="no">Non</button>
+  </div>`;
+};
+
+/* ---- Le dépôt ---- */
+let DRAGS = 0;
+const veil = on => document.body.classList.toggle('dropping', on);
+window.addEventListener('dragenter', e=>{
+  if(!$('shell').classList.contains('on') || !e.dataTransfer?.types.includes('Files')) return;
+  e.preventDefault(); DRAGS++; veil(true); BUB.set('wow');
+});
+window.addEventListener('dragover', e=>{ if(e.dataTransfer?.types.includes('Files')) e.preventDefault(); });
+window.addEventListener('dragleave', ()=>{ if(--DRAGS <= 0){ DRAGS = 0; veil(false); BUB.set('idle'); } });
+window.addEventListener('drop', async e=>{
+  if(!$('shell').classList.contains('on') || !e.dataTransfer?.files.length) return;
+  e.preventDefault(); DRAGS = 0; veil(false);
+  await takeFile(e.dataTransfer.files[0]);
+});
+
+async function takeFile(file){
+  closeAll();
+  BUB.tone('orange'); BUB.set('think'); BUB.bounce();
+  const ext  = (file.name.split('.').pop() || '').toLowerCase();
+  const text = TEXTY.test(ext) ? await readFileText(file) : '';
+  await wait(520);                                   // on le voit réfléchir
+  const guess = classify(file.name, ext, text);
+
+  let folder = FILES.folders.find(f => strip(f.name) === strip(guess.cat));
+  let isNew = false;
+  if(!folder){
+    folder = { id:uid(), name:guess.cat, color:FILES.folders.length % PALETTE.length, created:Date.now() };
+    isNew = true;
+  }
+  PENDING = { name:file.name, ext, size:file.size, text:text.slice(0,600), folder, isNew, why:guess.why };
+  BUB.tone('blue'); BUB.set('curious');
+  openPop($('newPop'), $('newBtn'));
+  popSize($('newPop'), SORT_CARD(), 280);
+}
+
+async function fileIt(){
+  const p = PENDING; if(!p) return;
+  if(p.isNew) FILES.folders.push(p.folder);
+  FILES.docs.push({
+    id:uid(), kind:'file', title:p.name, body:p.text,
+    folder:p.folder.id, size:p.size, ext:p.ext,
+    created:Date.now(), updated:Date.now(),
+  });
+  PENDING = null;
+  closePop($('newPop'), $('newBtn'));
+  await working();
+  await saveFiles();
+  refreshFiles();
+  await noted();
+}
+
+/* ---- Créer ---- */
+async function makeDoc(kind){
+  const d = kind === 'map'
+    ? { id:uid(), kind:'map', title:'Carte sans titre', nodes:[{ id:'r', text:'Idée centrale', parent:null }], folder:null, created:Date.now(), updated:Date.now() }
+    : { id:uid(), kind:'note', title:'', body:'', folder:null, created:Date.now(), updated:Date.now() };
+  FILES.docs.push(d);
+  await saveFiles();
+  closePop($('newPop'), $('newBtn'));
+  if(ACTIVE !== 'files') go('files'); else refreshFiles();
+  BUB.flash('happy', 900);
+  openSheet(d.id);
+}
+async function makeFolder(){
+  const name = $('mkName').value.trim();
+  if(!name) return $('mkName').focus();
+  FILES.folders.push({ id:uid(), name, color:MK_COLOR, created:Date.now() });
+  await saveFiles();
+  closePop($('newPop'), $('newBtn'));
+  if(ACTIVE !== 'files') go('files'); else refreshFiles();
+  BUB.tone('green'); BUB.flash('happy', 1000);
+  setTimeout(()=>BUB.tone('blue'), 1100);
+}
+
+$('newBtn').addEventListener('click', e=>{
+  e.stopPropagation();
+  if($('newPop').classList.contains('on')) return closePop($('newPop'), $('newBtn'));
+  PENDING = null;
+  openPop($('newPop'), $('newBtn'));
+  popSize($('newPop'), NEW_MENU(), 242);
+});
+$('newPop').addEventListener('click', e=>{
+  const c = e.target.closest('[data-col]');
+  if(c){ MK_COLOR = +c.dataset.col; popSize($('newPop'), MK_FOLDER(), 258); return; }
+  const s = e.target.closest('[data-sort]');
+  if(s){
+    if(s.dataset.sort === 'ok') return fileIt();
+    PENDING = null; closePop($('newPop'), $('newBtn')); BUB.flash('squint', 800); return;
+  }
+  const n = e.target.closest('[data-new]');
+  if(!n) return;
+  const k = n.dataset.new;
+  if(k === 'folder'){ MK_COLOR = FILES.folders.length % PALETTE.length; popSize($('newPop'), MK_FOLDER(), 258); setTimeout(()=>$('mkName')?.focus(), 60); return; }
+  if(k === 'back'){ popSize($('newPop'), NEW_MENU(), 242); return; }
+  if(k === 'mk') return makeFolder();
+  makeDoc(k);
+});
+$('newPop').addEventListener('keydown', e=>{ if(e.key === 'Enter' && e.target.id === 'mkName') makeFolder(); });
+
+
+/* ================= L'éditeur ================= */
+let SHEET_ID = null, SAVE_T = null;
+const docOf = id => FILES.docs.find(d => d.id === id);
+
+function sheetHTML(d){
+  const f = folderOf(d.folder);
+  const c = f ? PALETTE[(f.color ?? 0) % PALETTE.length] : null;
+  return `
+  <div class="sheet-top">
+    <span class="doc-ic" style="margin:0">${docIcon(d.kind)}</span>
+    <span class="sheet-save" id="sheetSave"></span>
+    <span class="where">
+      ${f ? `<span class="sort-chip" style="width:14px;height:14px;border-radius:4px;--f1:${c.f1};--f2:${c.f2}"></span>${esc(f.name)}` : 'Aucun dossier'}
+    </span>
+    <button class="sheet-x" id="sheetX" aria-label="Fermer">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="sheet-body">
+    <input class="sheet-title" id="shTitle" value="${esc(d.title||'')}" placeholder="${d.kind==='map'?'Titre de la carte':'Sans titre'}" maxlength="80">
+    ${d.kind === 'map'
+      ? `<div id="shMap" style="margin-top:16px"></div>`
+      : `<textarea class="sheet-text" id="shBody" placeholder="Écrivez…">${esc(d.body||'')}</textarea>`}
+  </div>`;
+}
+
+function openSheet(id){
+  const d = docOf(id); if(!d) return;
+  if(d.kind === 'file') return;              // un fichier déposé n'est pas éditable
+  SHEET_ID = id;
+  $('sheetCard').innerHTML = sheetHTML(d);
+  $('sheet').classList.add('on');
+  $('sheetX').addEventListener('click', closeSheet);
+  $('shTitle').addEventListener('input', touch);
+  $('shBody')?.addEventListener('input', touch);
+  if(d.kind === 'map') paintMap();
+  setTimeout(()=> $('shTitle').focus(), 60);
+}
+function closeSheet(){
+  flush();
+  $('sheet').classList.remove('on');
+  SHEET_ID = null;
+  refreshFiles();
+}
+function touch(){
+  clearTimeout(SAVE_T);
+  $('sheetSave').textContent = '…';
+  SAVE_T = setTimeout(flush, 500);
+}
+async function flush(){
+  const d = docOf(SHEET_ID); if(!d) return;
+  const t = $('shTitle'); if(!t) return;
+  d.title = t.value.trim();
+  if($('shBody')) d.body = $('shBody').value;
+  d.updated = Date.now();
+  await saveFiles();
+  if($('sheetSave')) $('sheetSave').textContent = 'enregistré';
+}
+$('sheet').addEventListener('click', e=>{ if(e.target.id === 'sheet') closeSheet(); });
+document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && SHEET_ID) closeSheet(); });
+
+/* ---- La carte mentale : un arbre, des courbes ---- */
+const NODE_W = 148, NODE_H = 34, GAP_X = 58, GAP_Y = 12;
+function layout(nodes){
+  const kids = p => nodes.filter(n => n.parent === p);
+  const pos = {};
+  let cursor = 0;
+  const walk = (n, depth) => {
+    const cs = kids(n.id);
+    if(!cs.length){ pos[n.id] = { x: depth, y: cursor }; cursor += NODE_H + GAP_Y; return pos[n.id]; }
+    const ys = cs.map(c => walk(c, depth+1).y);
+    pos[n.id] = { x: depth, y: (ys[0] + ys[ys.length-1]) / 2 };
+    return pos[n.id];
+  };
+  const root = nodes.find(n => !n.parent);
+  if(root) walk(root, 0);
+  return pos;
+}
+function paintMap(){
+  const d = docOf(SHEET_ID); if(!d) return;
+  const pos = layout(d.nodes);
+  const H = Math.max(...Object.values(pos).map(p=>p.y)) + NODE_H + 10;
+  const depth = Math.max(...Object.values(pos).map(p=>p.x));
+  const W = (depth+1) * (NODE_W + GAP_X);
+  const X = p => p.x * (NODE_W + GAP_X);
+
+  const links = d.nodes.filter(n => n.parent).map(n => {
+    const a = pos[n.parent], b = pos[n.id];
+    const x1 = X(a) + NODE_W, y1 = a.y + NODE_H/2, x2 = X(b), y2 = b.y + NODE_H/2;
+    const m = (x1 + x2) / 2;
+    return `<path d="M${x1} ${y1} C${m} ${y1}, ${m} ${y2}, ${x2} ${y2}" fill="none" stroke="var(--hair)" stroke-width="1.6"/>`;
+  }).join('');
+
+  const boxes = d.nodes.map(n => `
+    <div class="mn ${n.parent?'':'root'}" data-node="${n.id}"
+         style="left:${X(pos[n.id])}px;top:${pos[n.id].y}px">
+      <span class="mn-t" contenteditable="plaintext-only" data-edit="${n.id}">${esc(n.text)}</span>
+      <button class="mn-a" data-addnode="${n.id}" aria-label="Ajouter une branche">+</button>
+      ${n.parent ? `<button class="mn-k" data-delnode="${n.id}" aria-label="Supprimer">×</button>` : ''}
+    </div>`).join('');
+
+  $('shMap').innerHTML = `
+    <div class="map-wrap" style="height:${H}px;min-width:${W}px">
+      <svg style="position:absolute;inset:0;overflow:visible" width="${W}" height="${H}">${links}</svg>
+      ${boxes}
+    </div>`;
+}
+document.addEventListener('click', async e=>{
+  const add = e.target.closest('[data-addnode]');
+  if(add){
+    const d = docOf(SHEET_ID);
+    d.nodes.push({ id:uid(), text:'Nouvelle branche', parent:add.dataset.addnode });
+    d.updated = Date.now(); await saveFiles(); paintMap();
+    return;
+  }
+  const del = e.target.closest('[data-delnode]');
+  if(del){
+    const d = docOf(SHEET_ID);
+    const drop = new Set([del.dataset.delnode]);
+    let n; do { n = d.nodes.length; d.nodes.forEach(x => { if(drop.has(x.parent)) drop.add(x.id); }); } while(d.nodes.length !== n && false);
+    d.nodes.forEach(x => { if(drop.has(x.parent)) drop.add(x.id); });
+    d.nodes = d.nodes.filter(x => !drop.has(x.id));
+    d.updated = Date.now(); await saveFiles(); paintMap();
+  }
+});
+document.addEventListener('input', e=>{
+  const ed = e.target.closest('[data-edit]');
+  if(!ed || !SHEET_ID) return;
+  const d = docOf(SHEET_ID);
+  const n = d.nodes.find(x => x.id === ed.dataset.edit);
+  if(n){ n.text = ed.textContent.trim(); touch(); }
+});
+
+/* ---- Ouvrir / jeter depuis la page ---- */
+$('view').addEventListener('click', async e=>{
+  const dk = e.target.closest('[data-dockill]');
+  if(dk){ e.stopPropagation(); FILES.docs = FILES.docs.filter(d => d.id !== dk.dataset.dockill); await saveFiles(); return renderView(); }
+  const fk = e.target.closest('[data-foldkill]');
+  if(fk){
+    e.stopPropagation();
+    FILES.docs.forEach(d => { if(d.folder === fk.dataset.foldkill) d.folder = null; });
+    FILES.folders = FILES.folders.filter(f => f.id !== fk.dataset.foldkill);
+    await saveFiles(); return renderView();
+  }
+  const doc = e.target.closest('[data-doc]');
+  if(doc) return openSheet(doc.dataset.doc);
 });
 
 /* ================= Écoutes ================= */
@@ -1673,8 +2688,31 @@ $('avBtn').addEventListener('click', e=>{
   openPop($('account'), $('avBtn'));
   paintAcc('root');
 });
-$('view').addEventListener('click', e=>{
-  const g = e.target.closest('[data-goto]'); if(g) go(g.dataset.goto);
+$('view').addEventListener('click', async e=>{
+  const g = e.target.closest('[data-goto]'); if(g) return go(g.dataset.goto);
+
+  const nx = e.target.closest('[data-stknext]');
+  if(nx){ STK_I++; return renderView(); }
+  const dn = e.target.closest('[data-stkdone]');
+  if(dn){
+    const card = dn.closest('.stk-card'); card.classList.add('gone');
+    await wait(reduce ? 0 : 340);
+    return finishNote(dn.dataset.stkdone);
+  }
+  const lt = e.target.closest('[data-stklater]');
+  if(lt){
+    const n = NOTES.find(x => x.id === lt.dataset.stklater);
+    if(!n) return;
+    const d = n.due ? new Date(n.due) : new Date(new Date().setHours(9,0,0,0));
+    d.setDate(d.getDate()+1);
+    n.due = +d; n.fired = false; n.hasTime = n.hasTime || false;
+    lt.closest('.stk-card').classList.add('gone');
+    await wait(reduce ? 0 : 340);
+    await saveNotes(); paintMem(); paintBadge(); refreshCal(); renderView();
+    BUB.flash('curious', 900);
+    return;
+  }
+
 });
 document.addEventListener('click', e=>{
   // Une cible détachée = un bouton détruit par son propre rendu (ex. « Profil »).
@@ -1693,6 +2731,8 @@ document.addEventListener('keydown', e=>{
   if(!e.altKey || e.ctrlKey || e.metaKey) return;
   const k = (e.key || '').toUpperCase();
   if(k === 'W'){ e.preventDefault(); return closeTab(ACTIVE); }
+  if(k === 'T'){ e.preventDefault(); return makeDoc('note'); }
+  if(k === 'M'){ e.preventDefault(); return makeDoc('map'); }
   const hit = Object.entries(META).find(([,m]) => m.key === k);
   if(hit){ e.preventDefault(); go(hit[0]); }
 });
@@ -1903,7 +2943,7 @@ async function enter(id){
   auth.classList.remove('on');
   shell.classList.add('on');
   paintAvatars();
-  await loadNotes(); paintMem(); paintBadge();
+  await loadNotes(); await loadFiles(); paintMem(); paintBadge();
   setTimeout(()=>{ BUB.bounce(); BUB.flash('happy', 1200); checkDue(); }, 900);
   const saved = await Store.get('grid:tabs:'+id);
   TABS = (saved?.tabs || []).filter(t=>META[t]);
@@ -1923,11 +2963,14 @@ async function signOut(){
 }
 
 /* ================= Lancement ================= */
+/* Après 20h, Grid met son bonnet et dort. C'est vous qui le réveillez. */
+const NIGHT = () => { const h = new Date().getHours(); return h >= 20 || h < 7; };
+let ASLEEP = false;
 const boot = $('boot'), bootBar = $('bootBar'), bootStatus = $('bootStatus');
 const STEPS = [['Ouverture de Grid',18],['Lecture du profil',46],['Cycle de paiement',74],['Prêt',100]];
 
 /* les trois bulles vivantes : entrée, lancement, barre du haut */
-const BUB      = new Blob($('bubBtn'));
+const BUB      = new Blob($('gtBlob'));
 const BOOT_BUB = new Blob($('bootBlob'));
 const AUTH_BUB = new Blob($('authBlob'));
 LIVE.push(BUB, AUTH_BUB);
@@ -1937,11 +2980,15 @@ function gateWait(){
   const blob = $('bootBlob'), cta = $('bootCta');
   blob.setAttribute('role','button');
   blob.setAttribute('tabindex','0');
-  blob.setAttribute('aria-label','Entrer dans Grid');
-  BOOT_BUB.flash('curious', 1400);
+  blob.setAttribute('aria-label', ASLEEP ? 'Réveiller Grid' : 'Entrer dans Grid');
+  if(ASLEEP){
+    cta.textContent = 'Réveillez Grid';
+  } else {
+    BOOT_BUB.flash('curious', 1400);
+  }
 
   return new Promise(res => {
-    const done = e => {
+    const done = async e => {
       e.preventDefault();
       blob.removeEventListener('click', done);
       cta.removeEventListener('click', done);
@@ -1949,11 +2996,25 @@ function gateWait(){
       cta.removeEventListener('keydown', onKey);
       blob.removeEventListener('pointerenter', peek);
       blob.style.cursor = 'default';
-      BOOT_BUB.bounce(); BOOT_BUB.set('happy');
-      setTimeout(res, 380);
+
+      if(ASLEEP){
+        /* Le réveil, en trois temps : il émerge, il réalise, il sourit. */
+        BOOT_BUB.locked = false;
+        BOOT_BUB.set('squint');  BOOT_BUB.bounce();
+        await wait(260);
+        await BOOT_BUB.blink();
+        BOOT_BUB.set('wow');
+        await wait(420);
+        BOOT_BUB.set('happy');
+        await wait(360);
+      } else {
+        BOOT_BUB.bounce(); BOOT_BUB.set('happy');
+        await wait(380);
+      }
+      res();
     };
     const onKey = e => { if(e.key === 'Enter' || e.key === ' ') done(e); };
-    const peek = () => BOOT_BUB.flash('wow', 800);   // il vous voit approcher
+    const peek = () => { if(!ASLEEP) BOOT_BUB.flash('wow', 800); };   // on ne réveille pas en passant
     blob.addEventListener('click', done);
     cta.addEventListener('click', done);
     blob.addEventListener('keydown', onKey);
@@ -1968,20 +3029,30 @@ async function bootOut(){
 }
 async function runBoot(){
   boot.classList.add('on');
-  BOOT_BUB.set('sleep');                 // Grid dort
-  await wait(760);
-  BOOT_BUB.set('idle');                  // il ouvre les yeux
-  await wait(200);
-  BOOT_BUB.look(-3.4, -1.6); await wait(420);
-  BOOT_BUB.look(3.4, -1.6);  await wait(420);
+  ASLEEP = NIGHT();
+  BOOT_BUB.night(ASLEEP); AUTH_BUB.night(ASLEEP);
+
+  BOOT_BUB.set('sleep');
+  BOOT_BUB.locked = true;                // endormi, il ne suit rien du regard
   BOOT_BUB.look(0, 0);
-  BOOT_BUB.flash('wow', 700);            // il vous voit
+  await wait(760);
+
+  if(!ASLEEP){
+    BOOT_BUB.locked = false;
+    BOOT_BUB.set('idle');                // il ouvre les yeux
+    await wait(200);
+    BOOT_BUB.look(-3.4, -1.6); await wait(420);
+    BOOT_BUB.look(3.4, -1.6);  await wait(420);
+    BOOT_BUB.look(0, 0);
+    BOOT_BUB.flash('wow', 700);          // il vous voit
+  }
+
   for(const [label, pct] of STEPS){
     bootStatus.textContent = label;
     bootBar.style.width = pct + '%';
     await wait(340);
   }
-  BOOT_BUB.set('idle');
+  if(!ASLEEP) BOOT_BUB.set('idle');      // la nuit, il continue de dormir
   await wait(260);
 }
 
