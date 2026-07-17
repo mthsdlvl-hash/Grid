@@ -418,49 +418,65 @@ input{font:inherit}
 .mm-canvas.panning{cursor:grabbing}
 .mm-canvas.linking{cursor:crosshair}
 .mm-world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+.mm-canvas.smooth .mm-world{transition:transform .32s cubic-bezier(.32,.72,0,1)}
 .mm-svg{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
-.mm-link{fill:none;stroke:var(--muted);stroke-width:1.8;pointer-events:stroke;cursor:pointer;transition:stroke .15s}
-.mm-link:hover{stroke:var(--dim)}
-.mm-link.sel{stroke:var(--btn-lo);stroke-width:2.4}
-.mm-hit{fill:none;stroke:transparent;stroke-width:14;pointer-events:stroke;cursor:pointer}
+.mm-link{fill:none;stroke:var(--link-c);stroke-width:2;stroke-linecap:round;pointer-events:none;transition:stroke .2s,stroke-width .2s}
+.mm-svg{--link-c:rgba(140,146,158,.75)}
+[data-theme="dark"] .mm-svg{--link-c:rgba(150,158,172,.6)}
+.mm-link.hot{stroke:var(--dim);stroke-width:2.6}
+.mm-link.sel{stroke:var(--btn-lo);stroke-width:3}
+.mm-hit{fill:none;stroke:transparent;stroke-width:16;pointer-events:stroke;cursor:pointer}
 .mm-ghost{fill:none;stroke:var(--btn-lo);stroke-width:2;stroke-dasharray:5 4;opacity:.9}
 
 .mmn{
-  position:absolute;box-sizing:border-box;
-  border-radius:12px;padding:9px 12px;
-  background:var(--n-bg);color:var(--n-fg);
-  box-shadow:inset 0 0 0 1px var(--n-rim), 0 1px 2px rgba(20,23,30,.05), 0 6px 18px rgba(20,23,30,.07);
-  transition:box-shadow .15s;
-  cursor:grab;user-select:none;
+  position:absolute;left:0;top:0;box-sizing:border-box;
+  /* la largeur suit le texte : un mot = une petite bulle */
+  width:max-content;min-width:58px;max-width:230px;
+  padding:10px 17px;
+  background:linear-gradient(168deg, var(--n-1), var(--n-2));
+  color:var(--n-fg);
+  box-shadow:inset 0 1px 0 var(--n-top), inset 0 0 0 1px var(--n-rim),
+             0 1px 2px rgba(20,23,30,.05), 0 7px 20px var(--n-glow);
+  transition:box-shadow .22s cubic-bezier(.4,0,.2,1), filter .18s;
+  cursor:grab;user-select:none;will-change:transform;
 }
+.mmn:hover{filter:brightness(1.03);box-shadow:inset 0 1px 0 var(--n-top), inset 0 0 0 1px var(--n-rim), 0 2px 4px rgba(20,23,30,.06), 0 12px 30px var(--n-glow)}
 .mmn:active{cursor:grabbing}
-.mmn{--n-bg:var(--card);--n-fg:var(--ink);--n-rim:var(--hair)}
-.mmn.c-amber {--n-bg:#FFF6DC;--n-fg:#5A4200;--n-rim:rgba(214,160,0,.34)}
-.mmn.c-mint  {--n-bg:#E4FBF0;--n-fg:#085432;--n-rim:rgba(16,162,92,.30)}
-.mmn.c-coral {--n-bg:#FFECE9;--n-fg:#7A1F13;--n-rim:rgba(232,65,42,.28)}
-.mmn.c-violet{--n-bg:#EFEAFF;--n-fg:#331B7A;--n-rim:rgba(124,108,240,.30)}
-.mmn.c-ink   {--n-bg:#15171C;--n-fg:#F1F3F6;--n-rim:rgba(255,255,255,.10)}
-[data-theme="dark"] .mmn.c-amber {--n-bg:#3A2E08;--n-fg:#FFE9A8;--n-rim:rgba(255,196,46,.24)}
-[data-theme="dark"] .mmn.c-mint  {--n-bg:#0B3325;--n-fg:#9BF0C8;--n-rim:rgba(50,214,150,.22)}
-[data-theme="dark"] .mmn.c-coral {--n-bg:#3E1710;--n-fg:#FFB6AB;--n-rim:rgba(255,110,90,.22)}
-[data-theme="dark"] .mmn.c-violet{--n-bg:#241946;--n-fg:#CFC2FF;--n-rim:rgba(150,130,255,.24)}
-[data-theme="dark"] .mmn.c-ink   {--n-bg:#F1F3F6;--n-fg:#15171C;--n-rim:rgba(0,0,0,.10)}
-.mmn.sel{box-shadow:inset 0 0 0 1px var(--n-rim), 0 0 0 2px var(--btn-lo), 0 8px 24px rgba(20,23,30,.13)}
+.mmn.drag{transition:none;filter:brightness(1.05);box-shadow:inset 0 1px 0 var(--n-top), inset 0 0 0 1px var(--n-rim), 0 3px 6px rgba(20,23,30,.09), 0 22px 48px var(--n-glow);z-index:4}
+.mmn.born{animation:mmPop .42s cubic-bezier(.34,1.5,.5,1)}
+@keyframes mmPop{from{opacity:0;transform:var(--tf) scale(.5)}}
+
+.mmn         {--n-1:#FFFFFF;--n-2:#F1F3F7;--n-fg:var(--ink);--n-rim:rgba(20,23,30,.09);--n-top:rgba(255,255,255,.9);--n-glow:rgba(20,23,30,.08)}
+.mmn.c-amber {--n-1:#FFEFB8;--n-2:#FFD75E;--n-fg:#4A3400;--n-rim:rgba(160,116,0,.26);--n-top:rgba(255,255,255,.6);--n-glow:rgba(230,168,0,.30)}
+.mmn.c-mint  {--n-1:#C9FBE2;--n-2:#63E2AC;--n-fg:#04502F;--n-rim:rgba(6,120,70,.22);--n-top:rgba(255,255,255,.6);--n-glow:rgba(16,180,105,.30)}
+.mmn.c-coral {--n-1:#FFDCD4;--n-2:#FF9C86;--n-fg:#6E1B0E;--n-rim:rgba(180,50,28,.22);--n-top:rgba(255,255,255,.55);--n-glow:rgba(240,90,60,.30)}
+.mmn.c-violet{--n-1:#E3DBFF;--n-2:#A794FF;--n-fg:#2C1370;--n-rim:rgba(90,64,200,.24);--n-top:rgba(255,255,255,.55);--n-glow:rgba(124,108,240,.32)}
+.mmn.c-ink   {--n-1:#3A4150;--n-2:#15171C;--n-fg:#F1F3F6;--n-rim:rgba(255,255,255,.13);--n-top:rgba(255,255,255,.16);--n-glow:rgba(20,23,30,.28)}
+[data-theme="dark"] .mmn         {--n-1:#2E343F;--n-2:#21262E;--n-fg:#EDEFF2;--n-rim:rgba(255,255,255,.09);--n-top:rgba(255,255,255,.07);--n-glow:rgba(0,0,0,.4)}
+[data-theme="dark"] .mmn.c-amber {--n-1:#5A4405;--n-2:#3A2B02;--n-fg:#FFE7A0;--n-rim:rgba(255,196,46,.2);--n-top:rgba(255,255,255,.09);--n-glow:rgba(180,130,0,.3)}
+[data-theme="dark"] .mmn.c-mint  {--n-1:#0E4B33;--n-2:#08301F;--n-fg:#9BF0C8;--n-rim:rgba(50,214,150,.18);--n-top:rgba(255,255,255,.09);--n-glow:rgba(10,120,70,.34)}
+[data-theme="dark"] .mmn.c-coral {--n-1:#5C2317;--n-2:#39140C;--n-fg:#FFB6AB;--n-rim:rgba(255,110,90,.18);--n-top:rgba(255,255,255,.09);--n-glow:rgba(150,45,28,.34)}
+[data-theme="dark"] .mmn.c-violet{--n-1:#372663;--n-2:#20153F;--n-fg:#CFC2FF;--n-rim:rgba(150,130,255,.2);--n-top:rgba(255,255,255,.09);--n-glow:rgba(80,58,190,.36)}
+[data-theme="dark"] .mmn.c-ink   {--n-1:#FFFFFF;--n-2:#D8DCE3;--n-fg:#15171C;--n-rim:rgba(0,0,0,.12);--n-top:rgba(255,255,255,.9);--n-glow:rgba(0,0,0,.35)}
+.mmn.sel{box-shadow:inset 0 1px 0 var(--n-top), inset 0 0 0 1px var(--n-rim), 0 0 0 2.5px var(--btn-lo), 0 12px 32px var(--n-glow)}
 .mmn.root{font-weight:600}
 .mmn-t{
-  font-size:13px;line-height:1.42;outline:none;word-break:break-word;white-space:pre-wrap;
-  cursor:text;user-select:text;min-height:18px;
+  font-size:13px;line-height:1.42;outline:none;overflow-wrap:anywhere;white-space:pre-wrap;
+  cursor:text;user-select:text;min-height:18px;text-align:center;
 }
-.mmn-t:empty::before{content:attr(data-ph);color:var(--muted);opacity:.6}
+.mmn-t:empty::before{content:attr(data-ph);color:currentColor;opacity:.42}
 
 /* Les prises : elles n'apparaissent qu'au survol */
 .mm-port{
   position:absolute;width:11px;height:11px;border-radius:50%;
-  background:var(--card);box-shadow:inset 0 0 0 1.6px var(--btn-lo);
-  opacity:0;transition:opacity .15s,transform .15s;cursor:crosshair;z-index:3;
+  background:var(--card);box-shadow:inset 0 0 0 1.6px var(--btn-lo), 0 1px 4px rgba(20,23,30,.2);
+  opacity:0;transform:scale(.5);
+  transition:opacity .18s ease,transform .28s cubic-bezier(.34,1.6,.5,1);
+  cursor:crosshair;z-index:3;
 }
+.mmn:hover .mm-port,.mmn.sel .mm-port{transform:scale(1)}
 .mmn:hover .mm-port,.mmn.sel .mm-port{opacity:1}
-.mm-port:hover{transform:scale(1.35);background:var(--btn-lo)}
+.mm-port:hover{transform:scale(1.5);background:var(--btn-lo);box-shadow:inset 0 0 0 1.6px var(--btn-lo), 0 0 0 4px var(--btn-halo)}
 .mm-port.t{top:-6px;left:50%;margin-left:-5.5px}
 .mm-port.b{bottom:-6px;left:50%;margin-left:-5.5px}
 .mm-port.l{left:-6px;top:50%;margin-top:-5.5px}
@@ -468,7 +484,8 @@ input{font:inherit}
 
 /* La barre qui suit le bloc choisi */
 .mm-pick{
-  position:absolute;z-index:6;display:flex;align-items:center;gap:4px;padding:5px;
+  position:absolute;z-index:6;animation:mmPick .26s cubic-bezier(.34,1.5,.5,1);
+display:flex;align-items:center;gap:4px;padding:5px;
   border-radius:99px;background:var(--glass-pop);
   -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
   box-shadow:inset 0 0 0 1px var(--glass-rim), var(--shadow-pop);
@@ -479,6 +496,8 @@ input{font:inherit}
 .mm-pick .kill{width:22px;height:22px;display:grid;place-items:center;color:var(--muted);border-radius:6px}
 .mm-pick .kill:hover{background:var(--coral);color:#fff;transform:none}
 .mm-pick .sp{width:1px;height:14px;background:var(--hair);margin:0 2px}
+@keyframes mmPick{from{opacity:0;transform:translateX(-50%) translateY(5px) scale(.9)}}
+.mm-pick button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--card),0 0 0 3.5px var(--ink)}
 
 .mm-hint{
   position:absolute;left:50%;bottom:14px;transform:translateX(-50%);
@@ -495,6 +514,26 @@ input{font:inherit}
   .mm-canvas{height:calc(100vh - 190px)}
   .mm-hint{display:none}
 }
+
+
+/* ---------- Notes de version ---------- */
+.ask-back{display:flex;align-items:center;gap:7px;padding:7px 9px 9px;border-bottom:1px solid var(--hair);margin-bottom:6px}
+.ask-back button{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;color:var(--muted)}
+.ask-back button:hover{background:var(--hover);color:var(--ink)}
+.ask-back .t{font-family:var(--display);font-size:13px;font-weight:600;letter-spacing:-.01em}
+.ask-back .v{margin-left:auto;font-family:var(--mono);font-size:9.5px;color:var(--muted);background:var(--key);border-radius:5px;padding:2px 6px}
+.patch{max-height:264px;overflow-y:auto;padding:0 2px 2px}
+.pv{padding:8px 8px 12px}
+.pv + .pv{border-top:1px solid var(--hair)}
+.pv-h{display:flex;align-items:baseline;gap:8px;margin-bottom:7px}
+.pv-h b{font-family:var(--mono);font-size:11px;color:var(--ink)}
+.pv-h .d{font-size:10px;color:var(--muted)}
+.pv-h .new{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--btn-lo);border-radius:99px;padding:2px 7px;font-weight:600}
+.pv li{display:flex;gap:8px;font-size:12px;color:var(--dim);line-height:1.5;padding:2.5px 0}
+.pv li i{width:4px;height:4px;border-radius:50%;background:var(--muted);flex:none;margin-top:7px}
+.pv li b{color:var(--ink);font-weight:600}
+.ask-row .tag{margin-left:auto;flex:none;font-size:9px;letter-spacing:.06em;text-transform:uppercase;
+  color:#fff;background:var(--btn-lo);border-radius:99px;padding:2px 7px;font-weight:600}
 
 /* ---------- Les artefacts de sa mémoire ---------- */
 .mem-wrap{display:none}
@@ -1123,7 +1162,7 @@ const SWATCH = { plain:'var(--card)', amber:'#FFD84D', mint:'#3AD68F', coral:'#F
 
 const newMap = (name) => ({
   id:nid(), name: name || 'Carte ' + (MAPS.length + 1), created:Date.now(), updated:Date.now(),
-  nodes:[{ id:nid(), x:0, y:0, w:170, text:'Idée centrale', color:'ink', root:true }],
+  nodes:[{ id:nid(), x:0, y:0, text:'Idée centrale', color:'ink', root:true }],
   links:[],
 });
 
@@ -1192,22 +1231,30 @@ function applyView(){
   c.style.backgroundSize = `${g}px ${g}px`;
   c.style.backgroundPosition = `${MM.x}px ${MM.y}px`;
 }
+/* Les prises se calent sur le vrai bord de la bulle, qui est ronde. */
 
 /* ---- Dessin ---- */
+let MM_BORN = null;
 function paintNodes(){
   const m = curMap();
   $('mmNodes').innerHTML = m.nodes.map(n => `
-    <div class="mmn c-${n.color} ${n.root?'root':''} ${MM_SEL===n.id?'sel':''}" data-node="${n.id}"
-         style="left:${n.x}px;top:${n.y}px;width:${n.w}px">
+    <div class="mmn c-${n.color} ${n.root?'root':''} ${MM_SEL===n.id?'sel':''} ${MM_BORN===n.id?'born':''}" data-node="${n.id}"
+         style="transform:translate(${n.x}px,${n.y}px);--tf:translate(${n.x}px,${n.y}px)">
       <div class="mmn-t" contenteditable="plaintext-only" data-ph="Écrivez…" data-text="${n.id}">${esc(n.text)}</div>
       <span class="mm-port t" data-port="${n.id}"></span><span class="mm-port r" data-port="${n.id}"></span>
       <span class="mm-port b" data-port="${n.id}"></span><span class="mm-port l" data-port="${n.id}"></span>
     </div>`).join('');
   measure(); paintLinks(); paintPick();
+  MM_BORN = null;
 }
+/* Une bulle courte est ronde ; dès qu'elle passe à la ligne, elle s'arrondit moins. */
 function measure(){
   MM_SZ = {};
-  for(const el of $('mmNodes').children) MM_SZ[el.dataset.node] = { w: el.offsetWidth, h: el.offsetHeight };
+  for(const el of $('mmNodes').children){
+    const w = el.offsetWidth, h = el.offsetHeight;
+    MM_SZ[el.dataset.node] = { w, h };
+    el.style.borderRadius = h < 46 ? '999px' : '19px';
+  }
 }
 /* Le côté par lequel le trait sort dépend de la position relative des deux blocs. */
 function side(a, b){
@@ -1232,8 +1279,8 @@ function paintLinks(){
     if(!a || !b) return '';
     const d = curve(side(a, b), side(b, a));
     const sel = MM_SEL === l.id;
-    return `<path class="mm-hit" d="${d}" data-link="${l.id}"></path>
-            <path class="mm-link ${sel?'sel':''}" d="${d}" data-link="${l.id}" marker-end="url(#${sel?'mmArrowSel':'mmArrow'})"></path>`;
+    return `<path class="mm-link ${sel?'sel':''}" d="${d}" data-draw="${l.id}" marker-end="url(#${sel?'mmArrowSel':'mmArrow'})"></path>
+            <path class="mm-hit" d="${d}" data-link="${l.id}"></path>`;
   }).join('');
 }
 function paintPick(){
@@ -1254,6 +1301,29 @@ function paintPick(){
 }
 const paintMM = () => { paintNodes(); applyView(); };
 
+/* Un seul travail par image d'affichage : c'est ça, la fluidité. */
+let FRAME = null, FRAME_JOB = null;
+function frame(job){
+  FRAME_JOB = job;
+  if(FRAME) return;
+  FRAME = requestAnimationFrame(()=>{ FRAME = null; FRAME_JOB?.(); FRAME_JOB = null; });
+}
+
+/* Le zoom des boutons glisse au lieu de sauter. */
+function glide(to, ms = 320){
+  const from = { ...MM }, t0 = performance.now();
+  const ease = t => 1 - Math.pow(1 - t, 3);
+  const step = now => {
+    const k = Math.min(1, (now - t0) / ms), e = ease(k);
+    MM.x = from.x + (to.x - from.x) * e;
+    MM.y = from.y + (to.y - from.y) * e;
+    MM.z = from.z + (to.z - from.z) * e;
+    applyView(); paintPick();
+    if(k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
 
 /* ---- Les gestes ---- */
 MOUNT.mindmap = () => {
@@ -1261,6 +1331,14 @@ MOUNT.mindmap = () => {
   paintMM();
   const cv = $('mmCanvas');
   let pan = null, drag = null;
+  $('mmLinks').addEventListener('pointerover', e => {
+    const h = e.target.closest('[data-link]'); if(!h) return;
+    $('mmLinks').querySelector(`[data-draw="${h.dataset.link}"]`)?.classList.add('hot');
+  });
+  $('mmLinks').addEventListener('pointerout', e => {
+    const h = e.target.closest('[data-link]'); if(!h) return;
+    $('mmLinks').querySelector(`[data-draw="${h.dataset.link}"]`)?.classList.remove('hot');
+  });
 
   const pickNode = id => { MM_SEL = id; paintNodes(); };
 
@@ -1284,7 +1362,7 @@ MOUNT.mindmap = () => {
       e.preventDefault();
       const n = curMap().nodes.find(x => x.id === node.dataset.node);
       const p = toWorld(e.clientX, e.clientY);
-      drag = { n, dx:p.x - n.x, dy:p.y - n.y, moved:false };
+      drag = { n, el:node, dx:p.x - n.x, dy:p.y - n.y, moved:false };
       if(MM_SEL !== n.id) pickNode(n.id);
       cv.setPointerCapture(e.pointerId);
       return;
@@ -1301,27 +1379,36 @@ MOUNT.mindmap = () => {
   cv.addEventListener('pointermove', e => {
     if(MM_LINK){
       const p = toWorld(e.clientX, e.clientY);
-      const a = curMap().nodes.find(n => n.id === MM_LINK.from);
-      const fake = { id:'_', x:p.x - 1, y:p.y - 1, w:2 };
-      MM_SZ._ = { w:2, h:2 };
-      const g = $('mmGhost');
-      g.style.display = '';
-      g.setAttribute('d', curve(side(a, fake), { x:p.x, y:p.y, d:side(fake, a).d }));
+      const cx = e.clientX, cy = e.clientY;
+      /* Tout dans la même image : elementFromPoint force un recalcul,
+         on ne le paie qu'une fois par rafraîchissement. */
+      frame(()=>{
+        const a = curMap().nodes.find(n => n.id === MM_LINK?.from);
+        if(!a) return;
+        const fake = { id:'_', x:p.x - 1, y:p.y - 1 };
+        MM_SZ._ = { w:2, h:2 };
+        const g = $('mmGhost');
+        g.style.display = '';
+        g.setAttribute('d', curve(side(a, fake), { x:p.x, y:p.y, d:side(fake, a).d }));
+        const over = document.elementFromPoint?.(cx, cy)?.closest('[data-node]');
+        for(const el of $('mmNodes').children)
+          el.classList.toggle('sel', el === over && el.dataset.node !== MM_LINK.from);
+      });
       cv.classList.add('dirty');
       return;
     }
     if(drag){
       const p = toWorld(e.clientX, e.clientY);
       drag.n.x = Math.round(p.x - drag.dx); drag.n.y = Math.round(p.y - drag.dy);
-      drag.moved = true;
-      const el = $('mmNodes').querySelector(`[data-node="${drag.n.id}"]`);
-      el.style.left = drag.n.x + 'px'; el.style.top = drag.n.y + 'px';
-      paintLinks(); paintPick(); cv.classList.add('dirty');
+      if(!drag.moved){ drag.moved = true; drag.el.classList.add('drag'); }
+      drag.el.style.transform = `translate(${drag.n.x}px,${drag.n.y}px)`;
+      frame(()=>{ paintLinks(); paintPick(); });     // une seule fois par image
+      cv.classList.add('dirty');
       return;
     }
     if(pan){
       MM.x = pan.ox + (e.clientX - pan.sx); MM.y = pan.oy + (e.clientY - pan.sy);
-      applyView(); paintPick();
+      frame(()=>{ applyView(); paintPick(); });
     }
   });
 
@@ -1329,14 +1416,14 @@ MOUNT.mindmap = () => {
     cv.classList.remove('panning','linking');
     if(MM_LINK){
       $('mmGhost').style.display = 'none';
-      const over = document.elementFromPoint(e.clientX, e.clientY)?.closest('[data-node]');
+      const over = document.elementFromPoint?.(e.clientX, e.clientY)?.closest('[data-node]');
       const m = curMap();
       let to = over?.dataset.node;
       /* lâché dans le vide : on crée le bloc au bout du trait */
       if(!to){
         const p = toWorld(e.clientX, e.clientY);
-        const n = { id:nid(), x:Math.round(p.x - 60), y:Math.round(p.y - 18), w:170, text:'', color:'plain' };
-        m.nodes.push(n); to = n.id;
+        const n = { id:nid(), x:Math.round(p.x - 40), y:Math.round(p.y - 18), text:'', color:'plain' };
+        m.nodes.push(n); to = n.id; MM_BORN = n.id;
       }
       if(to !== MM_LINK.from && !m.links.some(l => (l.a===MM_LINK.from && l.b===to) || (l.a===to && l.b===MM_LINK.from)))
         m.links.push({ id:nid(), a:MM_LINK.from, b:to });
@@ -1346,7 +1433,11 @@ MOUNT.mindmap = () => {
       if(t && !t.textContent) t.focus();
       return;
     }
-    if(drag){ if(drag.moved) touchMap(); drag = null; return; }
+    if(drag){
+      drag.el.classList.remove('drag');
+      if(drag.moved){ touchMap(); paintPick(); }
+      drag = null; return;
+    }
     pan = null;
   });
 
@@ -1354,8 +1445,8 @@ MOUNT.mindmap = () => {
   cv.addEventListener('dblclick', e => {
     if(e.target.closest('[data-node]') || e.target.closest('.mm-pick')) return;
     const p = toWorld(e.clientX, e.clientY);
-    const n = { id:nid(), x:Math.round(p.x - 85), y:Math.round(p.y - 18), w:170, text:'', color:'plain' };
-    curMap().nodes.push(n); MM_SEL = n.id;
+    const n = { id:nid(), x:Math.round(p.x - 40), y:Math.round(p.y - 18), text:'', color:'plain' };
+    curMap().nodes.push(n); MM_SEL = n.id; MM_BORN = n.id;
     paintNodes(); touchMap(); cv.classList.add('dirty');
     $('mmNodes').querySelector(`[data-text="${n.id}"]`)?.focus();
   });
@@ -1397,10 +1488,7 @@ function fitMap(){
   }
   const pad = 60;
   const z = Math.min(1.6, Math.max(.3, Math.min((r.width - pad*2)/(x2-x1 || 1), (r.height - pad*2)/(y2-y1 || 1))));
-  MM.z = z;
-  MM.x = r.width/2 - (x1 + x2)/2 * z;
-  MM.y = r.height/2 - (y1 + y2)/2 * z;
-  applyView(); paintPick();
+  glide({ z, x: r.width/2 - (x1 + x2)/2 * z, y: r.height/2 - (y1 + y2)/2 * z }, 380);
 }
 
 /* ---- La barre du haut ---- */
@@ -1432,8 +1520,10 @@ $('view').addEventListener('click', async e => {
     BUB.flash('happy', 900);
   }
   else if(act === 'in'  || act === 'out'){
-    MM.z = Math.min(2.4, Math.max(.3, MM.z * (act === 'in' ? 1.25 : .8)));
-    applyView(); paintPick();
+    const cv = $('mmCanvas'), r = cv.getBoundingClientRect();
+    const mx = r.width/2, my = r.height/2;                 // on zoome sur le centre de l'écran
+    const z = Math.min(2.4, Math.max(.3, MM.z * (act === 'in' ? 1.25 : .8)));
+    glide({ x: mx - (mx - MM.x) * (z / MM.z), y: my - (my - MM.y) * (z / MM.z), z }, 240);
   }
   else if(act === 'fit') fitMap();
   else if(act === 'rename'){
@@ -2113,6 +2203,66 @@ function eyesTo(e){
 window.addEventListener('pointermove', eyesTo, {passive:true});
 window.addEventListener('pointerdown', eyesTo, {passive:true});
 
+
+/* ================= Ce qui a changé =================
+   À tenir à jour à CHAQUE mise à jour : une entrée en tête, rien d'autre à faire.
+   Grid lit ce tableau, en déduit la version courante et prévient si elle est neuve. */
+const PATCH = [
+  { v:'0.9', d:'18 juillet 2026', items:[
+    ['Cartes mentales', 'les blocs sont devenus des bulles qui suivent le texte, avec des dégradés et des halos colorés.'],
+    ['Fluidité', 'déplacement au transform, un seul calcul par image, zoom qui glisse au lieu de sauter.'],
+    ['Notes de version', 'cette page. Grid vous prévient quand quelque chose bouge.'],
+  ]},
+  { v:'0.8', d:'18 juillet 2026', items:[
+    ['Cartes mentales', 'poser un bloc, écrire dedans, tirer une flèche, lâcher dans le vide pour créer la suite.'],
+  ]},
+  { v:'0.7', d:'18 juillet 2026', items:[
+    ['Liquid glass', 'onglets, menus, capsule et barre de demande passent au verre.'],
+    ['Le halo', 'la pastille de Grid est allumée en permanence — en ligne.'],
+    ['Photo animée', 'les GIF gardent leur animation.'],
+  ]},
+  { v:'0.6', d:'17 juillet 2026', items:[
+    ['Grid au centre', 'sa capsule porte son nom et son état.'],
+    ['Le bureau', 'widget des rappels empilés, caché quand il n\u2019y a rien.'],
+    ['Son vocabulaire', 'les sept choses qu\u2019il comprend, affichées avec un exemple.'],
+  ]},
+  { v:'0.5', d:'17 juillet 2026', items:[
+    ['La nuit', 'de 20h à 7h Grid dort, trois « z » montent, il se réveille au clic.'],
+  ]},
+  { v:'0.4', d:'17 juillet 2026', items:[
+    ['Sa mémoire', 'tâches et notes, deux artefacts, et la bille qui vole s\u2019y ranger.'],
+    ['Les rappels', 'à l\u2019heure dite il devient rouge et le reste jusqu\u2019à « c\u2019est fait ».'],
+  ]},
+  { v:'0.3', d:'17 juillet 2026', items:[
+    ['Il comprend le français', 'dates, heures, récurrence, urgence, oublis, questions. 49 phrases à l\u2019examen.'],
+  ]},
+  { v:'0.2', d:'16 juillet 2026', items:[
+    ['Le compte', 'profil, photo, mot de passe, mode sombre.'],
+  ]},
+  { v:'0.1', d:'16 juillet 2026', items:[
+    ['Grid existe', 'le lancement, le seuil, les onglets.'],
+  ]},
+];
+const VERSION = PATCH[0].v;
+const seenKey = () => 'grid:seen:' + SESSION.id;
+let SEEN = null;
+const isNew = () => SEEN !== VERSION;
+async function loadSeen(){ SEEN = await Store.get(seenKey()); }
+async function markSeen(){ SEEN = VERSION; await Store.set(seenKey(), VERSION); }
+
+const patchHTML = () => `
+  <div class="ask-back">
+    <button data-ask-back="1" aria-label="Retour">${svg('back',14)}</button>
+    <span class="t">Ce qui a changé</span>
+    <span class="v">v${VERSION}</span>
+  </div>
+  <div class="patch">
+    ${PATCH.map((p,i)=>`<div class="pv">
+      <div class="pv-h"><b>${p.v}</b><span class="d">${p.d}</span>${i===0 && isNew() ? '<span class="new">nouveau</span>' : ''}</div>
+      <ul>${p.items.map(([t,x])=>`<li><i></i><span><b>${t}</b> — ${x}</span></li>`).join('')}</ul>
+    </div>`).join('')}
+  </div>`;
+
 /* ================= Barre de demande ================= */
 
 /* Tout ce que Grid sait faire. Il ne devine pas encore : il vous montre. */
@@ -2128,9 +2278,11 @@ const SKILLS = [
 
 /* Les onglets, c'est le rôle du « + ». Grid, lui, s'occupe de ce que vous lui dites. */
 const ACTIONS = () => [
+  { label:'Voir ce qui a changé', tag: isNew() ? 'nouveau' : '', stay:true,
+    run:()=>{ ASK_VIEW = 'patch'; paintAsk(); markSeen(); } },
   { label:'Basculer en mode ' + (isDark()?'clair':'sombre'), run:()=>applyTheme(!isDark()) },
 ];
-let ASK_CUR = 0, ASK_HITS = [], ASK_READ = null;
+let ASK_CUR = 0, ASK_HITS = [], ASK_READ = null, ASK_VIEW = null;
 
 /* Grid travaille : orange. Grid a noté : vert. Puis il redevient lui-même. */
 async function working(){ BUB.tone('orange'); BUB.set('think'); await wait(300); }
@@ -2141,6 +2293,7 @@ async function noted(){
 }
 
 function paintAsk(){
+  if(ASK_VIEW === 'patch'){ ASK_HITS = []; $('askList').innerHTML = patchHTML(); return; }
   const raw = $('askInput').value;
   ASK_READ = read(raw);
   const list = $('askList');
@@ -2256,6 +2409,7 @@ function paintAsk(){
     } else {
       html += `<button class="ask-row ${i===ASK_CUR?'cursor':''} ${h.act.done?'done':''}" data-ask="${i}">
         <span>${esc(h.act.label)}</span>
+        ${h.act.tag ? `<span class="tag">${h.act.tag}</span>` : ''}
         <svg class="go" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
       </button>`;
     }
@@ -2276,7 +2430,7 @@ function openAsk(){
   $('ask').classList.add('on');
   $('bubBtn').setAttribute('aria-expanded','true');
   BUB.locked = true; BUB.look(0, 2.4); BUB.set('squint'); BUB.bounce();
-  $('askInput').value = ''; ASK_CUR = 0; paintAsk();
+  $('askInput').value = ''; ASK_CUR = 0; ASK_VIEW = null; paintAsk();
   setTimeout(()=>$('askInput').focus(), 40);
 }
 function closeAsk(){
@@ -2301,6 +2455,7 @@ async function submitAsk(){
   const h = ASK_HITS[ASK_CUR];
   if(!h) return BUB.flash('wow', 800);
   if(h.note) return h.note.kind === 'note' ? closeAsk() : finishNote(h.note.id);
+  if(h.act.stay){ h.act.run(); BUB.flash('curious', 800); return; }   // il reste ouvert pour qu'on lise
   closeAsk();
   await working();
   h.act.run();
@@ -2573,6 +2728,7 @@ $('bubBtn').addEventListener('click', e=>{
   $('ask').classList.contains('on') ? closeAsk() : openAsk();
 });
 $('ask').addEventListener('click', e=>{
+  if(e.target.closest('[data-ask-back]')){ ASK_VIEW = null; paintAsk(); $('askInput').focus(); return; }
   const c = e.target.closest('[data-conf]');
   if(c){
     if(c.dataset.conf === 'yes') return remember(ASK_READ.kind, ASK_READ.what, ASK_READ.due, ASK_READ.hasTime, ASK_READ.repeat, ASK_READ.urgent);
@@ -2594,7 +2750,7 @@ $('askInput').addEventListener('keydown', e=>{
   if(e.key === 'ArrowDown' && ASK_HITS.length){ e.preventDefault(); ASK_CUR = (ASK_CUR+1) % ASK_HITS.length; paintAsk(); }
   else if(e.key === 'ArrowUp' && ASK_HITS.length){ e.preventDefault(); ASK_CUR = (ASK_CUR-1+ASK_HITS.length) % ASK_HITS.length; paintAsk(); }
   else if(e.key === 'Enter'){ e.preventDefault(); submitAsk(); }
-  else if(e.key === 'Escape'){ closeAsk(); }
+  else if(e.key === 'Escape'){ if(ASK_VIEW){ ASK_VIEW = null; paintAsk(); } else closeAsk(); }
 });
 
 
@@ -2891,7 +3047,7 @@ async function enter(id){
   auth.classList.remove('on');
   shell.classList.add('on');
   paintAvatars();
-  await loadNotes(); await loadMaps(); paintMem(); paintBadge();
+  await loadNotes(); await loadMaps(); await loadSeen(); paintMem(); paintBadge();
   setTimeout(()=>{ BUB.bounce(); BUB.flash('happy', 1200); checkDue(); }, 900);
   const saved = await Store.get('grid:tabs:'+id);
   TABS = (saved?.tabs || []).filter(t=>META[t]);
