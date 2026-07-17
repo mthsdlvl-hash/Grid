@@ -381,6 +381,121 @@ input{font:inherit}
 }
 
 
+
+/* ---------- Cartes mentales ---------- */
+.mm{display:flex;flex-direction:column;gap:10px}
+.mm-bar{
+  display:flex;align-items:center;gap:7px;padding:5px;border-radius:99px;
+  background:var(--glass);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 var(--glass-top);
+}
+.mm-chips{display:flex;align-items:center;gap:3px;min-width:0;overflow-x:auto;scrollbar-width:none}
+.mm-chip{
+  display:flex;align-items:center;gap:6px;flex:none;
+  padding:6px 11px;border-radius:99px;font-size:12.5px;color:var(--muted);
+  transition:background .16s,color .16s;
+}
+.mm-chip:hover{background:var(--hover);color:var(--dim)}
+.mm-chip[aria-selected="true"]{
+  color:var(--ink);font-weight:500;background:var(--glass-hi);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), 0 2px 8px rgba(20,23,30,.09);
+}
+.mm-chip .n{font-family:var(--mono);font-size:9px;color:var(--muted)}
+.mm-new{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:var(--muted);transition:.16s}
+.mm-new:hover{background:var(--hover);color:var(--ink)}
+.mm-tools{margin-left:auto;display:flex;align-items:center;gap:3px;flex:none}
+.mm-tools button{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;color:var(--muted);transition:.16s}
+.mm-tools button:hover{background:var(--hover);color:var(--ink)}
+.mm-z{font-family:var(--mono);font-size:10px;color:var(--muted);min-width:34px;text-align:center}
+.mm-sep{width:1px;height:16px;background:var(--hair);margin:0 4px;flex:none}
+
+.mm-canvas{
+  position:relative;overflow:hidden;border-radius:var(--r);
+  height:calc(100vh - 168px);min-height:400px;
+  background:var(--card);box-shadow:var(--shadow);
+  cursor:grab;touch-action:none;
+}
+.mm-canvas.panning{cursor:grabbing}
+.mm-canvas.linking{cursor:crosshair}
+.mm-world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+.mm-svg{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.mm-link{fill:none;stroke:var(--muted);stroke-width:1.8;pointer-events:stroke;cursor:pointer;transition:stroke .15s}
+.mm-link:hover{stroke:var(--dim)}
+.mm-link.sel{stroke:var(--btn-lo);stroke-width:2.4}
+.mm-hit{fill:none;stroke:transparent;stroke-width:14;pointer-events:stroke;cursor:pointer}
+.mm-ghost{fill:none;stroke:var(--btn-lo);stroke-width:2;stroke-dasharray:5 4;opacity:.9}
+
+.mmn{
+  position:absolute;box-sizing:border-box;
+  border-radius:12px;padding:9px 12px;
+  background:var(--n-bg);color:var(--n-fg);
+  box-shadow:inset 0 0 0 1px var(--n-rim), 0 1px 2px rgba(20,23,30,.05), 0 6px 18px rgba(20,23,30,.07);
+  transition:box-shadow .15s;
+  cursor:grab;user-select:none;
+}
+.mmn:active{cursor:grabbing}
+.mmn{--n-bg:var(--card);--n-fg:var(--ink);--n-rim:var(--hair)}
+.mmn.c-amber {--n-bg:#FFF6DC;--n-fg:#5A4200;--n-rim:rgba(214,160,0,.34)}
+.mmn.c-mint  {--n-bg:#E4FBF0;--n-fg:#085432;--n-rim:rgba(16,162,92,.30)}
+.mmn.c-coral {--n-bg:#FFECE9;--n-fg:#7A1F13;--n-rim:rgba(232,65,42,.28)}
+.mmn.c-violet{--n-bg:#EFEAFF;--n-fg:#331B7A;--n-rim:rgba(124,108,240,.30)}
+.mmn.c-ink   {--n-bg:#15171C;--n-fg:#F1F3F6;--n-rim:rgba(255,255,255,.10)}
+[data-theme="dark"] .mmn.c-amber {--n-bg:#3A2E08;--n-fg:#FFE9A8;--n-rim:rgba(255,196,46,.24)}
+[data-theme="dark"] .mmn.c-mint  {--n-bg:#0B3325;--n-fg:#9BF0C8;--n-rim:rgba(50,214,150,.22)}
+[data-theme="dark"] .mmn.c-coral {--n-bg:#3E1710;--n-fg:#FFB6AB;--n-rim:rgba(255,110,90,.22)}
+[data-theme="dark"] .mmn.c-violet{--n-bg:#241946;--n-fg:#CFC2FF;--n-rim:rgba(150,130,255,.24)}
+[data-theme="dark"] .mmn.c-ink   {--n-bg:#F1F3F6;--n-fg:#15171C;--n-rim:rgba(0,0,0,.10)}
+.mmn.sel{box-shadow:inset 0 0 0 1px var(--n-rim), 0 0 0 2px var(--btn-lo), 0 8px 24px rgba(20,23,30,.13)}
+.mmn.root{font-weight:600}
+.mmn-t{
+  font-size:13px;line-height:1.42;outline:none;word-break:break-word;white-space:pre-wrap;
+  cursor:text;user-select:text;min-height:18px;
+}
+.mmn-t:empty::before{content:attr(data-ph);color:var(--muted);opacity:.6}
+
+/* Les prises : elles n'apparaissent qu'au survol */
+.mm-port{
+  position:absolute;width:11px;height:11px;border-radius:50%;
+  background:var(--card);box-shadow:inset 0 0 0 1.6px var(--btn-lo);
+  opacity:0;transition:opacity .15s,transform .15s;cursor:crosshair;z-index:3;
+}
+.mmn:hover .mm-port,.mmn.sel .mm-port{opacity:1}
+.mm-port:hover{transform:scale(1.35);background:var(--btn-lo)}
+.mm-port.t{top:-6px;left:50%;margin-left:-5.5px}
+.mm-port.b{bottom:-6px;left:50%;margin-left:-5.5px}
+.mm-port.l{left:-6px;top:50%;margin-top:-5.5px}
+.mm-port.r{right:-6px;top:50%;margin-top:-5.5px}
+
+/* La barre qui suit le bloc choisi */
+.mm-pick{
+  position:absolute;z-index:6;display:flex;align-items:center;gap:4px;padding:5px;
+  border-radius:99px;background:var(--glass-pop);
+  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), var(--shadow-pop);
+}
+.mm-pick button{width:18px;height:18px;border-radius:50%;transition:transform .15s}
+.mm-pick button:hover{transform:scale(1.2)}
+.mm-pick .sw{box-shadow:inset 0 0 0 1px rgba(20,23,30,.14)}
+.mm-pick .kill{width:22px;height:22px;display:grid;place-items:center;color:var(--muted);border-radius:6px}
+.mm-pick .kill:hover{background:var(--coral);color:#fff;transform:none}
+.mm-pick .sp{width:1px;height:14px;background:var(--hair);margin:0 2px}
+
+.mm-hint{
+  position:absolute;left:50%;bottom:14px;transform:translateX(-50%);
+  font-size:11px;color:var(--muted);background:var(--glass-pop);
+  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim);
+  border-radius:99px;padding:6px 13px;pointer-events:none;
+  opacity:1;transition:opacity .4s ease;
+}
+.mm-canvas.dirty .mm-hint{opacity:0}
+.mm-hint b{color:var(--dim);font-weight:600}
+
+@media(max-width:720px){
+  .mm-canvas{height:calc(100vh - 190px)}
+  .mm-hint{display:none}
+}
+
 /* ---------- Les artefacts de sa mémoire ---------- */
 .mem-wrap{display:none}
 .mem-wrap.on{display:block;animation:memBorn .55s cubic-bezier(.34,1.5,.5,1)}
@@ -975,6 +1090,7 @@ const nf = n => n.toLocaleString('fr-FR');
 
 /* ================= Pages ================= */
 const PAGES = {};
+const MOUNT = {};   // ce qu'une page branche une fois qu'elle est dans le DOM
 
 const emptyState = (title, body, cta) => `
   <div class="card empty">
@@ -987,6 +1103,373 @@ const emptyState = (title, body, cta) => `
 
 
 
+
+
+/* ================= Cartes mentales ================= */
+/* Les blocs vivent dans un « monde » qu'on déplace et qu'on zoome.
+   Le DOM ne connaît que des coordonnées de monde ; l'écran, c'est une affaire de transform. */
+let MAPS = [], MAP_I = 0;
+let MM = { x:0, y:0, z:1 }, MM_SEL = null, MM_LINK = null, MM_SZ = {};
+const mapsKey  = () => 'grid:maps:' + SESSION.id;
+const saveMaps = () => Store.set(mapsKey(), MAPS);
+async function loadMaps(){ MAPS = (await Store.get(mapsKey())) || []; MAP_I = 0; }
+const curMap = () => MAPS[MAP_I];
+const nid = () => Math.random().toString(36).slice(2, 9);
+let MM_T = null;
+const touchMap = () => { const m = curMap(); if(m) m.updated = Date.now(); clearTimeout(MM_T); MM_T = setTimeout(saveMaps, 400); };
+
+const N_COLS = ['plain','amber','mint','coral','violet','ink'];
+const SWATCH = { plain:'var(--card)', amber:'#FFD84D', mint:'#3AD68F', coral:'#FF6B54', violet:'#8B7BF5', ink:'#15171C' };
+
+const newMap = (name) => ({
+  id:nid(), name: name || 'Carte ' + (MAPS.length + 1), created:Date.now(), updated:Date.now(),
+  nodes:[{ id:nid(), x:0, y:0, w:170, text:'Idée centrale', color:'ink', root:true }],
+  links:[],
+});
+
+/* ---- La page ---- */
+PAGES.mindmap = () => {
+  if(!MAPS.length) return `
+    <div class="page-head" style="padding-top:4px"><h1>Cartes mentales. <em>Rien encore.</em></h1></div>
+    <div class="card empty">
+      <span class="empty-blob" style="width:62px;height:62px;display:block;margin-bottom:20px"></span>
+      <h2>Une page blanche</h2>
+      <p>Posez des blocs, écrivez dedans, reliez-les. Grid garde tout.</p>
+      <button class="gbtn" data-mm="new" style="margin-top:18px;width:auto;padding:11px 20px">Créer une carte</button>
+    </div>`;
+
+  const m = curMap();
+  return `
+  <div class="mm">
+    <div class="mm-bar">
+      <div class="mm-chips">
+        ${MAPS.map((x,i)=>`<button class="mm-chip" aria-selected="${i===MAP_I}" data-mmgo="${i}">
+          <span>${esc(x.name)}</span><span class="n">${x.nodes.length}</span>
+        </button>`).join('')}
+      </div>
+      <button class="mm-new" data-mm="new" aria-label="Nouvelle carte">${svg('plus',14)}</button>
+      <div class="mm-tools">
+        <button data-mm="rename" aria-label="Renommer">${svg('pencil',14)}</button>
+        <button data-mm="kill" aria-label="Supprimer la carte">${svg('trash',14)}</button>
+        <span class="mm-sep"></span>
+        <button data-mm="out" aria-label="Dézoomer">${svg('minus',14)}</button>
+        <span class="mm-z" id="mmZ">100%</span>
+        <button data-mm="in" aria-label="Zoomer">${svg('plus',14)}</button>
+        <button data-mm="fit" aria-label="Tout voir">${svg('fit',14)}</button>
+      </div>
+    </div>
+    <div class="mm-canvas" id="mmCanvas">
+      <div class="mm-world" id="mmWorld">
+        <svg class="mm-svg" id="mmSvg">
+          <defs>
+            <marker id="mmArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+              <path d="M0 1.2 L9 5 L0 8.8 z" fill="var(--muted)"/>
+            </marker>
+            <marker id="mmArrowSel" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+              <path d="M0 1.2 L9 5 L0 8.8 z" fill="var(--btn-lo)"/>
+            </marker>
+          </defs>
+          <g id="mmLinks"></g>
+          <path class="mm-ghost" id="mmGhost" style="display:none"></path>
+        </svg>
+        <div id="mmNodes"></div>
+      </div>
+      <div class="mm-hint">Double-cliquez le fond pour poser un bloc · tirez un point pour relier</div>
+    </div>
+  </div>`;
+};
+
+/* ---- Écran ↔ monde ---- */
+const toWorld = (cx, cy) => {
+  const r = $('mmCanvas').getBoundingClientRect();
+  return { x:(cx - r.left - MM.x) / MM.z, y:(cy - r.top - MM.y) / MM.z };
+};
+function applyView(){
+  $('mmWorld').style.transform = `translate(${MM.x}px, ${MM.y}px) scale(${MM.z})`;
+  $('mmZ').textContent = Math.round(MM.z * 100) + '%';
+  const c = $('mmCanvas'), g = 22 * MM.z;
+  c.style.backgroundImage = `radial-gradient(circle, var(--hair) ${Math.max(1, 1.1*MM.z)}px, transparent ${Math.max(1, 1.1*MM.z)}px)`;
+  c.style.backgroundSize = `${g}px ${g}px`;
+  c.style.backgroundPosition = `${MM.x}px ${MM.y}px`;
+}
+
+/* ---- Dessin ---- */
+function paintNodes(){
+  const m = curMap();
+  $('mmNodes').innerHTML = m.nodes.map(n => `
+    <div class="mmn c-${n.color} ${n.root?'root':''} ${MM_SEL===n.id?'sel':''}" data-node="${n.id}"
+         style="left:${n.x}px;top:${n.y}px;width:${n.w}px">
+      <div class="mmn-t" contenteditable="plaintext-only" data-ph="Écrivez…" data-text="${n.id}">${esc(n.text)}</div>
+      <span class="mm-port t" data-port="${n.id}"></span><span class="mm-port r" data-port="${n.id}"></span>
+      <span class="mm-port b" data-port="${n.id}"></span><span class="mm-port l" data-port="${n.id}"></span>
+    </div>`).join('');
+  measure(); paintLinks(); paintPick();
+}
+function measure(){
+  MM_SZ = {};
+  for(const el of $('mmNodes').children) MM_SZ[el.dataset.node] = { w: el.offsetWidth, h: el.offsetHeight };
+}
+/* Le côté par lequel le trait sort dépend de la position relative des deux blocs. */
+function side(a, b){
+  const sa = MM_SZ[a.id] || { w:a.w, h:40 }, sb = MM_SZ[b.id] || { w:b.w, h:40 };
+  const ax = a.x + sa.w/2, ay = a.y + sa.h/2, bx = b.x + sb.w/2, by = b.y + sb.h/2;
+  const dx = bx - ax, dy = by - ay;
+  if(Math.abs(dx) >= Math.abs(dy))
+    return dx >= 0 ? { x:a.x + sa.w, y:ay, d:'r' } : { x:a.x, y:ay, d:'l' };
+  return dy >= 0 ? { x:ax, y:a.y + sa.h, d:'b' } : { x:ax, y:a.y, d:'t' };
+}
+function curve(p, q){
+  const k = Math.max(38, Math.hypot(q.x-p.x, q.y-p.y) * 0.38);
+  const off = (pt, k) => pt.d === 'r' ? [pt.x+k, pt.y] : pt.d === 'l' ? [pt.x-k, pt.y]
+                       : pt.d === 'b' ? [pt.x, pt.y+k] : [pt.x, pt.y-k];
+  const [c1x,c1y] = off(p, k), [c2x,c2y] = off(q, k);
+  return `M${p.x} ${p.y} C${c1x} ${c1y}, ${c2x} ${c2y}, ${q.x} ${q.y}`;
+}
+function paintLinks(){
+  const m = curMap(), by = id => m.nodes.find(n => n.id === id);
+  $('mmLinks').innerHTML = m.links.map(l => {
+    const a = by(l.a), b = by(l.b);
+    if(!a || !b) return '';
+    const d = curve(side(a, b), side(b, a));
+    const sel = MM_SEL === l.id;
+    return `<path class="mm-hit" d="${d}" data-link="${l.id}"></path>
+            <path class="mm-link ${sel?'sel':''}" d="${d}" data-link="${l.id}" marker-end="url(#${sel?'mmArrowSel':'mmArrow'})"></path>`;
+  }).join('');
+}
+function paintPick(){
+  document.querySelector('.mm-pick')?.remove();
+  const m = curMap(), n = m.nodes.find(x => x.id === MM_SEL);
+  if(!n) return;
+  const sz = MM_SZ[n.id] || { w:n.w, h:40 };
+  const bar = document.createElement('div');
+  bar.className = 'mm-pick';
+  bar.style.left = (MM.x + (n.x + sz.w/2) * MM.z) + 'px';
+  bar.style.top  = (MM.y + n.y * MM.z - 42) + 'px';
+  bar.style.transform = 'translateX(-50%)';
+  bar.innerHTML = N_COLS.map(c =>
+      `<button class="sw" data-col="${c}" style="background:${SWATCH[c]}" aria-label="${c}"></button>`).join('')
+    + `<span class="sp"></span>`
+    + (n.root ? '' : `<button class="kill" data-nodekill="${n.id}" aria-label="Supprimer">${svg('trash',12)}</button>`);
+  $('mmCanvas').appendChild(bar);
+}
+const paintMM = () => { paintNodes(); applyView(); };
+
+
+/* ---- Les gestes ---- */
+MOUNT.mindmap = () => {
+  if(!MAPS.length) return;
+  paintMM();
+  const cv = $('mmCanvas');
+  let pan = null, drag = null;
+
+  const pickNode = id => { MM_SEL = id; paintNodes(); };
+
+  cv.addEventListener('pointerdown', e => {
+    if(e.target.closest('.mm-pick')) return;
+    const port = e.target.closest('[data-port]');
+    const node = e.target.closest('[data-node]');
+    const link = e.target.closest('[data-link]');
+
+    /* tirer une flèche */
+    if(port){
+      e.preventDefault(); e.stopPropagation();
+      cv.classList.add('linking');
+      MM_LINK = { from:port.dataset.port, x:0, y:0 };
+      cv.setPointerCapture(e.pointerId);
+      return;
+    }
+    /* déplacer un bloc — sauf si on est en train d'écrire dedans */
+    if(node){
+      if(e.target.closest('[data-text]') && MM_SEL === node.dataset.node) return;
+      e.preventDefault();
+      const n = curMap().nodes.find(x => x.id === node.dataset.node);
+      const p = toWorld(e.clientX, e.clientY);
+      drag = { n, dx:p.x - n.x, dy:p.y - n.y, moved:false };
+      if(MM_SEL !== n.id) pickNode(n.id);
+      cv.setPointerCapture(e.pointerId);
+      return;
+    }
+    if(link){ MM_SEL = link.dataset.link; paintLinks(); paintPick(); return; }
+
+    /* sinon : on déplace le monde */
+    if(MM_SEL){ MM_SEL = null; paintNodes(); }
+    pan = { sx:e.clientX, sy:e.clientY, ox:MM.x, oy:MM.y };
+    cv.classList.add('panning');
+    cv.setPointerCapture(e.pointerId);
+  });
+
+  cv.addEventListener('pointermove', e => {
+    if(MM_LINK){
+      const p = toWorld(e.clientX, e.clientY);
+      const a = curMap().nodes.find(n => n.id === MM_LINK.from);
+      const fake = { id:'_', x:p.x - 1, y:p.y - 1, w:2 };
+      MM_SZ._ = { w:2, h:2 };
+      const g = $('mmGhost');
+      g.style.display = '';
+      g.setAttribute('d', curve(side(a, fake), { x:p.x, y:p.y, d:side(fake, a).d }));
+      cv.classList.add('dirty');
+      return;
+    }
+    if(drag){
+      const p = toWorld(e.clientX, e.clientY);
+      drag.n.x = Math.round(p.x - drag.dx); drag.n.y = Math.round(p.y - drag.dy);
+      drag.moved = true;
+      const el = $('mmNodes').querySelector(`[data-node="${drag.n.id}"]`);
+      el.style.left = drag.n.x + 'px'; el.style.top = drag.n.y + 'px';
+      paintLinks(); paintPick(); cv.classList.add('dirty');
+      return;
+    }
+    if(pan){
+      MM.x = pan.ox + (e.clientX - pan.sx); MM.y = pan.oy + (e.clientY - pan.sy);
+      applyView(); paintPick();
+    }
+  });
+
+  cv.addEventListener('pointerup', async e => {
+    cv.classList.remove('panning','linking');
+    if(MM_LINK){
+      $('mmGhost').style.display = 'none';
+      const over = document.elementFromPoint(e.clientX, e.clientY)?.closest('[data-node]');
+      const m = curMap();
+      let to = over?.dataset.node;
+      /* lâché dans le vide : on crée le bloc au bout du trait */
+      if(!to){
+        const p = toWorld(e.clientX, e.clientY);
+        const n = { id:nid(), x:Math.round(p.x - 60), y:Math.round(p.y - 18), w:170, text:'', color:'plain' };
+        m.nodes.push(n); to = n.id;
+      }
+      if(to !== MM_LINK.from && !m.links.some(l => (l.a===MM_LINK.from && l.b===to) || (l.a===to && l.b===MM_LINK.from)))
+        m.links.push({ id:nid(), a:MM_LINK.from, b:to });
+      MM_SEL = to; MM_LINK = null;
+      paintNodes(); touchMap();
+      const t = $('mmNodes').querySelector(`[data-text="${to}"]`);
+      if(t && !t.textContent) t.focus();
+      return;
+    }
+    if(drag){ if(drag.moved) touchMap(); drag = null; return; }
+    pan = null;
+  });
+
+  /* poser un bloc */
+  cv.addEventListener('dblclick', e => {
+    if(e.target.closest('[data-node]') || e.target.closest('.mm-pick')) return;
+    const p = toWorld(e.clientX, e.clientY);
+    const n = { id:nid(), x:Math.round(p.x - 85), y:Math.round(p.y - 18), w:170, text:'', color:'plain' };
+    curMap().nodes.push(n); MM_SEL = n.id;
+    paintNodes(); touchMap(); cv.classList.add('dirty');
+    $('mmNodes').querySelector(`[data-text="${n.id}"]`)?.focus();
+  });
+
+  /* zoom : molette + Ctrl, ou pincement. Molette seule = on se déplace. */
+  cv.addEventListener('wheel', e => {
+    e.preventDefault();
+    if(e.ctrlKey || e.metaKey){
+      const r = cv.getBoundingClientRect();
+      const mx = e.clientX - r.left, my = e.clientY - r.top;
+      const z = Math.min(2.4, Math.max(.3, MM.z * (1 - e.deltaY * 0.0022)));
+      MM.x = mx - (mx - MM.x) * (z / MM.z);
+      MM.y = my - (my - MM.y) * (z / MM.z);
+      MM.z = z;
+    } else { MM.x -= e.deltaX; MM.y -= e.deltaY; }
+    applyView(); paintPick();
+  }, { passive:false });
+
+  $('mmNodes').addEventListener('input', e => {
+    const t = e.target.closest('[data-text]'); if(!t) return;
+    const n = curMap().nodes.find(x => x.id === t.dataset.text);
+    if(n){ n.text = t.textContent; measure(); paintLinks(); paintPick(); touchMap(); }
+  });
+  $('mmNodes').addEventListener('dblclick', e => {
+    const t = e.target.closest('[data-text]');
+    if(t) t.focus();
+  });
+};
+
+/* ---- Zoom pour tout voir ---- */
+function fitMap(){
+  const m = curMap(); if(!m?.nodes.length) return;
+  const cv = $('mmCanvas'), r = cv.getBoundingClientRect();
+  let x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity;
+  for(const n of m.nodes){
+    const sz = MM_SZ[n.id] || { w:n.w, h:40 };
+    x1 = Math.min(x1, n.x); y1 = Math.min(y1, n.y);
+    x2 = Math.max(x2, n.x + sz.w); y2 = Math.max(y2, n.y + sz.h);
+  }
+  const pad = 60;
+  const z = Math.min(1.6, Math.max(.3, Math.min((r.width - pad*2)/(x2-x1 || 1), (r.height - pad*2)/(y2-y1 || 1))));
+  MM.z = z;
+  MM.x = r.width/2 - (x1 + x2)/2 * z;
+  MM.y = r.height/2 - (y1 + y2)/2 * z;
+  applyView(); paintPick();
+}
+
+/* ---- La barre du haut ---- */
+$('view').addEventListener('click', async e => {
+  const go = e.target.closest('[data-mmgo]');
+  if(go){ MAP_I = +go.dataset.mmgo; MM = { x:0, y:0, z:1 }; MM_SEL = null; renderView(); setTimeout(fitMap, 30); return; }
+
+  const col = e.target.closest('[data-col]');
+  if(col){
+    const n = curMap().nodes.find(x => x.id === MM_SEL);
+    if(n){ n.color = col.dataset.col; paintNodes(); touchMap(); }
+    return;
+  }
+  const k = e.target.closest('[data-nodekill]');
+  if(k){
+    const m = curMap(), id = k.dataset.nodekill;
+    m.nodes = m.nodes.filter(n => n.id !== id);
+    m.links = m.links.filter(l => l.a !== id && l.b !== id);
+    MM_SEL = null; paintNodes(); touchMap();
+    return;
+  }
+  const a = e.target.closest('[data-mm]');
+  if(!a) return;
+  const act = a.dataset.mm;
+  if(act === 'new'){
+    MAPS.push(newMap()); MAP_I = MAPS.length - 1;
+    MM = { x:0, y:0, z:1 }; MM_SEL = null;
+    await saveMaps(); renderView(); setTimeout(fitMap, 30);
+    BUB.flash('happy', 900);
+  }
+  else if(act === 'in'  || act === 'out'){
+    MM.z = Math.min(2.4, Math.max(.3, MM.z * (act === 'in' ? 1.25 : .8)));
+    applyView(); paintPick();
+  }
+  else if(act === 'fit') fitMap();
+  else if(act === 'rename'){
+    const chip = $('view').querySelector('.mm-chip[aria-selected="true"] span');
+    chip.contentEditable = 'plaintext-only'; chip.focus();
+    document.getSelection().selectAllChildren(chip);
+    const done = async () => {
+      chip.contentEditable = 'false';
+      curMap().name = chip.textContent.trim() || 'Sans titre';
+      await saveMaps(); renderView();
+    };
+    chip.addEventListener('blur', done, { once:true });
+    chip.addEventListener('keydown', ev => { if(ev.key === 'Enter'){ ev.preventDefault(); chip.blur(); } });
+  }
+  else if(act === 'kill'){
+    MAPS.splice(MAP_I, 1); MAP_I = Math.max(0, MAP_I - 1);
+    MM = { x:0, y:0, z:1 }; MM_SEL = null;
+    await saveMaps(); renderView(); if(MAPS.length) setTimeout(fitMap, 30);
+  }
+});
+
+/* ---- Clavier ---- */
+document.addEventListener('keydown', e => {
+  if(ACTIVE !== 'mindmap' || !MM_SEL) return;
+  if(e.target.isContentEditable || e.target.tagName === 'INPUT') return;
+  if(e.key === 'Escape'){ MM_SEL = null; paintNodes(); return; }
+  if(e.key === 'Delete' || e.key === 'Backspace'){
+    e.preventDefault();
+    const m = curMap();
+    const n = m.nodes.find(x => x.id === MM_SEL);
+    if(n?.root) return;
+    if(n){ m.nodes = m.nodes.filter(x => x.id !== MM_SEL); m.links = m.links.filter(l => l.a !== MM_SEL && l.b !== MM_SEL); }
+    else m.links = m.links.filter(l => l.id !== MM_SEL);
+    MM_SEL = null; paintNodes(); touchMap();
+  }
+});
 
 /* ================= Le bureau ================= */
 const ago = ts => {
@@ -1063,12 +1546,18 @@ PAGES.dashboard = () => {
 /* ================= Onglets ================= */
 const ICON = {
   dashboard:'<path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+  mindmap:'<circle cx="5" cy="12" r="2.4"/><circle cx="19" cy="6" r="2.4"/><circle cx="19" cy="18" r="2.4"/><path d="M7.3 11.1l9.4-4M7.3 12.9l9.4 4"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  minus:'<path d="M5 12h14"/>',
+  fit:'<path d="M4 9V5h4M20 9V5h-4M4 15v4h4M20 15v4h-4"/>',
+  trash:'<path d="M4 7h16M9 7V5h6v2M7 7l1 13h8l1-13"/>',
   left:'<path d="M15 6l-6 6 6 6"/>',
   right:'<path d="M9 6l6 6-6 6"/>',
   user:'<circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/>',
   settings:'<rect x="2.5" y="7" width="19" height="10" rx="5"/><circle cx="8" cy="12" r="2.6"/>',
   out:'<path d="M15 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3"/><path d="M10 17l-5-5 5-5M5 12h11"/>',
   back:'<path d="M14 6l-6 6 6 6"/>',
+  pencil:'<path d="M4 20h4L19 9a2.1 2.1 0 00-3-3L5 17v3z"/><path d="M14.5 6.5l3 3"/>',
   chev:'<path d="M9 6l6 6-6 6"/>',
 };
 const svg = (k, size=14) =>
@@ -1076,6 +1565,7 @@ const svg = (k, size=14) =>
 
 const META = {
   dashboard:{ label:'Tableau de bord', key:'D', pinned:true },
+  mindmap:  { label:'Cartes mentales',  key:'M' },
 };
 const MAC = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
 const MOD = MAC ? '⌥' : 'Alt';
@@ -1103,6 +1593,7 @@ function renderView(){
   if(host){ VIEW_BUB = new Blob(host); LIVE.push(VIEW_BUB); VIEW_BUB.set('curious'); }
   v.classList.remove('swap'); void v.offsetWidth; v.classList.add('swap');
   v.scrollTop = 0;
+  MOUNT[ACTIVE]?.();          // certaines pages ont besoin de se brancher après coup
 }
 function go(id){
   if(!META[id]) id = 'dashboard';
@@ -2400,7 +2891,7 @@ async function enter(id){
   auth.classList.remove('on');
   shell.classList.add('on');
   paintAvatars();
-  await loadNotes(); paintMem(); paintBadge();
+  await loadNotes(); await loadMaps(); paintMem(); paintBadge();
   setTimeout(()=>{ BUB.bounce(); BUB.flash('happy', 1200); checkDue(); }, 900);
   const saved = await Store.get('grid:tabs:'+id);
   TABS = (saved?.tabs || []).filter(t=>META[t]);
