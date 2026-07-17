@@ -517,23 +517,75 @@ display:flex;align-items:center;gap:4px;padding:5px;
 
 
 /* ---------- Notes de version ---------- */
-.ask-back{display:flex;align-items:center;gap:7px;padding:7px 9px 9px;border-bottom:1px solid var(--hair);margin-bottom:6px}
-.ask-back button{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;color:var(--muted)}
-.ask-back button:hover{background:var(--hover);color:var(--ink)}
-.ask-back .t{font-family:var(--display);font-size:13px;font-weight:600;letter-spacing:-.01em}
-.ask-back .v{margin-left:auto;font-family:var(--mono);font-size:9.5px;color:var(--muted);background:var(--key);border-radius:5px;padding:2px 6px}
-.patch{max-height:264px;overflow-y:auto;padding:0 2px 2px}
-.pv{padding:8px 8px 12px}
-.pv + .pv{border-top:1px solid var(--hair)}
-.pv-h{display:flex;align-items:baseline;gap:8px;margin-bottom:7px}
-.pv-h b{font-family:var(--mono);font-size:11px;color:var(--ink)}
-.pv-h .d{font-size:10px;color:var(--muted)}
-.pv-h .new{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--btn-lo);border-radius:99px;padding:2px 7px;font-weight:600}
-.pv li{display:flex;gap:8px;font-size:12px;color:var(--dim);line-height:1.5;padding:2.5px 0}
-.pv li i{width:4px;height:4px;border-radius:50%;background:var(--muted);flex:none;margin-top:7px}
-.pv li b{color:var(--ink);font-weight:600}
 .ask-row .tag{margin-left:auto;flex:none;font-size:9px;letter-spacing:.06em;text-transform:uppercase;
   color:#fff;background:var(--btn-lo);border-radius:99px;padding:2px 7px;font-weight:600}
+
+
+/* ---------- Formes de bulle ---------- */
+.mmn.s-carte{border-radius:13px !important}
+.mmn.s-rond{
+  border-radius:50% !important;aspect-ratio:1;min-width:104px;max-width:180px;
+  display:grid;place-items:center;padding:24px;
+}
+.mmn.s-losange{
+  border-radius:0 !important;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+  padding:26px 34px;min-width:120px;box-shadow:none;
+}
+.mmn.s-losange:hover,.mmn.s-losange.sel,.mmn.s-losange.drag{box-shadow:none}
+.mmn.s-losange.sel{filter:brightness(1.06) drop-shadow(0 0 0 var(--btn-lo)) drop-shadow(0 0 2px var(--btn-lo)) drop-shadow(0 0 2px var(--btn-lo))}
+.mmn.s-nuage{border-radius:62% 48% 56% 44% / 54% 62% 42% 48% !important;padding:16px 22px;min-width:88px}
+.mmn.s-ruban{border-radius:5px 13px 13px 5px !important;border-left:3px solid var(--n-fg);padding-left:14px}
+
+/* La barre d'outils flottante, en bas à gauche */
+.mm-tool{
+  position:absolute;left:14px;bottom:14px;z-index:5;
+  display:flex;align-items:center;gap:3px;padding:5px;border-radius:99px;
+  background:var(--glass-pop);
+  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 var(--glass-top), var(--shadow-pop);
+}
+.mm-tool button{
+  width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  color:var(--muted);transition:background .16s,color .16s,transform .2s cubic-bezier(.34,1.5,.5,1);
+}
+.mm-tool button:hover{background:var(--hover);color:var(--ink);transform:scale(1.1)}
+.mm-tool button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.mm-tool .sep{width:1px;height:16px;background:var(--hair);margin:0 4px}
+.mm-tool .png{width:auto;padding:0 12px;height:30px;border-radius:99px;gap:6px;
+  display:flex;align-items:center;font-size:11.5px;font-weight:500}
+@media(max-width:720px){.mm-tool .png span{display:none}.mm-tool .png{width:30px;padding:0}}
+
+/* ---------- Le pop-up des nouveautés ---------- */
+.modal{
+  position:fixed;inset:0;z-index:80;display:none;place-items:center;padding:24px;
+  background:rgba(20,23,30,.38);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+}
+.modal.on{display:grid;animation:fadeUp .28s ease}
+.modal-card{
+  width:100%;max-width:560px;max-height:78vh;display:flex;flex-direction:column;
+  background:var(--card);border-radius:26px;box-shadow:var(--shadow-pop);
+  overflow:hidden;animation:popIn .34s cubic-bezier(.34,1.4,.5,1);
+}
+@keyframes popIn{from{opacity:0;transform:translateY(12px) scale(.97)}}
+.pn-h{display:flex;align-items:center;gap:11px;padding:20px 22px 16px;border-bottom:1px solid var(--hair)}
+.pn-t{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.03em}
+.pn-v{font-family:var(--mono);font-size:10.5px;color:var(--muted);background:var(--key);border-radius:6px;padding:3px 8px}
+.pn-x{margin-left:auto;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:var(--muted);background:var(--key)}
+.pn-x:hover{background:var(--hair);color:var(--ink)}
+.pn-body{flex:1;overflow-y:auto;padding:6px 22px 22px}
+.pn-e{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:18px 0}
+.pn-e + .pn-e{border-top:1px solid var(--hair)}
+.pn-rail{display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:5px}
+.pn-rail b{font-family:var(--mono);font-size:11px;color:var(--ink);font-weight:600}
+.pn-rail .d{font-size:9.5px;color:var(--muted);white-space:nowrap}
+.pn-rail i{width:7px;height:7px;border-radius:50%;background:var(--hair)}
+.pn-e.first .pn-rail i{background:var(--btn-lo);box-shadow:0 0 0 3px var(--btn-halo)}
+.pn-new{display:inline-block;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#fff;
+  background:var(--btn-lo);border-radius:99px;padding:2px 8px;font-weight:600;margin-bottom:8px}
+.pn-e ul{display:flex;flex-direction:column;gap:9px}
+.pn-e li{display:flex;gap:10px;font-size:13px;color:var(--dim);line-height:1.55}
+.pn-e li i{width:5px;height:5px;border-radius:50%;background:var(--muted);flex:none;margin-top:8px}
+.pn-e li b{color:var(--ink);font-weight:600}
 
 /* ---------- Les artefacts de sa mémoire ---------- */
 .mem-wrap{display:none}
@@ -1063,6 +1115,7 @@ h1 em{font-style:normal;color:var(--muted)}
 </div>
 
 <input type="file" id="picker" accept="image/*" hidden>
+<div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div>
 
 <script>
 /* ================= Stockage ================= */
@@ -1158,11 +1211,16 @@ let MM_T = null;
 const touchMap = () => { const m = curMap(); if(m) m.updated = Date.now(); clearTimeout(MM_T); MM_T = setTimeout(saveMaps, 400); };
 
 const N_COLS = ['plain','amber','mint','coral','violet','ink'];
+const SHAPES = [
+  { k:'bulle',   t:'Bulle' }, { k:'carte',  t:'Carte' },  { k:'rond',   t:'Rond' },
+  { k:'losange', t:'Losange' }, { k:'nuage', t:'Nuage' },
+];
+let MM_SHAPE = 'bulle';
 const SWATCH = { plain:'var(--card)', amber:'#FFD84D', mint:'#3AD68F', coral:'#FF6B54', violet:'#8B7BF5', ink:'#15171C' };
 
 const newMap = (name) => ({
   id:nid(), name: name || 'Carte ' + (MAPS.length + 1), created:Date.now(), updated:Date.now(),
-  nodes:[{ id:nid(), x:0, y:0, text:'Idée centrale', color:'ink', root:true }],
+  nodes:[{ id:nid(), x:0, y:0, text:'Idée centrale', color:'ink', shape:'bulle', root:true }],
   links:[],
 });
 
@@ -1213,6 +1271,11 @@ PAGES.mindmap = () => {
         </svg>
         <div id="mmNodes"></div>
       </div>
+      <div class="mm-tool">
+        ${SHAPES.map(x=>`<button data-shape="${x.k}" aria-pressed="${MM_SHAPE===x.k}" title="${x.t}" aria-label="${x.t}">${svg('s_'+x.k,15)}</button>`).join('')}
+        <span class="sep"></span>
+        <button class="png" data-mm="png" title="Télécharger en PNG">${svg('down',14)}<span>PNG</span></button>
+      </div>
       <div class="mm-hint">Double-cliquez le fond pour poser un bloc · tirez un point pour relier</div>
     </div>
   </div>`;
@@ -1238,7 +1301,7 @@ let MM_BORN = null;
 function paintNodes(){
   const m = curMap();
   $('mmNodes').innerHTML = m.nodes.map(n => `
-    <div class="mmn c-${n.color} ${n.root?'root':''} ${MM_SEL===n.id?'sel':''} ${MM_BORN===n.id?'born':''}" data-node="${n.id}"
+    <div class="mmn c-${n.color} s-${n.shape || 'bulle'} ${n.root?'root':''} ${MM_SEL===n.id?'sel':''} ${MM_BORN===n.id?'born':''}" data-node="${n.id}"
          style="transform:translate(${n.x}px,${n.y}px);--tf:translate(${n.x}px,${n.y}px)">
       <div class="mmn-t" contenteditable="plaintext-only" data-ph="Écrivez…" data-text="${n.id}">${esc(n.text)}</div>
       <span class="mm-port t" data-port="${n.id}"></span><span class="mm-port r" data-port="${n.id}"></span>
@@ -1253,12 +1316,12 @@ function measure(){
   for(const el of $('mmNodes').children){
     const w = el.offsetWidth, h = el.offsetHeight;
     MM_SZ[el.dataset.node] = { w, h };
-    el.style.borderRadius = h < 46 ? '999px' : '19px';
+    if(el.classList.contains('s-bulle')) el.style.borderRadius = h < 46 ? '999px' : '19px';
   }
 }
 /* Le côté par lequel le trait sort dépend de la position relative des deux blocs. */
 function side(a, b){
-  const sa = MM_SZ[a.id] || { w:a.w, h:40 }, sb = MM_SZ[b.id] || { w:b.w, h:40 };
+  const sa = MM_SZ[a.id] || { w:120, h:40 }, sb = MM_SZ[b.id] || { w:120, h:40 };
   const ax = a.x + sa.w/2, ay = a.y + sa.h/2, bx = b.x + sb.w/2, by = b.y + sb.h/2;
   const dx = bx - ax, dy = by - ay;
   if(Math.abs(dx) >= Math.abs(dy))
@@ -1287,14 +1350,16 @@ function paintPick(){
   document.querySelector('.mm-pick')?.remove();
   const m = curMap(), n = m.nodes.find(x => x.id === MM_SEL);
   if(!n) return;
-  const sz = MM_SZ[n.id] || { w:n.w, h:40 };
+  const sz = MM_SZ[n.id] || { w:120, h:40 };
+  MM_SHAPE = n.shape || 'bulle';
+  document.querySelectorAll('.mm-tool [data-shape]').forEach(b => b.setAttribute('aria-pressed', b.dataset.shape === MM_SHAPE));
   const bar = document.createElement('div');
   bar.className = 'mm-pick';
   bar.style.left = (MM.x + (n.x + sz.w/2) * MM.z) + 'px';
   bar.style.top  = (MM.y + n.y * MM.z - 42) + 'px';
   bar.style.transform = 'translateX(-50%)';
   bar.innerHTML = N_COLS.map(c =>
-      `<button class="sw" data-col="${c}" style="background:${SWATCH[c]}" aria-label="${c}"></button>`).join('')
+      `<button class="sw" data-col="${c}" aria-pressed="${n.color===c}" style="background:${SWATCH[c]}" aria-label="${c}"></button>`).join('')
     + `<span class="sp"></span>`
     + (n.root ? '' : `<button class="kill" data-nodekill="${n.id}" aria-label="Supprimer">${svg('trash',12)}</button>`);
   $('mmCanvas').appendChild(bar);
@@ -1340,10 +1405,16 @@ MOUNT.mindmap = () => {
     $('mmLinks').querySelector(`[data-draw="${h.dataset.link}"]`)?.classList.remove('hot');
   });
 
-  const pickNode = id => { MM_SEL = id; paintNodes(); };
+  /* On ne refait PAS le DOM : sinon la bulle qu'on tient est détachée
+     et on déplace un fantôme pendant que les flèches, elles, suivent le modèle. */
+  const pickNode = id => {
+    MM_SEL = id;
+    for(const el of $('mmNodes').children) el.classList.toggle('sel', el.dataset.node === id);
+    paintLinks(); paintPick();
+  };
 
   cv.addEventListener('pointerdown', e => {
-    if(e.target.closest('.mm-pick')) return;
+    if(e.target.closest('.mm-pick') || e.target.closest('.mm-tool')) return;
     const port = e.target.closest('[data-port]');
     const node = e.target.closest('[data-node]');
     const link = e.target.closest('[data-link]');
@@ -1370,7 +1441,7 @@ MOUNT.mindmap = () => {
     if(link){ MM_SEL = link.dataset.link; paintLinks(); paintPick(); return; }
 
     /* sinon : on déplace le monde */
-    if(MM_SEL){ MM_SEL = null; paintNodes(); }
+    if(MM_SEL){ pickNode(null); }
     pan = { sx:e.clientX, sy:e.clientY, ox:MM.x, oy:MM.y };
     cv.classList.add('panning');
     cv.setPointerCapture(e.pointerId);
@@ -1422,7 +1493,7 @@ MOUNT.mindmap = () => {
       /* lâché dans le vide : on crée le bloc au bout du trait */
       if(!to){
         const p = toWorld(e.clientX, e.clientY);
-        const n = { id:nid(), x:Math.round(p.x - 40), y:Math.round(p.y - 18), text:'', color:'plain' };
+        const n = { id:nid(), x:Math.round(p.x - 40), y:Math.round(p.y - 18), text:'', color:'plain', shape:MM_SHAPE };
         m.nodes.push(n); to = n.id; MM_BORN = n.id;
       }
       if(to !== MM_LINK.from && !m.links.some(l => (l.a===MM_LINK.from && l.b===to) || (l.a===to && l.b===MM_LINK.from)))
@@ -1445,7 +1516,7 @@ MOUNT.mindmap = () => {
   cv.addEventListener('dblclick', e => {
     if(e.target.closest('[data-node]') || e.target.closest('.mm-pick')) return;
     const p = toWorld(e.clientX, e.clientY);
-    const n = { id:nid(), x:Math.round(p.x - 40), y:Math.round(p.y - 18), text:'', color:'plain' };
+    const n = { id:nid(), x:Math.round(p.x - 40), y:Math.round(p.y - 18), text:'', color:'plain', shape:MM_SHAPE };
     curMap().nodes.push(n); MM_SEL = n.id; MM_BORN = n.id;
     paintNodes(); touchMap(); cv.classList.add('dirty');
     $('mmNodes').querySelector(`[data-text="${n.id}"]`)?.focus();
@@ -1476,13 +1547,149 @@ MOUNT.mindmap = () => {
   });
 };
 
+
+/* ---- Télécharger la carte ----
+   On ne peut pas photographier du HTML. Alors on la redessine :
+   mêmes formes, mêmes couleurs, mêmes courbes, mais sur un canevas. */
+const cssv = (el, k) => getComputedStyle(el).getPropertyValue(k).trim();
+
+function wrap(ctx, text, max){
+  const out = [];
+  for(const para of String(text || '').split('\n')){
+    if(!para){ out.push(''); continue; }
+    let line = '';
+    for(const word of para.split(/\s+/)){
+      const t = line ? line + ' ' + word : word;
+      if(ctx.measureText(t).width > max && line){ out.push(line); line = word; }
+      else line = t;
+    }
+    out.push(line);
+  }
+  return out;
+}
+function shapePath(ctx, sh, x, y, w, h, r){
+  ctx.beginPath();
+  if(sh === 'rond'){ ctx.ellipse(x + w/2, y + h/2, w/2, h/2, 0, 0, Math.PI*2); return; }
+  if(sh === 'losange'){
+    ctx.moveTo(x + w/2, y); ctx.lineTo(x + w, y + h/2);
+    ctx.lineTo(x + w/2, y + h); ctx.lineTo(x, y + h/2); ctx.closePath(); return;
+  }
+  if(sh === 'nuage'){
+    const rx = w/2, ry = h/2, cx = x + rx, cy = y + ry;
+    ctx.moveTo(cx, y);
+    ctx.bezierCurveTo(cx + rx*.86, y, x + w, cy - ry*.5, x + w, cy + ry*.08);
+    ctx.bezierCurveTo(x + w, cy + ry*.78, cx + rx*.6, y + h, cx - rx*.06, y + h);
+    ctx.bezierCurveTo(cx - rx*.76, y + h, x, cy + ry*.66, x, cy - ry*.1);
+    ctx.bezierCurveTo(x, cy - ry*.74, cx - rx*.72, y, cx, y);
+    ctx.closePath(); return;
+  }
+  ctx.roundRect(x, y, w, h, sh === 'carte' ? 13 : Math.min(r, h/2));
+}
+
+async function exportPNG(){
+  const m = curMap();
+  if(!m?.nodes.length) return;
+  BUB.tone('orange'); BUB.set('think');
+  await wait(180);
+
+  const PAD = 56, S = 2;
+  let x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity;
+  for(const n of m.nodes){
+    const z = MM_SZ[n.id] || { w:120, h:40 };
+    x1 = Math.min(x1, n.x); y1 = Math.min(y1, n.y);
+    x2 = Math.max(x2, n.x + z.w); y2 = Math.max(y2, n.y + z.h);
+  }
+  const W = x2 - x1 + PAD*2, H = y2 - y1 + PAD*2 + 26;
+  const cvs = document.createElement('canvas');
+  cvs.width = W * S; cvs.height = H * S;
+  const ctx = cvs.getContext('2d');
+  ctx.scale(S, S);
+  ctx.translate(PAD - x1, PAD - y1 + 26);
+
+  const root = document.documentElement;
+  ctx.save(); ctx.setTransform(S, 0, 0, S, 0, 0);
+  ctx.fillStyle = cssv(root, '--card') || '#fff';
+  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = cssv(root, '--muted') || '#888';
+  ctx.font = '600 12px "Familjen Grotesk", system-ui, sans-serif';
+  ctx.textBaseline = 'top';
+  ctx.fillText(m.name, PAD, 20);
+  ctx.restore();
+
+  /* les traits d'abord, ils passent dessous */
+  const by = id => m.nodes.find(n => n.id === id);
+  const linkC = cssv($('mmSvg'), '--link-c') || '#8C919B';
+  ctx.strokeStyle = linkC; ctx.fillStyle = linkC;
+  ctx.lineWidth = 2; ctx.lineCap = 'round';
+  for(const l of m.links){
+    const a = by(l.a), b = by(l.b);
+    if(!a || !b) continue;
+    const p = side(a, b), q = side(b, a);
+    const k = Math.max(38, Math.hypot(q.x-p.x, q.y-p.y) * 0.38);
+    const off = (pt, k) => pt.d === 'r' ? [pt.x+k, pt.y] : pt.d === 'l' ? [pt.x-k, pt.y]
+                         : pt.d === 'b' ? [pt.x, pt.y+k] : [pt.x, pt.y-k];
+    const [c1x,c1y] = off(p, k), [c2x,c2y] = off(q, k);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y); ctx.bezierCurveTo(c1x, c1y, c2x, c2y, q.x, q.y);
+    ctx.stroke();
+    /* la pointe, orientée par la tangente d'arrivée */
+    const ang = Math.atan2(q.y - c2y, q.x - c2x), L = 9, S2 = 3.8;
+    ctx.beginPath();
+    ctx.moveTo(q.x, q.y);
+    ctx.lineTo(q.x - L*Math.cos(ang) + S2*Math.sin(ang), q.y - L*Math.sin(ang) - S2*Math.cos(ang));
+    ctx.lineTo(q.x - L*Math.cos(ang) - S2*Math.sin(ang), q.y - L*Math.sin(ang) + S2*Math.cos(ang));
+    ctx.closePath(); ctx.fill();
+  }
+
+  /* puis les bulles, avec les couleurs vraiment calculées par le navigateur */
+  for(const n of m.nodes){
+    const el = $('mmNodes').querySelector(`[data-node="${n.id}"]`);
+    const z  = MM_SZ[n.id] || { w:120, h:40 };
+    const sh = n.shape || 'bulle';
+    const c1 = el ? cssv(el, '--n-1') : '#fff', c2 = el ? cssv(el, '--n-2') : '#eee';
+    const fg = el ? cssv(el, '--n-fg') : '#15171C', rim = el ? cssv(el, '--n-rim') : 'rgba(0,0,0,.1)';
+
+    ctx.save();
+    ctx.shadowColor = el ? cssv(el, '--n-glow') : 'rgba(0,0,0,.1)';
+    ctx.shadowBlur = 20; ctx.shadowOffsetY = 7;
+    const g = ctx.createLinearGradient(n.x, n.y, n.x + z.w*.35, n.y + z.h);
+    g.addColorStop(0, c1); g.addColorStop(1, c2);
+    ctx.fillStyle = g;
+    shapePath(ctx, sh, n.x, n.y, z.w, z.h, 999);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.strokeStyle = rim; ctx.lineWidth = 1;
+    shapePath(ctx, sh, n.x, n.y, z.w, z.h, 999);
+    ctx.stroke();
+
+    ctx.fillStyle = fg;
+    ctx.font = `${n.root ? 600 : 400} 13px "Inter Tight", system-ui, sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const inner = z.w - (sh === 'rond' ? 48 : sh === 'losange' ? 68 : 34);
+    const lines = wrap(ctx, n.text, Math.max(20, inner));
+    const LH = 18.5, top = n.y + z.h/2 - (lines.length - 1) * LH/2;
+    lines.forEach((ln, i) => ctx.fillText(ln, n.x + z.w/2, top + i*LH));
+  }
+
+  const blob = await new Promise(r => cvs.toBlob(r, 'image/png'));
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (m.name || 'carte').replace(/[^\w\u00C0-\u017F -]/g, '').trim() + '.png';
+  a.click();
+  setTimeout(()=> URL.revokeObjectURL(url), 4000);
+  BUB.tone('green'); BUB.set('happy'); BUB.bounce();
+  setTimeout(()=>{ BUB.tone('blue'); BUB.set('idle'); }, 1400);
+}
+
 /* ---- Zoom pour tout voir ---- */
 function fitMap(){
   const m = curMap(); if(!m?.nodes.length) return;
   const cv = $('mmCanvas'), r = cv.getBoundingClientRect();
   let x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity;
   for(const n of m.nodes){
-    const sz = MM_SZ[n.id] || { w:n.w, h:40 };
+    const sz = MM_SZ[n.id] || { w:120, h:40 };
     x1 = Math.min(x1, n.x); y1 = Math.min(y1, n.y);
     x2 = Math.max(x2, n.x + sz.w); y2 = Math.max(y2, n.y + sz.h);
   }
@@ -1496,6 +1703,14 @@ $('view').addEventListener('click', async e => {
   const go = e.target.closest('[data-mmgo]');
   if(go){ MAP_I = +go.dataset.mmgo; MM = { x:0, y:0, z:1 }; MM_SEL = null; renderView(); setTimeout(fitMap, 30); return; }
 
+  const sh = e.target.closest('[data-shape]');
+  if(sh){
+    MM_SHAPE = sh.dataset.shape;
+    $('view').querySelectorAll('[data-shape]').forEach(b => b.setAttribute('aria-pressed', b.dataset.shape === MM_SHAPE));
+    const n = curMap()?.nodes.find(x => x.id === MM_SEL);
+    if(n){ n.shape = MM_SHAPE; paintNodes(); touchMap(); }   // un bloc choisi : il change de forme
+    return;
+  }
   const col = e.target.closest('[data-col]');
   if(col){
     const n = curMap().nodes.find(x => x.id === MM_SEL);
@@ -1526,6 +1741,7 @@ $('view').addEventListener('click', async e => {
     glide({ x: mx - (mx - MM.x) * (z / MM.z), y: my - (my - MM.y) * (z / MM.z), z }, 240);
   }
   else if(act === 'fit') fitMap();
+  else if(act === 'png') exportPNG();
   else if(act === 'rename'){
     const chip = $('view').querySelector('.mm-chip[aria-selected="true"] span');
     chip.contentEditable = 'plaintext-only'; chip.focus();
@@ -1549,7 +1765,11 @@ $('view').addEventListener('click', async e => {
 document.addEventListener('keydown', e => {
   if(ACTIVE !== 'mindmap' || !MM_SEL) return;
   if(e.target.isContentEditable || e.target.tagName === 'INPUT') return;
-  if(e.key === 'Escape'){ MM_SEL = null; paintNodes(); return; }
+  if(e.key === 'Escape'){
+    MM_SEL = null;
+    for(const el of $('mmNodes').children) el.classList.remove('sel');
+    paintLinks(); paintPick(); return;
+  }
   if(e.key === 'Delete' || e.key === 'Backspace'){
     e.preventDefault();
     const m = curMap();
@@ -1647,6 +1867,12 @@ const ICON = {
   settings:'<rect x="2.5" y="7" width="19" height="10" rx="5"/><circle cx="8" cy="12" r="2.6"/>',
   out:'<path d="M15 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3"/><path d="M10 17l-5-5 5-5M5 12h11"/>',
   back:'<path d="M14 6l-6 6 6 6"/>',
+  down:'<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19h14"/>',
+  s_bulle:'<rect x="3" y="7.5" width="18" height="9" rx="4.5"/>',
+  s_carte:'<rect x="3.5" y="6" width="17" height="12" rx="2.5"/>',
+  s_rond:'<circle cx="12" cy="12" r="7.5"/>',
+  s_losange:'<path d="M12 4.5L19.5 12 12 19.5 4.5 12z"/>',
+  s_nuage:'<path d="M12 5c4.2 0 8 2.6 8 6.4 0 4.4-3.4 7.6-8.4 7.6C7.2 19 4 16 4 12c0-4 3.6-7 8-7z"/>',
   pencil:'<path d="M4 20h4L19 9a2.1 2.1 0 00-3-3L5 17v3z"/><path d="M14.5 6.5l3 3"/>',
   chev:'<path d="M9 6l6 6-6 6"/>',
 };
@@ -2208,10 +2434,16 @@ window.addEventListener('pointerdown', eyesTo, {passive:true});
    À tenir à jour à CHAQUE mise à jour : une entrée en tête, rien d'autre à faire.
    Grid lit ce tableau, en déduit la version courante et prévient si elle est neuve. */
 const PATCH = [
+  { v:'1.0', d:'18 juillet 2026', items:[
+    ['Cinq formes', 'bulle, carte, rond, losange, nuage — dans une barre d\u2019outils en verre, en bas à gauche.'],
+    ['Télécharger en PNG', 'la carte est redessinée sur un canevas, en double résolution.'],
+    ['Le glissement réparé', 'la bulle qu\u2019on tenait était détruite par sa propre sélection : on déplaçait un fantôme.'],
+    ['Ces notes', 'dans un vrai pop-up centré, lisible.'],
+  ]},
   { v:'0.9', d:'18 juillet 2026', items:[
     ['Cartes mentales', 'les blocs sont devenus des bulles qui suivent le texte, avec des dégradés et des halos colorés.'],
     ['Fluidité', 'déplacement au transform, un seul calcul par image, zoom qui glisse au lieu de sauter.'],
-    ['Notes de version', 'cette page. Grid vous prévient quand quelque chose bouge.'],
+    ['Notes de version', 'Grid vous prévient quand quelque chose bouge.'],
   ]},
   { v:'0.8', d:'18 juillet 2026', items:[
     ['Cartes mentales', 'poser un bloc, écrire dedans, tirer une flèche, lâcher dans le vide pour créer la suite.'],
@@ -2250,18 +2482,30 @@ const isNew = () => SEEN !== VERSION;
 async function loadSeen(){ SEEN = await Store.get(seenKey()); }
 async function markSeen(){ SEEN = VERSION; await Store.set(seenKey(), VERSION); }
 
-const patchHTML = () => `
-  <div class="ask-back">
-    <button data-ask-back="1" aria-label="Retour">${svg('back',14)}</button>
-    <span class="t">Ce qui a changé</span>
-    <span class="v">v${VERSION}</span>
-  </div>
-  <div class="patch">
-    ${PATCH.map((p,i)=>`<div class="pv">
-      <div class="pv-h"><b>${p.v}</b><span class="d">${p.d}</span>${i===0 && isNew() ? '<span class="new">nouveau</span>' : ''}</div>
-      <ul>${p.items.map(([t,x])=>`<li><i></i><span><b>${t}</b> — ${x}</span></li>`).join('')}</ul>
-    </div>`).join('')}
-  </div>`;
+function openPatch(){
+  $('modalCard').innerHTML = `
+    <div class="pn-h">
+      <span class="pn-t">Ce qui a changé</span>
+      <span class="pn-v">v${VERSION}</span>
+      <button class="pn-x" data-modal-x aria-label="Fermer">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="pn-body">
+      ${PATCH.map((p,i)=>`<div class="pn-e ${i===0?'first':''}">
+        <div class="pn-rail"><b>${p.v}</b><i></i><span class="d">${p.d.replace(' 2026','')}</span></div>
+        <div>
+          ${i===0 && isNew() ? '<span class="pn-new">nouveau</span>' : ''}
+          <ul>${p.items.map(([t,x])=>`<li><i></i><span><b>${t}</b> — ${x}</span></li>`).join('')}</ul>
+        </div>
+      </div>`).join('')}
+    </div>`;
+  $('modal').classList.add('on');
+  markSeen();
+}
+const closeModal = () => $('modal').classList.remove('on');
+$('modal').addEventListener('click', e=>{ if(e.target.id === 'modal' || e.target.closest('[data-modal-x]')) closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && $('modal').classList.contains('on')){ e.stopPropagation(); closeModal(); } }, true);
 
 /* ================= Barre de demande ================= */
 
@@ -2278,11 +2522,10 @@ const SKILLS = [
 
 /* Les onglets, c'est le rôle du « + ». Grid, lui, s'occupe de ce que vous lui dites. */
 const ACTIONS = () => [
-  { label:'Voir ce qui a changé', tag: isNew() ? 'nouveau' : '', stay:true,
-    run:()=>{ ASK_VIEW = 'patch'; paintAsk(); markSeen(); } },
+  { label:'Voir ce qui a changé', tag: isNew() ? 'nouveau' : '', run:()=>openPatch() },
   { label:'Basculer en mode ' + (isDark()?'clair':'sombre'), run:()=>applyTheme(!isDark()) },
 ];
-let ASK_CUR = 0, ASK_HITS = [], ASK_READ = null, ASK_VIEW = null;
+let ASK_CUR = 0, ASK_HITS = [], ASK_READ = null;
 
 /* Grid travaille : orange. Grid a noté : vert. Puis il redevient lui-même. */
 async function working(){ BUB.tone('orange'); BUB.set('think'); await wait(300); }
@@ -2293,7 +2536,6 @@ async function noted(){
 }
 
 function paintAsk(){
-  if(ASK_VIEW === 'patch'){ ASK_HITS = []; $('askList').innerHTML = patchHTML(); return; }
   const raw = $('askInput').value;
   ASK_READ = read(raw);
   const list = $('askList');
@@ -2430,7 +2672,7 @@ function openAsk(){
   $('ask').classList.add('on');
   $('bubBtn').setAttribute('aria-expanded','true');
   BUB.locked = true; BUB.look(0, 2.4); BUB.set('squint'); BUB.bounce();
-  $('askInput').value = ''; ASK_CUR = 0; ASK_VIEW = null; paintAsk();
+  $('askInput').value = ''; ASK_CUR = 0; paintAsk();
   setTimeout(()=>$('askInput').focus(), 40);
 }
 function closeAsk(){
@@ -2455,7 +2697,6 @@ async function submitAsk(){
   const h = ASK_HITS[ASK_CUR];
   if(!h) return BUB.flash('wow', 800);
   if(h.note) return h.note.kind === 'note' ? closeAsk() : finishNote(h.note.id);
-  if(h.act.stay){ h.act.run(); BUB.flash('curious', 800); return; }   // il reste ouvert pour qu'on lise
   closeAsk();
   await working();
   h.act.run();
@@ -2728,7 +2969,6 @@ $('bubBtn').addEventListener('click', e=>{
   $('ask').classList.contains('on') ? closeAsk() : openAsk();
 });
 $('ask').addEventListener('click', e=>{
-  if(e.target.closest('[data-ask-back]')){ ASK_VIEW = null; paintAsk(); $('askInput').focus(); return; }
   const c = e.target.closest('[data-conf]');
   if(c){
     if(c.dataset.conf === 'yes') return remember(ASK_READ.kind, ASK_READ.what, ASK_READ.due, ASK_READ.hasTime, ASK_READ.repeat, ASK_READ.urgent);
@@ -2750,7 +2990,7 @@ $('askInput').addEventListener('keydown', e=>{
   if(e.key === 'ArrowDown' && ASK_HITS.length){ e.preventDefault(); ASK_CUR = (ASK_CUR+1) % ASK_HITS.length; paintAsk(); }
   else if(e.key === 'ArrowUp' && ASK_HITS.length){ e.preventDefault(); ASK_CUR = (ASK_CUR-1+ASK_HITS.length) % ASK_HITS.length; paintAsk(); }
   else if(e.key === 'Enter'){ e.preventDefault(); submitAsk(); }
-  else if(e.key === 'Escape'){ if(ASK_VIEW){ ASK_VIEW = null; paintAsk(); } else closeAsk(); }
+  else if(e.key === 'Escape'){ closeAsk(); }
 });
 
 
