@@ -587,6 +587,248 @@ display:flex;align-items:center;gap:4px;padding:5px;
 .pn-e li i{width:5px;height:5px;border-radius:50%;background:var(--muted);flex:none;margin-top:8px}
 .pn-e li b{color:var(--ink);font-weight:600}
 
+
+/* Une catégorie dans le menu du + */
+.menu-row.cat .n{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--muted);
+  background:var(--key);border-radius:5px;padding:2px 5px}
+.menu-row.cat .ch{display:grid;place-items:center;color:var(--muted);margin-left:6px;transition:transform .18s}
+.menu-row.cat:hover .ch{transform:translateX(2px);color:var(--ink)}
+.menu-back{display:flex;align-items:center;gap:8px;padding:4px 4px 9px;margin-bottom:5px;border-bottom:1px solid var(--hair)}
+.menu-back button{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;color:var(--muted)}
+.menu-back button:hover{background:var(--hover);color:var(--ink)}
+.menu-back .t{font-family:var(--display);font-size:12.5px;font-weight:600;letter-spacing:-.01em}
+
+
+/* ---------- Matériaux Maker ---------- */
+.mx{display:grid;grid-template-columns:1fr 372px;gap:14px;align-items:start}
+@media(max-width:940px){.mx{grid-template-columns:1fr}}
+.mx-h{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:13px}
+.mx-h .beta{margin-left:7px;color:var(--btn-lo);letter-spacing:.08em}
+
+.mx-view{background:var(--soft);border-radius:14px;padding:14px;display:flex;flex-direction:column;
+  align-items:center;gap:12px;box-shadow:inset 0 0 0 1px var(--hair)}
+#mxPreview{width:100%;max-width:420px;aspect-ratio:1;border-radius:10px;display:block;
+  box-shadow:0 2px 6px rgba(20,23,30,.09), 0 14px 34px rgba(20,23,30,.10)}
+
+/* Le segment, dans le verre des onglets */
+.mx-seg{display:inline-flex;gap:2px;padding:3px;border-radius:99px;
+  background:var(--glass);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 var(--glass-top)}
+.mx-seg.full{display:flex;width:100%}
+.mx-seg.full button{flex:1}
+.mx-seg button{padding:6px 13px;border-radius:99px;font-size:12px;color:var(--muted);transition:.16s;white-space:nowrap}
+.mx-seg button:hover{color:var(--dim)}
+.mx-seg button[aria-selected="true"]{
+  color:var(--ink);font-weight:500;background:var(--glass-hi);
+  box-shadow:inset 0 0 0 1px var(--glass-rim), inset 0 1px 0 rgba(255,255,255,.8), 0 2px 8px rgba(20,23,30,.09);
+}
+.mx-cap{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+
+.mx-out{display:flex;gap:9px;margin-top:14px}
+.mx-sel{flex:1;position:relative}
+.mx-sel select{
+  width:100%;appearance:none;background:var(--soft);color:var(--ink);
+  border-radius:11px;padding:11px 32px 11px 13px;font-family:var(--mono);font-size:12.5px;cursor:pointer;
+  box-shadow:inset 0 0 0 1px var(--hair);transition:box-shadow .16s;
+}
+.mx-sel select:hover{box-shadow:inset 0 0 0 1px var(--muted)}
+.mx-sel::after{content:"";position:absolute;right:13px;top:50%;width:6px;height:6px;
+  border-right:1.6px solid var(--muted);border-bottom:1.6px solid var(--muted);
+  transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.mx-out .gbtn{width:auto;padding:0 20px;display:flex;align-items:center;gap:8px}
+.mx-note{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:11px;min-height:14px}
+
+.mx-wheel{display:flex;gap:15px;align-items:center;margin-bottom:17px}
+#mxWheel{width:128px;height:128px;cursor:crosshair;flex:none;border-radius:50%;
+  box-shadow:0 2px 8px rgba(20,23,30,.12), 0 8px 22px rgba(20,23,30,.10)}
+.mx-side{flex:1;display:flex;flex-direction:column;gap:11px;min-width:0}
+.mx-hex{display:flex;align-items:center;gap:8px}
+.mx-hex .sw{width:30px;height:30px;border-radius:9px;flex:none;box-shadow:inset 0 0 0 1px rgba(20,23,30,.14)}
+.mx-hex input{
+  flex:1;min-width:0;background:var(--soft);color:var(--ink);border-radius:9px;padding:8px 10px;
+  font-family:var(--mono);font-size:12.5px;box-shadow:inset 0 0 0 1px var(--hair);transition:box-shadow .16s;
+}
+.mx-hex input:focus{box-shadow:inset 0 0 0 1.5px var(--btn-lo)}
+
+.mx-chips{display:flex;flex-wrap:wrap;gap:7px}
+.mx-chip{width:28px;height:28px;border-radius:9px;transition:transform .18s cubic-bezier(.34,1.5,.5,1);
+  box-shadow:inset 0 0 0 1px rgba(20,23,30,.14)}
+.mx-chip:hover{transform:translateY(-2px) scale(1.06)}
+.mx-chip[aria-pressed="true"]{box-shadow:inset 0 0 0 1px rgba(20,23,30,.14), 0 0 0 2px var(--card), 0 0 0 3.5px var(--ink)}
+
+.mx-block{margin-bottom:17px}
+.mx-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.mx-sw{position:relative;width:40px;height:23px;border-radius:99px;flex:none;cursor:pointer;
+  background:var(--key);box-shadow:inset 0 0 0 1px var(--hair);transition:.22s}
+.mx-sw::after{content:"";position:absolute;top:2.5px;left:2.5px;width:17px;height:17px;border-radius:50%;
+  background:var(--card);box-shadow:0 1px 3px rgba(20,23,30,.28);
+  transition:transform .24s cubic-bezier(.34,1.4,.5,1)}
+.mx-sw[aria-checked="true"]{background:linear-gradient(180deg,var(--btn-hi),var(--btn-lo));box-shadow:inset 0 0 0 1px transparent, 0 0 12px var(--btn-halo)}
+.mx-sw[aria-checked="true"]::after{transform:translateX(17px)}
+.mx-two{display:none;gap:8px}
+.mx-two.on{display:flex}
+.mx-two button{flex:1;display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:11px;
+  background:var(--soft);box-shadow:inset 0 0 0 1px var(--hair);transition:.16s}
+.mx-two button .d{width:17px;height:17px;border-radius:5px;flex:none;box-shadow:inset 0 0 0 1px rgba(20,23,30,.14)}
+.mx-two button span{font-size:11.5px;color:var(--muted)}
+.mx-two button[aria-selected="true"]{box-shadow:inset 0 0 0 1.5px var(--btn-lo)}
+.mx-two button[aria-selected="true"] span{color:var(--ink)}
+
+.mx-sliders{display:flex;flex-direction:column;gap:14px}
+.mx-s{display:grid;grid-template-columns:76px 1fr 44px;align-items:center;gap:11px}
+.mx-s label{font-size:12px;color:var(--muted)}
+.mx-s .v{font-family:var(--mono);font-size:11.5px;color:var(--ink);text-align:right}
+.mx-s input[type=range]{-webkit-appearance:none;appearance:none;height:4px;border-radius:99px;
+  background:var(--hair);outline:none;cursor:pointer}
+.mx-s input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;
+  background:var(--card);box-shadow:inset 0 0 0 4px var(--btn-lo), 0 1px 4px rgba(20,23,30,.3);cursor:pointer;
+  transition:transform .16s}
+.mx-s input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.mx-s input[type=range]::-moz-range-thumb{width:15px;height:15px;border:none;border-radius:50%;
+  background:var(--card);box-shadow:inset 0 0 0 4px var(--btn-lo), 0 1px 4px rgba(20,23,30,.3);cursor:pointer}
+
+.mx-drop{display:flex;gap:16px;align-items:center}
+@media(max-width:640px){.mx-drop{flex-direction:column;align-items:stretch}}
+.mx-zone{
+  position:relative;flex:none;width:200px;height:118px;border-radius:14px;overflow:hidden;cursor:pointer;
+  display:grid;place-items:center;text-align:center;
+  background:var(--soft);box-shadow:inset 0 0 0 1.5px var(--hair);
+  color:var(--muted);font-size:12.5px;transition:.18s;
+}
+@media(max-width:640px){.mx-zone{width:100%}}
+.mx-zone:hover,.mx-zone.over{box-shadow:inset 0 0 0 1.5px var(--btn-lo);color:var(--ink);background:var(--btn-halo)}
+.mx-zone small{display:block;color:var(--muted);font-size:10.5px;margin-top:4px}
+.mx-zone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mx-said{flex:1;font-size:13px;color:var(--muted);line-height:1.6}
+.mx-said b{color:var(--ink);font-weight:600}
+.mx-said.ok{color:var(--dim)}
+
+
+/* ---------- Dossiers ---------- */
+.vault{display:grid;grid-template-columns:236px 1fr;gap:16px;align-items:start}
+@media(max-width:820px){.vault{grid-template-columns:1fr}}
+
+/* La colonne de gauche : recherche + arbre */
+.vt-side{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:12px;position:sticky;top:8px}
+.vt-search{display:flex;align-items:center;gap:8px;padding:8px 11px;border-radius:11px;background:var(--soft);
+  box-shadow:inset 0 0 0 1px var(--hair);margin-bottom:11px}
+.vt-search svg{color:var(--muted);flex:none}
+.vt-search input{flex:1;min-width:0;background:none;border:none;outline:none;color:var(--ink);font-size:13px}
+.vt-search input::placeholder{color:var(--muted)}
+.vt-tree{display:flex;flex-direction:column;gap:1px}
+.vt-node{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:9px;cursor:pointer;
+  color:var(--dim);transition:background .14s,color .14s;user-select:none}
+.vt-node:hover{background:var(--hover);color:var(--ink)}
+.vt-node.on{background:var(--soft);color:var(--ink);font-weight:500;box-shadow:inset 0 0 0 1px var(--hair)}
+.vt-node .tw{width:14px;flex:none;display:grid;place-items:center;color:var(--muted);transition:transform .18s}
+.vt-node .tw.open{transform:rotate(90deg)}
+.vt-node .tw.leaf{opacity:0}
+.vt-node .ico{flex:none;display:grid;place-items:center;color:var(--muted)}
+.vt-node.on .ico{color:var(--amber)}
+.vt-node .lbl{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:13px}
+.vt-node .ct{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.vt-kids{margin-left:13px;border-left:1px solid var(--hair);padding-left:5px;display:flex;flex-direction:column;gap:1px}
+.vt-newf{display:flex;align-items:center;gap:8px;width:100%;padding:9px;border-radius:9px;color:var(--muted);
+  font-size:12.5px;margin-top:6px;transition:.14s}
+.vt-newf:hover{background:var(--hover);color:var(--ink)}
+
+/* La colonne principale */
+.vt-crumbs{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:16px}
+.vt-crumbs button{font-family:var(--display);font-size:19px;font-weight:500;letter-spacing:-.02em;color:var(--ink);transition:color .14s}
+.vt-crumbs button.mut{color:var(--muted);font-size:15px;font-weight:400}
+.vt-crumbs button.mut:hover{color:var(--ink)}
+.vt-crumbs .sl{color:var(--muted);font-size:15px}
+.vt-sec{font-family:var(--display);font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--dim);margin:4px 2px 12px}
+.vt-sec .n{font-family:var(--mono);font-size:10px;color:var(--muted);font-weight:400;margin-left:6px}
+
+.vt-folders{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:13px;margin-bottom:26px}
+.folder{position:relative;cursor:pointer;transition:transform .22s cubic-bezier(.34,1.3,.5,1)}
+.folder:hover{transform:translateY(-3px)}
+.folder-vis{position:relative;height:112px}
+/* le corps du dossier, deux tons + languette */
+.folder-vis .body{position:absolute;inset:16px 0 0;border-radius:14px;
+  background:linear-gradient(160deg,var(--fd-1),var(--fd-2));
+  box-shadow:0 2px 5px rgba(20,23,30,.10), 0 14px 30px var(--fd-sh)}
+.folder-vis .tab{position:absolute;top:6px;left:8px;width:44%;height:20px;border-radius:9px 9px 0 0;
+  background:var(--fd-1)}
+.folder{--fd-1:#5B626F;--fd-2:#3A404B;--fd-sh:rgba(30,34,42,.24)}
+.folder.c-amber {--fd-1:#F7C04A;--fd-2:#E0921C;--fd-sh:rgba(224,146,28,.3)}
+.folder.c-mint  {--fd-1:#4FD98B;--fd-2:#12A05C;--fd-sh:rgba(16,162,92,.3)}
+.folder.c-coral {--fd-1:#FF8067;--fd-2:#E8412A;--fd-sh:rgba(232,65,42,.3)}
+.folder.c-violet{--fd-1:#A08BFF;--fd-2:#6B4EE8;--fd-sh:rgba(107,78,232,.32)}
+.folder.c-sky   {--fd-1:#54B8F5;--fd-2:#0A84FF;--fd-sh:rgba(10,132,255,.3)}
+/* les feuilles qui dépassent */
+.folder-vis .peek{position:absolute;top:9px;left:14px;right:14px;height:44px;display:flex;gap:5px;align-items:flex-end;z-index:1}
+.folder-vis .peek i{flex:1;background:#fff;border-radius:5px 5px 0 0;box-shadow:0 -2px 8px rgba(0,0,0,.12)}
+.folder-vis .peek i:nth-child(1){height:34px;transform:rotate(-2deg)}
+.folder-vis .peek i:nth-child(2){height:42px}
+.folder-vis .peek i:nth-child(3){height:32px;transform:rotate(2deg)}
+/* les pastilles de type de fichier */
+.folder-vis .badges{position:absolute;left:14px;bottom:12px;display:flex;z-index:2}
+.folder-vis .badges span{width:22px;height:22px;border-radius:6px;margin-left:-6px;display:grid;place-items:center;
+  background:var(--card);box-shadow:0 1px 3px rgba(20,23,30,.25);color:var(--dim)}
+.folder-vis .badges span:first-child{margin-left:0}
+.folder-meta{padding:10px 4px 2px}
+.folder-name{font-family:var(--display);font-size:14px;font-weight:500;letter-spacing:-.01em;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.folder-sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+.folder-x{position:absolute;top:20px;right:8px;width:24px;height:24px;border-radius:7px;z-index:3;
+  display:grid;place-items:center;color:#fff;background:rgba(20,23,30,.28);opacity:0;transition:.15s}
+.folder:hover .folder-x{opacity:1}
+.folder-x:hover{background:var(--coral)}
+
+/* La liste des fichiers */
+.vt-files{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.vt-fhead,.vt-frow{display:grid;grid-template-columns:1fr 130px 74px;align-items:center;gap:10px;padding:12px 16px}
+.vt-fhead{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--hair)}
+.vt-frow{border-top:1px solid var(--hair);transition:background .14s}
+.vt-frow:first-of-type{border-top:none}
+.vt-frow:hover{background:var(--soft)}
+.vt-fname{display:flex;align-items:center;gap:11px;min-width:0;cursor:pointer}
+.vt-fic{width:34px;height:34px;border-radius:9px;flex:none;display:grid;place-items:center;
+  background:var(--soft);color:var(--muted);overflow:hidden;box-shadow:inset 0 0 0 1px var(--hair)}
+.vt-fic img{width:100%;height:100%;object-fit:cover}
+.vt-fic.pdf{background:rgba(232,65,42,.12);color:#E8412A}
+.vt-ftext{min-width:0}
+.vt-ftext .nm{font-size:13px;color:var(--ink);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-weight:500}
+.vt-ftext .meta{font-size:10.5px;color:var(--muted);margin-top:1px}
+.vt-fby{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--dim);min-width:0}
+.vt-fby .av{width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:var(--violet);color:#fff;font-size:10px;font-weight:600;overflow:hidden}
+.vt-fby .av img{width:100%;height:100%;object-fit:cover}
+.vt-fby span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.vt-facts{display:flex;gap:3px;justify-content:flex-end}
+.vt-facts button{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;color:var(--muted);transition:.14s}
+.vt-facts button:hover{background:var(--hover);color:var(--ink)}
+.vt-facts button.del:hover{background:var(--coral);color:#fff}
+
+/* La zone de dépôt */
+.vt-drop{margin:2px 0 20px;border-radius:14px;padding:22px;text-align:center;cursor:pointer;
+  background:var(--soft);box-shadow:inset 0 0 0 1.5px var(--hair);color:var(--muted);font-size:13px;transition:.16s}
+.vt-drop:hover,.vt-drop.over{box-shadow:inset 0 0 0 1.5px var(--btn-lo);color:var(--ink);background:var(--btn-halo)}
+.vt-drop b{color:var(--dim);font-weight:600}
+.vt-drop small{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+body.vault-drop .vt-main{outline:2px dashed var(--btn-lo);outline-offset:6px;border-radius:16px}
+
+/* Aperçu plein écran */
+.lightbox{position:fixed;inset:0;z-index:85;display:none;place-items:center;padding:32px;
+  background:rgba(11,13,18,.82);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.lightbox.on{display:grid;animation:fadeUp .26s ease}
+.lightbox img{max-width:100%;max-height:82vh;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:popIn .32s cubic-bezier(.34,1.4,.5,1)}
+.lightbox .lb-bar{position:absolute;top:20px;right:20px;display:flex;gap:8px}
+.lightbox .lb-bar button{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  color:#fff;background:rgba(255,255,255,.14);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:.15s}
+.lightbox .lb-bar button:hover{background:rgba(255,255,255,.26)}
+.lightbox .lb-cap{position:absolute;bottom:24px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:12.5px}
+
+/* Nommer un dossier */
+.vt-mk{padding:2px}
+.vt-mk .pin{margin-bottom:11px}
+.vt-cols{display:flex;gap:7px;margin:0 0 13px}
+.vt-cols button{width:26px;height:26px;border-radius:50%;transition:transform .16s}
+.vt-cols button:hover{transform:scale(1.14)}
+.vt-cols button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--card),0 0 0 3.5px var(--ink)}
+
 /* ---------- Les artefacts de sa mémoire ---------- */
 .mem-wrap{display:none}
 .mem-wrap.on{display:block;animation:memBorn .55s cubic-bezier(.34,1.5,.5,1)}
@@ -1116,6 +1358,15 @@ h1 em{font-style:normal;color:var(--muted)}
 
 <input type="file" id="picker" accept="image/*" hidden>
 <div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div>
+<input type="file" id="vtFile" accept="image/*,application/pdf" multiple hidden>
+<div class="lightbox" id="lightbox">
+  <div class="lb-bar">
+    <button id="lbDl" aria-label="Télécharger"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19h14"/></svg></button>
+    <button id="lbX" aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <img id="lbImg" alt="">
+  <div class="lb-cap" id="lbCap"></div>
+</div>
 
 <script>
 /* ================= Stockage ================= */
@@ -1781,6 +2032,812 @@ document.addEventListener('keydown', e => {
   }
 });
 
+
+/* ================= Matériaux Maker =================
+   Le moteur (SDF, éclairage, k-means, autocorrélation) est repris tel quel :
+   il marche. Seule la peau change. */
+const MXC = { colors:[{h:112,s:.78,v:.83},{h:112,s:.82,v:.52}], active:0, damier:false,
+              shape:'tiles', angle:45, tiling:2 };
+const MX_PRESETS = ['#44D32E','#1E9ED4','#8A2BE2','#C81E1E','#FF4FA3','#E8A317','#B8C0CC','#2A2E36','#7CFC4D','#FF6A2B'];
+const MX_SHAPES = [['tiles','Tuiles'],['dashes','Dashes'],['smooth','Lisse']];
+const cl = (n,a,b) => n<a?a:(n>b?b:n);
+function hsv2rgb(h,s,v){
+  h=((h%360)+360)%360; const c=v*s, x=c*(1-Math.abs((h/60)%2-1)), m=v-c;
+  let r=0,g=0,b=0;
+  if(h<60){r=c;g=x;} else if(h<120){r=x;g=c;} else if(h<180){g=c;b=x;}
+  else if(h<240){g=x;b=c;} else if(h<300){r=x;b=c;} else {r=c;b=x;}
+  return [(r+m)*255,(g+m)*255,(b+m)*255];
+}
+const hx = rgb => '#' + rgb.map(n => cl(Math.round(n),0,255).toString(16).padStart(2,'0')).join('').toUpperCase();
+function hex2hsv(h){
+  const m = /^#?([0-9a-f]{6})$/i.exec(h); if(!m) return null;
+  const n = parseInt(m[1],16), r=(n>>16&255)/255, g=(n>>8&255)/255, b=(n&255)/255;
+  return rgb2hsv([r*255,g*255,b*255]);
+}
+function rgb2hsv(p){
+  const r=p[0]/255,g=p[1]/255,b=p[2]/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;
+  let h=0;
+  if(d){ if(mx===r)h=((g-b)/d)%6; else if(mx===g)h=(b-r)/d+2; else h=(r-g)/d+4; h*=60; if(h<0)h+=360; }
+  return { h, s: mx?d/mx:0, v: mx };
+}
+const mxCur = () => MXC.colors[MXC.active];
+const MX_L = (()=>{ let x=.7, y=-.72; const n=Math.hypot(x,y); return { x:x/n, y:y/n }; })();
+
+function mxPal(col,k){
+  return {
+    bg: hsv2rgb(col.h, col.s, col.v),
+    face: hsv2rgb(col.h, col.s*.92, cl(col.v*1.015,0,1)),
+    hi: hsv2rgb(col.h, col.s*cl(1-.45*k,0,1), cl(col.v*(1+.10*k),0,1)),
+    sh: hsv2rgb(col.h, cl(col.s*1.03,0,1), cl(col.v*(1-.55*k),0,1)),
+  };
+}
+function mxShade(buf,size,cells,tileR,radiusR,k,M){
+  M = M || 1;
+  const p0 = mxPal(MXC.colors[0],k), p1 = MXC.damier ? mxPal(MXC.colors[1],k) : p0;
+  const cell = size/cells, half = cell*tileR/2;
+  let idx = 0;
+  const isDash = MXC.shape === 'dashes', sm = MXC.shape === 'smooth';
+  let rad,hxx,hyy,L,T,rr2,ca,sa,bev;
+  if(isDash){
+    L = half*1.3; T = half*.36; rr2 = T;
+    const th = MXC.angle*Math.PI/180; ca = Math.cos(th); sa = Math.sin(th);
+    bev = Math.max(2, T*.9);
+  } else {
+    rad = 2*half*radiusR; hxx = half-rad; hyy = half-rad; bev = Math.max(2, 2*half*.26);
+  }
+  for(let y=0;y<size;y++){
+    const crow = Math.floor(y/cell), brow = Math.floor(crow/M), ly = (y%cell)-cell/2;
+    const xoff = (isDash && (crow&1)) ? cell*.5 : 0;
+    for(let x=0;x<size;x++){
+      const bsel = brow + Math.floor(Math.floor(x/cell)/M);
+      const p = (MXC.damier && (bsel&1)) ? p1 : p0;
+      const bg=p.bg, face=p.face, hi=p.hi, sh=p.sh;
+      if(sm){ buf[idx++]=bg[0]; buf[idx++]=bg[1]; buf[idx++]=bg[2]; buf[idx++]=255; continue; }
+      let sdf,nx,ny;
+      if(isDash){
+        const lx = (((x-xoff)%cell)+cell)%cell - cell/2;
+        const rx = lx*ca+ly*sa, ry = -lx*sa+ly*ca;
+        const qx = Math.abs(rx)-(L-rr2), qy = Math.abs(ry)-(T-rr2);
+        const ax = qx>0?qx:0, ay = qy>0?qy:0, outl = Math.sqrt(ax*ax+ay*ay);
+        sdf = outl + Math.min(Math.max(qx,qy),0) - rr2;
+        let nrx,nry;
+        if(qx>0&&qy>0){ const Lr=outl+1e-6; nrx=(rx<0?-1:1)*ax/Lr; nry=(ry<0?-1:1)*ay/Lr; }
+        else if(qx>qy){ nrx=(rx<0?-1:1); nry=0; } else { nrx=0; nry=(ry<0?-1:1); }
+        nx = ca*nrx - sa*nry; ny = sa*nrx + ca*nry;
+      } else {
+        const lx2 = (x%cell)-cell/2;
+        const qx2 = Math.abs(lx2)-hxx, qy2 = Math.abs(ly)-hyy;
+        const ax2 = qx2>0?qx2:0, ay2 = qy2>0?qy2:0, outl2 = Math.sqrt(ax2*ax2+ay2*ay2);
+        sdf = outl2 + Math.min(Math.max(qx2,qy2),0) - rad;
+        if(qx2>0&&qy2>0){ const Lr2=outl2+1e-6; nx=(lx2<0?-1:1)*ax2/Lr2; ny=(ly<0?-1:1)*ay2/Lr2; }
+        else if(qx2>qy2){ nx=(lx2<0?-1:1); ny=0; } else { nx=0; ny=(ly<0?-1:1); }
+      }
+      const cov = cl(.5-sdf,0,1);
+      let r,g,b;
+      if(cov<=0){ r=bg[0]; g=bg[1]; b=bg[2]; }
+      else {
+        const dot = nx*MX_L.x + ny*MX_L.y;
+        const rim = Math.pow(cl(1-Math.abs(sdf)/bev,0,1), .7);
+        const pos = (dot>0?dot:0)*rim, neg = (dot<0?-dot:0)*rim, bw = 1-pos-neg;
+        r = bg[0] + (face[0]*bw+hi[0]*pos+sh[0]*neg - bg[0])*cov;
+        g = bg[1] + (face[1]*bw+hi[1]*pos+sh[1]*neg - bg[1])*cov;
+        b = bg[2] + (face[2]*bw+hi[2]*pos+sh[2]*neg - bg[2])*cov;
+      }
+      buf[idx++]=r; buf[idx++]=g; buf[idx++]=b; buf[idx++]=255;
+    }
+  }
+}
+function mxRender(canvas,size,c){
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d'), img = ctx.createImageData(size,size);
+  mxShade(img.data, size, c.cells, c.tileR, c.radiusR, c.k, c.M);
+  ctx.putImageData(img,0,0);
+}
+
+/* ---- La page ---- */
+PAGES.material = () => `
+  <div class="page-head" style="padding-top:4px">
+    <h1>Matériaux Maker. <em>Des tuiles en relief, prêtes pour UEFN.</em></h1>
+  </div>
+
+  <section class="card" style="margin-bottom:14px">
+    <div class="mx-h">Reproduire une texture <span class="beta">auto</span></div>
+    <div class="mx-drop">
+      <label class="mx-zone" id="mxZone">
+        <input type="file" id="mxFile" accept="image/*" hidden>
+        <span id="mxZoneT">Glissez une image<small>ou cliquez pour choisir</small></span>
+        <img id="mxThumb" alt="" hidden>
+      </label>
+      <p class="mx-said" id="mxSaid">Envoyez une texture ou une capture bien cadrée. Les couleurs sont regroupées en deux teintes, la grille est trouvée par autocorrélation des contours, et les curseurs se règlent seuls. Vous affinez ensuite.</p>
+    </div>
+  </section>
+
+  <div class="mx">
+    <section class="card">
+      <div class="mx-h">Aperçu</div>
+      <div class="mx-view">
+        <canvas id="mxPreview" width="512" height="512"></canvas>
+        <div style="display:flex;align-items:center;gap:9px">
+          <span class="mx-cap">Répétition</span>
+          <div class="mx-seg" id="mxTiling">
+            ${[1,2,3].map(n=>`<button data-t="${n}" aria-selected="${MXC.tiling===n}">${n}×</button>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="mx-out">
+        <span class="mx-sel">
+          <select id="mxRes">
+            <option value="512">512 × 512</option>
+            <option value="1024" selected>1024 × 1024</option>
+            <option value="2048">2048 × 2048</option>
+          </select>
+        </span>
+        <button class="gbtn" id="mxDl">${svg('down',14)} Exporter</button>
+      </div>
+      <div class="mx-note" id="mxNote">PNG sRGB, puissance de 2. Import UEFN : Texture Group = World · Filter Nearest.</div>
+    </section>
+
+    <section class="card">
+      <div class="mx-h">Matériau</div>
+      <div class="mx-wheel">
+        <canvas id="mxWheel" width="128" height="128"></canvas>
+        <div class="mx-side">
+          <div>
+            <div class="mx-s" style="grid-template-columns:1fr">
+              <label style="margin-bottom:7px">Luminosité</label>
+            </div>
+            <input type="range" id="mxVal" min="5" max="100" value="83" style="width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:99px;background:var(--hair);outline:none;cursor:pointer">
+          </div>
+          <div class="mx-hex">
+            <span class="sw" id="mxSw"></span>
+            <input id="mxHex" maxlength="7" spellcheck="false">
+          </div>
+        </div>
+      </div>
+
+      <div class="mx-block">
+        <div class="mx-row"><label class="mx-h" style="margin:0">Forme du motif</label></div>
+        <div class="mx-seg full" id="mxShape">
+          ${MX_SHAPES.map(([k,t])=>`<button data-s="${k}" aria-selected="${MXC.shape===k}">${t}</button>`).join('')}
+        </div>
+        <div class="mx-seg full" id="mxAngle" style="margin-top:8px;display:none">
+          <button data-a="45" aria-selected="true">╱ 45°</button>
+          <button data-a="135" aria-selected="false">╲ 135°</button>
+        </div>
+      </div>
+
+      <div class="mx-block">
+        <div class="mx-row"><label class="mx-h" style="margin:0">Presets</label></div>
+        <div class="mx-chips" id="mxChips">
+          ${MX_PRESETS.map(h=>`<button class="mx-chip" data-hex="${h}" style="background:${h}" aria-pressed="false" aria-label="${h}"></button>`).join('')}
+        </div>
+      </div>
+
+      <div class="mx-block">
+        <div class="mx-row">
+          <label class="mx-h" style="margin:0">Damier — 2 couleurs</label>
+          <button class="mx-sw" id="mxDamier" role="switch" aria-checked="false" aria-label="Damier"></button>
+        </div>
+        <div class="mx-two" id="mxTwo">
+          ${[0,1].map(i=>`<button data-i="${i}" aria-selected="${i===0}"><span class="d" id="mxDot${i}"></span><span>Couleur ${i+1}</span></button>`).join('')}
+        </div>
+      </div>
+
+      <div class="mx-sliders">
+        <div class="mx-s" id="mxr-cells"><label>Tuiles</label><input type="range" id="mxCells" min="2" max="16" value="8" step="1"><span class="v" id="mxCellsO">8×8</span></div>
+        <div class="mx-s" id="mxr-blocks" style="display:none"><label>Blocs</label><input type="range" id="mxBlocks" min="2" max="8" value="4" step="2"><span class="v" id="mxBlocksO">4×4</span></div>
+        <div class="mx-s" id="mxr-tpb" style="display:none"><label>Tuiles/bloc</label><input type="range" id="mxTpb" min="1" max="5" value="3" step="1"><span class="v" id="mxTpbO">3</span></div>
+        <div class="mx-s" id="mxr-tile"><label>Taille</label><input type="range" id="mxTile" min="40" max="80" value="64" step="1"><span class="v" id="mxTileO">64%</span></div>
+        <div class="mx-s" id="mxr-round"><label>Arrondi</label><input type="range" id="mxRound" min="0" max="50" value="24" step="1"><span class="v" id="mxRoundO">24%</span></div>
+        <div class="mx-s" id="mxr-depth"><label>Relief</label><input type="range" id="mxDepth" min="0" max="160" value="100" step="1"><span class="v" id="mxDepthO">100%</span></div>
+      </div>
+    </section>
+  </div>`;
+
+
+/* ---- Les branchements ---- */
+const MX = {};
+function mxRead(){
+  const tileR = +$('mxTile').value/100, radiusR = +$('mxRound').value/100, k = +$('mxDepth').value/100;
+  if(MXC.damier){
+    const blocks = +$('mxBlocks').value, tpb = +$('mxTpb').value;
+    return { cells:blocks*tpb, M:tpb, blocks, tpb, tileR, radiusR, k };
+  }
+  return { cells:+$('mxCells').value, M:1, tileR, radiusR, k };
+}
+function mxRows(){
+  const t = MXC.shape === 'tiles', sm = MXC.shape === 'smooth';
+  $('mxAngle').style.display = MXC.shape === 'dashes' ? 'flex' : 'none';
+  $('mxr-tile').style.display  = sm ? 'none' : '';
+  $('mxr-round').style.display = t ? '' : 'none';
+  $('mxr-depth').style.display = sm ? 'none' : '';
+  $('mxr-cells').style.display  = (!MXC.damier && !sm) ? '' : 'none';
+  $('mxr-blocks').style.display = MXC.damier ? '' : 'none';
+  $('mxr-tpb').style.display    = MXC.damier ? '' : 'none';
+}
+function mxWheelDraw(){
+  const W = $('mxWheel'), ctx = W.getContext('2d'), R = 64;
+  const img = ctx.createImageData(128,128), d = img.data;
+  for(let y=0;y<128;y++) for(let x=0;x<128;x++){
+    const dx=x-R, dy=y-R, dist=Math.sqrt(dx*dx+dy*dy), i=(y*128+x)*4;
+    if(dist<=R){
+      let hue = Math.atan2(dy,dx)*180/Math.PI; if(hue<0) hue+=360;
+      const c = hsv2rgb(hue, Math.min(dist/R,1), 1);
+      d[i]=c[0]; d[i+1]=c[1]; d[i+2]=c[2]; d[i+3]=255;
+    } else d[i+3]=0;
+  }
+  ctx.putImageData(img,0,0);
+  const col = mxCur(), ang = col.h*Math.PI/180, rr = col.s*R;
+  const px = R+Math.cos(ang)*rr, py = R+Math.sin(ang)*rr;
+  ctx.beginPath(); ctx.arc(px,py,6.5,0,7); ctx.strokeStyle='#fff'; ctx.lineWidth=3; ctx.stroke();
+  ctx.beginPath(); ctx.arc(px,py,6.5,0,7); ctx.strokeStyle='rgba(20,23,30,.5)'; ctx.lineWidth=1.5; ctx.stroke();
+}
+function mxUpdate(){
+  if(ACTIVE !== 'material' || !$('mxPreview')) return;
+  const c = mxRead();
+  if(MXC.shape === 'dashes' && !MXC.damier && (c.cells & 1)){ c.cells = Math.max(2, c.cells-1); $('mxCells').value = c.cells; }
+  if(MXC.damier){ $('mxBlocksO').textContent = c.blocks+'×'+c.blocks; $('mxTpbO').textContent = c.tpb; }
+  else $('mxCellsO').textContent = c.cells+'×'+c.cells;
+  $('mxTileO').textContent  = Math.round(c.tileR*100)+'%';
+  $('mxRoundO').textContent = Math.round(c.radiusR*100)+'%';
+  $('mxDepthO').textContent = Math.round(c.k*100)+'%';
+
+  MX.off ||= document.createElement('canvas');
+  mxRender(MX.off, c.cells*16, c);
+  const pv = $('mxPreview'), ctx = pv.getContext('2d'), ps = 512;
+  pv.width = ps; pv.height = ps;
+  ctx.clearRect(0,0,ps,ps); ctx.imageSmoothingEnabled = true;
+  const step = ps/MXC.tiling;
+  for(let i=0;i<MXC.tiling;i++) for(let j=0;j<MXC.tiling;j++) ctx.drawImage(MX.off, i*step, j*step, step, step);
+
+  const col = mxCur(), h = hx(hsv2rgb(col.h,col.s,col.v));
+  $('mxHex').value = h; $('mxSw').style.background = h; $('mxVal').value = Math.round(col.v*100);
+  [0,1].forEach(i => $('mxDot'+i).style.background = hx(hsv2rgb(MXC.colors[i].h, MXC.colors[i].s, MXC.colors[i].v)));
+  $('mxChips').querySelectorAll('[data-hex]').forEach(b => b.setAttribute('aria-pressed', b.dataset.hex.toUpperCase() === h));
+  mxWheelDraw();
+}
+function mxDamier(on){
+  MXC.damier = on;
+  $('mxDamier').setAttribute('aria-checked', on);
+  $('mxTwo').classList.toggle('on', on);
+  if(!on){ MXC.active = 0; $('mxTwo').querySelectorAll('[data-i]').forEach(b => b.setAttribute('aria-selected', b.dataset.i === '0')); }
+  mxRows(); mxUpdate();
+}
+
+MOUNT.material = () => {
+  mxRows(); mxUpdate();
+  const W = $('mxWheel');
+  W.addEventListener('pointerdown', e => {
+    W.setPointerCapture(e.pointerId);
+    const pick = ev => {
+      const r = W.getBoundingClientRect();
+      const dx = ev.clientX - r.left - 64, dy = ev.clientY - r.top - 64;
+      let hue = Math.atan2(dy,dx)*180/Math.PI; if(hue<0) hue+=360;
+      mxCur().h = hue; mxCur().s = Math.min(Math.sqrt(dx*dx+dy*dy)/64, 1);
+      mxUpdate();
+    };
+    pick(e);
+    const mv = ev => pick(ev);
+    const up = () => { W.removeEventListener('pointermove', mv); W.removeEventListener('pointerup', up); };
+    W.addEventListener('pointermove', mv); W.addEventListener('pointerup', up);
+  });
+  $('mxVal').addEventListener('input', function(){ mxCur().v = this.value/100; mxUpdate(); });
+  $('mxHex').addEventListener('change', function(){
+    const h = hex2hsv(this.value.trim());
+    if(h){ MXC.colors[MXC.active] = h; mxUpdate(); } else mxUpdate();
+  });
+  ['mxCells','mxBlocks','mxTpb','mxTile','mxRound','mxDepth'].forEach(id => $(id).addEventListener('input', mxUpdate));
+  $('mxDamier').addEventListener('click', ()=> mxDamier(!MXC.damier));
+
+  $('mxDl').addEventListener('click', async ()=>{
+    const size = +$('mxRes').value, c = mxRead();
+    $('mxNote').textContent = 'Génération ' + size + '×' + size + '…';
+    BUB.tone('orange'); BUB.set('think');
+    await wait(30);
+    const out = document.createElement('canvas');
+    mxRender(out, size, c);
+    const blob = await new Promise(r => out.toBlob(r, 'image/png'));
+    const url = URL.createObjectURL(blob), a = document.createElement('a');
+    const c0 = hx(hsv2rgb(MXC.colors[0].h, MXC.colors[0].s, MXC.colors[0].v)).slice(1);
+    const tag = MXC.damier
+      ? 'damier_' + c0 + '-' + hx(hsv2rgb(MXC.colors[1].h, MXC.colors[1].s, MXC.colors[1].v)).slice(1)
+      : (MXC.shape === 'dashes' ? 'dashes_' : MXC.shape === 'smooth' ? 'uni_' : 'tuiles_') + c0;
+    a.href = url; a.download = 'GRID_' + tag + '_' + size + '.png'; a.click();
+    setTimeout(()=> URL.revokeObjectURL(url), 2000);
+    $('mxNote').textContent = 'Exporté : ' + a.download;
+    BUB.tone('green'); BUB.set('happy'); BUB.bounce();
+    setTimeout(()=>{ BUB.tone('blue'); BUB.set('idle'); }, 1400);
+  });
+
+  const zone = $('mxZone');
+  $('mxFile').addEventListener('change', e => e.target.files[0] && mxTake(e.target.files[0]));
+  ['dragenter','dragover'].forEach(k => zone.addEventListener(k, e => { e.preventDefault(); zone.classList.add('over'); }));
+  zone.addEventListener('dragleave', e => { e.preventDefault(); zone.classList.remove('over'); });
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); e.stopPropagation(); zone.classList.remove('over');
+    if(e.dataTransfer.files[0]) mxTake(e.dataTransfer.files[0]);
+  });
+};
+
+$('view').addEventListener('click', e => {
+  if(ACTIVE !== 'material') return;
+  const seg = (host, attr, set) => {
+    const b = e.target.closest(`#${host} [data-${attr}]`);
+    if(!b) return false;
+    $(host).querySelectorAll('button').forEach(x => x.setAttribute('aria-selected', x === b));
+    set(b.dataset[attr]); return true;
+  };
+  if(seg('mxTiling','t', v => { MXC.tiling = +v; mxUpdate(); })) return;
+  if(seg('mxShape','s', v => { MXC.shape = v; mxRows(); mxUpdate(); })) return;
+  if(seg('mxAngle','a', v => { MXC.angle = +v; mxUpdate(); })) return;
+  if(seg('mxTwo','i', v => { MXC.active = +v; mxUpdate(); })) return;
+  const chip = e.target.closest('[data-hex]');
+  if(chip){ const h = hex2hsv(chip.dataset.hex); if(h){ MXC.colors[MXC.active] = h; mxUpdate(); } }
+});
+
+
+/* ---- Lire une texture existante ----
+   Deux couleurs par k-means, la grille par autocorrélation des contours.
+   Repris tel quel : c'est ce qui marche. */
+const mxDraw = (img,w,h) => { const c = document.createElement('canvas'); c.width=w; c.height=h;
+  c.getContext('2d').drawImage(img,0,0,w,h); return c; };
+const mxPix = c => c.getContext('2d').getImageData(0,0,c.width,c.height).data;
+const d2 = (p,c) => (p[0]-c[0])**2 + (p[1]-c[1])**2 + (p[2]-c[2])**2;
+
+function mxKmeans(pts){
+  const lum = p => .299*p[0] + .587*p[1] + .114*p[2];
+  let mn=0, mx=0;
+  for(let i=1;i<pts.length;i++){ if(lum(pts[i])<lum(pts[mn])) mn=i; if(lum(pts[i])>lum(pts[mx])) mx=i; }
+  let c0 = pts[mn].slice(), c1 = pts[mx].slice();
+  for(let it=0;it<12;it++){
+    const s0=[0,0,0], s1=[0,0,0]; let n0=0, n1=0;
+    for(const p of pts){
+      if(d2(p,c1) < d2(p,c0)){ s1[0]+=p[0]; s1[1]+=p[1]; s1[2]+=p[2]; n1++; }
+      else { s0[0]+=p[0]; s0[1]+=p[1]; s0[2]+=p[2]; n0++; }
+    }
+    if(!n0 || !n1) break;
+    c0 = [s0[0]/n0, s0[1]/n0, s0[2]/n0]; c1 = [s1[0]/n1, s1[1]/n1, s1[2]/n1];
+  }
+  let k0=0, k1=0;
+  for(const p of pts) (d2(p,c1) < d2(p,c0)) ? k1++ : k0++;
+  return { centers:[c0,c1], counts:[k0,k1] };
+}
+function mxEdges(img,S){
+  const d = mxPix(mxDraw(img,S,S)), g = new Float32Array(S*S);
+  for(let i=0;i<S*S;i++) g[i] = .299*d[i*4] + .587*d[i*4+1] + .114*d[i*4+2];
+  const px = new Float64Array(S), py = new Float64Array(S);
+  for(let y=0;y<S;y++) for(let x=0;x<S;x++){
+    const i = y*S+x;
+    px[x] += Math.abs(g[i] - g[y*S + (x>0?x-1:x)]);
+    py[y] += Math.abs(g[i] - g[(y>0?y-1:y)*S + x]);
+  }
+  return { px, py };
+}
+function mxPeak(prof,minlag,maxlag){
+  const n = prof.length;
+  let mean = 0; for(let i=0;i<n;i++) mean += prof[i]; mean /= n;
+  const p = new Float64Array(n); for(let i=0;i<n;i++) p[i] = prof[i]-mean;
+  const ac = []; let mx = -1e18;
+  for(let lag=minlag;lag<maxlag;lag++){
+    let s = 0; for(let i=0;i<n-lag;i++) s += p[i]*p[i+lag];
+    s /= (n-lag); ac.push(s); if(s>mx) mx = s;
+  }
+  if(mx <= 0) return null;
+  const thr = .25*mx;
+  for(let i=1;i<ac.length-1;i++) if(ac[i]>ac[i-1] && ac[i]>=ac[i+1] && ac[i]>thr) return minlag+i;
+  return null;
+}
+function mxGrid(img){
+  const S = 200, pr = mxEdges(img,S);
+  const a = mxPeak(pr.px, Math.max(4,Math.floor(S/16)), Math.floor(S/2));
+  const b = mxPeak(pr.py, Math.max(4,Math.floor(S/16)), Math.floor(S/2));
+  const cand = []; if(a) cand.push(S/a); if(b) cand.push(S/b);
+  if(!cand.length) return 8;
+  return cl(Math.round(cand.reduce((x,y)=>x+y,0)/cand.length), 2, 16);
+}
+function mxMap(img,N,centers){
+  const d = mxPix(mxDraw(img,N,N)), m = [];
+  for(let y=0;y<N;y++){
+    const row = [];
+    for(let x=0;x<N;x++){
+      const i = (y*N+x)*4, p = [d[i],d[i+1],d[i+2]];
+      row.push(d2(p,centers[1]) < d2(p,centers[0]) ? 1 : 0);
+    }
+    m.push(row);
+  }
+  return m;
+}
+function mxRun(m){
+  const N = m.length, runs = {};
+  const scan = get => { for(let a=0;a<N;a++){ let r=1;
+    for(let b=1;b<N;b++){ if(get(a,b) === get(a,b-1)) r++; else { runs[r]=(runs[r]||0)+1; r=1; } }
+    runs[r]=(runs[r]||0)+1; } };
+  scan((a,b)=>m[a][b]); scan((a,b)=>m[b][a]);
+  let best=1, bc=0;
+  for(const k in runs) if(runs[k]>bc){ bc=runs[k]; best=+k; }
+  return best;
+}
+function mxAnalyze(img){
+  const d = mxPix(mxDraw(img,150,150)), pts = [];
+  for(let i=0;i<d.length;i+=4) pts.push([d[i],d[i+1],d[i+2]]);
+  const km = mxKmeans(pts), total = km.counts[0]+km.counts[1];
+  const share = Math.min(km.counts[0],km.counts[1])/total;
+  const dist = Math.sqrt(d2(km.centers[0], km.centers[1]));
+  const isD = share > .30 && dist > 28;
+  const cells = mxGrid(img);
+  const r = { damier:isD, cells, centers:km.centers, counts:km.counts };
+  if(isD){
+    const M = cl(mxRun(mxMap(img, cells, km.centers)), 1, 5);
+    let blocks = Math.max(2, Math.round(cells/M));
+    if(blocks % 2) blocks++;
+    r.tpb = M; r.blocks = Math.min(8, blocks);
+  }
+  return r;
+}
+function mxApply(r){
+  if(r.damier){
+    MXC.colors[0] = rgb2hsv(r.centers[0]); MXC.colors[1] = rgb2hsv(r.centers[1]);
+    $('mxBlocks').value = r.blocks; $('mxTpb').value = r.tpb;
+    MXC.active = 0;
+    $('mxTwo').querySelectorAll('[data-i]').forEach(b => b.setAttribute('aria-selected', b.dataset.i === '0'));
+    mxDamier(true);
+    return `Damier — deux couleurs, <b>${r.blocks}×${r.blocks} blocs</b> de <b>${r.tpb} tuiles</b>.`;
+  }
+  const big = r.counts[0] >= r.counts[1] ? r.centers[0] : r.centers[1];
+  MXC.colors[0] = rgb2hsv(big);
+  const n = cl(r.cells, 2, 16);
+  $('mxCells').value = n; MXC.active = 0;
+  mxDamier(false);
+  return `Texture unie — couleur calée, grille <b>≈ ${n}×${n}</b>.`;
+}
+async function mxTake(f){
+  const said = $('mxSaid');
+  if(!f || !/^image\//.test(f.type)){ said.textContent = 'Fichier non reconnu — envoyez une image.'; return; }
+  const url = URL.createObjectURL(f), img = new Image();
+  img.onerror = () => { said.textContent = 'Image illisible.'; };
+  img.onload = async () => {
+    $('mxThumb').src = url; $('mxThumb').hidden = false; $('mxZoneT').style.display = 'none';
+    said.textContent = 'Analyse…'; said.classList.remove('ok');
+    BUB.tone('orange'); BUB.set('think');
+    await wait(40);
+    try {
+      const msg = mxApply(mxAnalyze(img));
+      said.innerHTML = '<b>Reproduit.</b> ' + msg + ' Affinez si besoin.';
+      said.classList.add('ok');
+      BUB.tone('green'); BUB.set('happy'); BUB.bounce();
+      setTimeout(()=>{ BUB.tone('blue'); BUB.set('idle'); }, 1400);
+    } catch(err) {
+      said.textContent = 'Analyse impossible sur cette image. Essayez une texture plus nette, ou réglez à la main.';
+      BUB.tone('blue'); BUB.flash('squint', 900);
+    }
+  };
+  img.src = url;
+}
+
+
+/* ================= Dossiers =================
+   Un arbre de dossiers, des fichiers dedans. Les images sont stockées
+   dans le navigateur (data URL), compressées, avec un quota assumé. */
+let VAULT = { folders:[], files:[] };
+let VT_CUR = null, VT_OPEN = {}, VT_Q = '';
+const vaultKey = () => 'grid:vault:' + SESSION.id;
+const saveVault = () => Store.set(vaultKey(), VAULT);
+async function loadVault(){ VAULT = (await Store.get(vaultKey())) || { folders:[], files:[] }; }
+const fid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+
+const VT_PALETTE = ['plain','amber','mint','coral','violet','sky'];
+const VT_SWATCH = { plain:'#4A515E', amber:'#F0A319', mint:'#12A05C', coral:'#E8412A', violet:'#6B4EE8', sky:'#0A84FF' };
+const IMG_MAX = 4.4e6;                       // au-delà, le quota du navigateur sature vite
+const kids  = pid => VAULT.folders.filter(f => f.parent === pid);
+const inDir = fid => VAULT.files.filter(f => f.folder === fid);
+const folderById = id => VAULT.folders.find(f => f.id === id);
+/* tout ce qui est sous un dossier, en profondeur */
+function subtree(id){
+  const out = [id]; let i = 0;
+  while(i < out.length){ for(const k of kids(out[i])) out.push(k.id); i++; }
+  return out;
+}
+const KB = b => b < 1024 ? b + ' o' : b < 1048576 ? (b/1024).toFixed(0) + ' Ko' : (b/1048576).toFixed(1) + ' Mo';
+const fDate = ts => new Date(ts).toLocaleDateString('fr-FR', { day:'numeric', month:'short', year:'2-digit' });
+
+/* ---- L'arbre de gauche ---- */
+function treeRows(pid, depth){
+  return kids(pid).map(f => {
+    const has = kids(f.id).length, open = VT_OPEN[f.id];
+    const n = inDir(f.id).length;
+    return `<div>
+      <div class="vt-node ${VT_CUR===f.id?'on':''}" data-vtgo="${f.id}">
+        <span class="tw ${has?'':'leaf'} ${open?'open':''}" data-vttw="${f.id}">${has?svg('chev',11):''}</span>
+        <span class="ico">${svg('folderMini',15)}</span>
+        <span class="lbl">${esc(f.name)}</span>
+        <span class="ct">${n||''}</span>
+      </div>
+      ${has && open ? `<div class="vt-kids">${treeRows(f.id, depth+1)}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+const FTYPE = f => f.kind === 'pdf' ? 'pdf' : f.kind === 'image' ? 'image' : 'file';
+function fileIcon(f){
+  if(f.kind === 'image' && f.data) return `<span class="vt-fic"><img src="${f.data}" alt=""></span>`;
+  if(f.kind === 'pdf') return `<span class="vt-fic pdf">${svg('filePdf',17)}</span>`;
+  return `<span class="vt-fic">${svg('fileGen',17)}</span>`;
+}
+/* les 3 pastilles de type sur la carte dossier */
+function folderBadges(id){
+  const files = inDir(id);
+  const seen = [], out = [];
+  for(const f of files){ const t = FTYPE(f); if(!seen.includes(t)){ seen.push(t); out.push(t); } if(out.length===3) break; }
+  const ic = { image:'img', pdf:'filePdf', file:'fileGen' };
+  return out.map(t => `<span>${svg(ic[t],13)}</span>`).join('');
+}
+
+function crumbs(){
+  const chain = [];
+  let c = VT_CUR;
+  while(c){ const f = folderById(c); if(!f) break; chain.unshift(f); c = f.parent; }
+  return `<button class="${VT_CUR?'mut':''}" data-vtgo="">Dossiers</button>` +
+    chain.map((f,i) => `<span class="sl">/</span><button class="${i<chain.length-1?'mut':''}" data-vtgo="${f.id}">${esc(f.name)}</button>`).join('');
+}
+
+PAGES.vault = () => {
+  const showFolders = VT_CUR ? kids(VT_CUR) : kids(null);
+  let files = VT_CUR ? inDir(VT_CUR) : VAULT.files.filter(f => !f.folder);
+  if(VT_Q){
+    const q = strip(VT_Q);
+    files = VAULT.files.filter(f => strip(f.name).includes(q));
+  }
+  files = [...files].sort((a,b) => b.created - a.created);
+
+  const empty = !VAULT.folders.length && !VAULT.files.length;
+  return `
+  <div class="page-head" style="padding-top:4px">
+    <h1>Dossiers. <em>${empty ? 'Rangez vos images et vos docs.' : ''}</em></h1>
+  </div>
+  <div class="vault">
+    <aside class="vt-side">
+      <div class="vt-search">
+        ${svg('search',15)}
+        <input id="vtSearch" placeholder="Rechercher un fichier" value="${esc(VT_Q)}" spellcheck="false">
+      </div>
+      <div class="vt-tree">
+        <div class="vt-node ${!VT_CUR?'on':''}" data-vtgo="">
+          <span class="tw leaf"></span><span class="ico">${svg('vault',15)}</span>
+          <span class="lbl">Tous les dossiers</span><span class="ct">${VAULT.folders.filter(f=>!f.parent).length||''}</span>
+        </div>
+        ${treeRows(null, 0)}
+      </div>
+      <button class="vt-newf" data-vtnew="1">${svg('plus',14)} Nouveau dossier</button>
+    </aside>
+
+    <div class="vt-main">
+      <div class="vt-crumbs">${crumbs()}</div>
+
+      <div class="vt-drop" id="vtDrop" data-vtdrop="1">
+        ${svg('upload',18)}
+        <div style="margin-top:7px"><b>Déposez des images ou des PDF</b>${VT_CUR ? ' dans ce dossier' : ''}</div>
+        <small>ou cliquez pour choisir · JPG, PNG, GIF, WebP, PDF</small>
+      </div>
+
+      ${showFolders.length ? `
+        <div class="vt-sec">${VT_CUR ? 'Sous-dossiers' : 'Dossiers'}<span class="n">${showFolders.length}</span></div>
+        <div class="vt-folders">
+          ${showFolders.map(f => {
+            const cnt = inDir(f.id).length, sub = kids(f.id).length;
+            return `<div class="folder c-${f.color||'plain'}" data-vtgo="${f.id}">
+              <div class="folder-vis">
+                <span class="tab"></span>
+                <span class="peek"><i></i><i></i><i></i></span>
+                <span class="body"></span>
+                <span class="badges">${folderBadges(f.id)}</span>
+              </div>
+              <button class="folder-x" data-vtkill="${f.id}" aria-label="Supprimer">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              </button>
+              <div class="folder-meta">
+                <div class="folder-name">${esc(f.name)}</div>
+                <div class="folder-sub">${cnt} fichier${cnt>1?'s':''}${sub?` · ${sub} dossier${sub>1?'s':''}`:''}</div>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>` : ''}
+
+      ${files.length ? `
+        <div class="vt-sec">${VT_Q ? 'Résultats' : 'Fichiers'}<span class="n">${files.length}</span></div>
+        <div class="vt-files">
+          <div class="vt-fhead"><span>Nom</span><span>Ajouté</span><span></span></div>
+          ${files.map(f => `<div class="vt-frow" data-file="${f.id}">
+            <div class="vt-fname" data-open-file="${f.id}">
+              ${fileIcon(f)}
+              <div class="vt-ftext">
+                <div class="nm">${esc(f.name)}</div>
+                <div class="meta">${KB(f.size)}${f.kind==='pdf'?' · PDF':f.kind==='image'?' · Image':''}${VT_Q&&f.folder?' · '+esc(folderById(f.folder)?.name||''):''}</div>
+              </div>
+            </div>
+            <div class="vt-fby">
+              <span class="av">${SESSION.photo?`<img src="${SESSION.photo}" alt="">`:esc((SESSION.pseudo||'?')[0].toUpperCase())}</span>
+              <span>${esc(SESSION.pseudo||'moi')} · ${fDate(f.created)}</span>
+            </div>
+            <div class="vt-facts">
+              ${f.kind==='image'?`<button data-open-file="${f.id}" aria-label="Voir">${svg('img',15)}</button>`:''}
+              <button class="dl" data-dl-file="${f.id}" aria-label="Télécharger">${svg('down',15)}</button>
+              <button class="del" data-file-kill="${f.id}" aria-label="Supprimer">${svg('trash',15)}</button>
+            </div>
+          </div>`).join('')}
+        </div>` :
+        (!showFolders.length && !VT_Q ? `
+        <div class="card empty" style="margin-top:2px">
+          <span class="empty-blob" style="width:58px;height:58px;display:block;margin-bottom:18px"></span>
+          <h2>${VT_CUR ? 'Dossier vide' : 'Rien encore'}</h2>
+          <p>Déposez un fichier ci-dessus${VT_CUR?'':', ou créez un dossier à gauche'}. Grid le garde ici, même après fermeture.</p>
+        </div>` : (VT_Q ? `<div class="card empty" style="margin-top:2px"><h2>Aucun fichier</h2><p>Rien ne correspond à « ${esc(VT_Q)} ».</p></div>` : ''))}
+    </div>
+  </div>`;
+};
+const refreshVault = () => { if(ACTIVE === 'vault') renderView(); };
+
+
+/* ---- Recevoir des fichiers ---- */
+async function vtIngest(fileList){
+  const files = [...fileList];
+  if(!files.length) return;
+  BUB.tone('orange'); BUB.set('think'); BUB.bounce();
+  let added = 0, skipped = [];
+  for(const f of files){
+    const isImg = /^image\//.test(f.type);
+    const isPdf = f.type === 'application/pdf';
+    if(!isImg && !isPdf){ skipped.push(f.name + ' (type non géré)'); continue; }
+    try {
+      let data = null, kind = isPdf ? 'pdf' : 'image';
+      if(isImg){
+        const anim = f.type === 'image/gif' || f.type === 'image/webp';
+        if(anim && f.size > IMG_MAX){ skipped.push(f.name + ' (trop lourd)'); continue; }
+        data = anim ? await asDataURL(f) : await downscale(f, 1600);
+      } else {
+        if(f.size > IMG_MAX){ skipped.push(f.name + ' (PDF > 4,4 Mo)'); continue; }
+        data = await asDataURL(f);
+      }
+      VAULT.files.push({
+        id:fid(), name:f.name, kind, data,
+        size:f.size, folder:VT_CUR, created:Date.now(),
+      });
+      added++;
+    } catch(e){ skipped.push(f.name); }
+  }
+  await saveVault();
+  refreshVault();
+  if(added){ BUB.tone('green'); BUB.set('happy'); setTimeout(()=>{ BUB.tone('blue'); BUB.set('idle'); }, 1300); }
+  else { BUB.tone('blue'); BUB.flash('squint', 900); }
+  if(skipped.length){
+    const d = $('vtDrop');
+    if(d) d.querySelector('small').textContent = 'Non ajouté : ' + skipped.slice(0,3).join(', ');
+  }
+}
+
+/* ---- Créer un dossier ---- */
+let VT_MKC = 0;
+function vtNewFolder(){
+  MENU_VIEW = 'root';
+  closeAll();
+  $('modalCard').innerHTML = `
+    <div class="pn-h">
+      <span class="pn-t">Nouveau dossier</span>
+      <button class="pn-x" data-modal-x aria-label="Fermer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="pn-body">
+      <div class="vt-mk">
+        ${VT_CUR ? `<p style="font-size:12px;color:var(--muted);margin-bottom:11px">Dans <b style="color:var(--ink)">${esc(folderById(VT_CUR)?.name||'')}</b></p>` : ''}
+        <div class="pin"><input id="vtName" placeholder="Références, Captures, Contrats…" maxlength="40" spellcheck="false"></div>
+        <div class="vt-cols">${VT_PALETTE.map((c,i)=>`<button data-vtcol="${i}" aria-pressed="${i===VT_MKC}" style="background:${VT_SWATCH[c]}" aria-label="${c}"></button>`).join('')}</div>
+        <button class="gbtn" id="vtMake" style="width:100%">Créer le dossier</button>
+      </div>
+    </div>`;
+  $('modal').classList.add('on');
+  setTimeout(()=> $('vtName')?.focus(), 60);
+}
+async function vtMake(){
+  const name = $('vtName').value.trim();
+  if(!name){ $('vtName').focus(); return; }
+  const f = { id:fid(), name, color:VT_PALETTE[VT_MKC], parent:VT_CUR, created:Date.now() };
+  VAULT.folders.push(f);
+  if(VT_CUR) VT_OPEN[VT_CUR] = true;
+  await saveVault();
+  closeModal();
+  refreshVault();
+  BUB.tone('green'); BUB.flash('happy', 1000);
+  setTimeout(()=> BUB.tone('blue'), 1100);
+}
+
+/* ---- Aperçu plein écran ---- */
+let LB_ID = null;
+function openLightbox(id){
+  const f = VAULT.files.find(x => x.id === id);
+  if(!f || f.kind !== 'image') return;
+  LB_ID = id;
+  $('lbImg').src = f.data;
+  $('lbCap').textContent = f.name + ' · ' + KB(f.size);
+  $('lightbox').classList.add('on');
+}
+const closeLightbox = () => { $('lightbox').classList.remove('on'); LB_ID = null; };
+function dlFile(id){
+  const f = VAULT.files.find(x => x.id === id);
+  if(!f?.data) return;
+  const a = document.createElement('a');
+  a.href = f.data; a.download = f.name; a.click();
+}
+
+MOUNT.vault = () => {
+  const search = $('vtSearch');
+  if(search){
+    search.addEventListener('input', () => {
+      VT_Q = search.value;
+      const pos = search.selectionStart;
+      renderView();
+      const s2 = $('vtSearch'); if(s2){ s2.focus(); try{ s2.setSelectionRange(pos,pos); }catch(e){} }
+    });
+  }
+  const drop = $('vtDrop');
+  if(drop){
+    drop.addEventListener('click', () => $('vtFile').click());
+    ['dragenter','dragover'].forEach(k => drop.addEventListener(k, e => { e.preventDefault(); drop.classList.add('over'); }));
+    drop.addEventListener('dragleave', e => { e.preventDefault(); drop.classList.remove('over'); });
+    drop.addEventListener('drop', e => {
+      e.preventDefault(); e.stopPropagation(); drop.classList.remove('over');
+      if(e.dataTransfer.files.length) vtIngest(e.dataTransfer.files);
+    });
+  }
+};
+
+/* input fichier partagé */
+$('vtFile').addEventListener('change', e => {
+  if(e.target.files.length && ACTIVE === 'vault') vtIngest(e.target.files);
+  e.target.value = '';
+});
+
+/* clics de la page */
+$('view').addEventListener('click', async e => {
+  if(ACTIVE !== 'vault') return;
+  const tw = e.target.closest('[data-vttw]');
+  if(tw){ e.stopPropagation(); const id = tw.dataset.vttw; VT_OPEN[id] = !VT_OPEN[id]; renderView(); return; }
+  const open = e.target.closest('[data-open-file]');
+  if(open){ e.stopPropagation(); return openLightbox(open.dataset.openFile); }
+  const dl = e.target.closest('[data-dl-file]');
+  if(dl){ e.stopPropagation(); return dlFile(dl.dataset.dlFile); }
+  const kf = e.target.closest('[data-file-kill]');
+  if(kf){
+    e.stopPropagation();
+    VAULT.files = VAULT.files.filter(x => x.id !== kf.dataset.fileKill);
+    await saveVault(); return renderView();
+  }
+  const kfo = e.target.closest('[data-vtkill]');
+  if(kfo){
+    e.stopPropagation();
+    const ids = subtree(kfo.dataset.vtkill);
+    VAULT.folders = VAULT.folders.filter(f => !ids.includes(f.id));
+    VAULT.files = VAULT.files.filter(f => !ids.includes(f.folder));
+    if(ids.includes(VT_CUR)) VT_CUR = null;
+    await saveVault(); return renderView();
+  }
+  const nw = e.target.closest('[data-vtnew]');
+  if(nw){ VT_MKC = 0; return vtNewFolder(); }
+  const go = e.target.closest('[data-vtgo]');
+  if(go){ VT_CUR = go.dataset.vtgo || null; VT_Q = ''; if(VT_CUR) VT_OPEN[VT_CUR] = true; return renderView(); }
+});
+
+/* modale : couleur + créer */
+$('modal').addEventListener('click', e => {
+  const c = e.target.closest('[data-vtcol]');
+  if(c){ VT_MKC = +c.dataset.vtcol; $('modal').querySelectorAll('[data-vtcol]').forEach(b => b.setAttribute('aria-pressed', b.dataset.vtcol === c.dataset.vtcol)); return; }
+  if(e.target.closest('#vtMake')) vtMake();
+});
+$('modal').addEventListener('keydown', e => { if(e.key === 'Enter' && e.target.id === 'vtName') vtMake(); });
+
+/* lightbox */
+$('lbX').addEventListener('click', closeLightbox);
+$('lbDl').addEventListener('click', () => LB_ID && dlFile(LB_ID));
+$('lightbox').addEventListener('click', e => { if(e.target.id === 'lightbox') closeLightbox(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && $('lightbox').classList.contains('on')){ e.stopPropagation(); closeLightbox(); } }, true);
+
 /* ================= Le bureau ================= */
 const ago = ts => {
   const s = Math.round((Date.now() - ts) / 1000);
@@ -1856,6 +2913,17 @@ PAGES.dashboard = () => {
 /* ================= Onglets ================= */
 const ICON = {
   dashboard:'<path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+  tools:'<path d="M14.5 3.5a4.6 4.6 0 00-6 6L3.5 14.5a2 2 0 002.8 2.8l5-5a4.6 4.6 0 006-6L14 8.5 11.5 6l3-2.5z"/>',
+  material:'<rect x="3.5" y="3.5" width="7.5" height="7.5" rx="2"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="2"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="2"/><rect x="13" y="13" width="7.5" height="7.5" rx="2"/>',
+  chev:'<path d="M9 6l6 6-6 6"/>',
+  vault:'<path d="M3 8V6.5A1.5 1.5 0 014.5 5h4L11 7.5h8A1.5 1.5 0 0120.5 9v8.5A1.5 1.5 0 0119 19H5a2 2 0 01-2-2V8z"/>',
+  folderMini:'<path d="M2.5 6.5V5.6A1 1 0 013.5 4.6h2.6L7.7 6h6.8a1 1 0 011 1v5.9a1 1 0 01-1 1H3.5a1 1 0 01-1-1V6.5z"/>',
+  chevD:'<path d="M6 9l6 6 6-6"/>',
+  img:'<rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="8.5" cy="9.5" r="1.8"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5"/>',
+  fileGen:'<path d="M13 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V9z"/><path d="M13 3v6h6"/>',
+  filePdf:'<path d="M13 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V9z"/><path d="M13 3v6h6"/><path d="M8.5 17v-3.2h1a1 1 0 010 2h-1M13 17v-3.2h1.4M13 15.4h1.1M16.6 17v-3.2h1.2" stroke-width="1.1"/>',
+  upload:'<path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 19h14"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
   mindmap:'<circle cx="5" cy="12" r="2.4"/><circle cx="19" cy="6" r="2.4"/><circle cx="19" cy="18" r="2.4"/><path d="M7.3 11.1l9.4-4M7.3 12.9l9.4 4"/>',
   plus:'<path d="M12 5v14M5 12h14"/>',
   minus:'<path d="M5 12h14"/>',
@@ -1880,8 +2948,10 @@ const svg = (k, size=14) =>
   `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICON[k]}</svg>`;
 
 const META = {
-  dashboard:{ label:'Tableau de bord', key:'D', pinned:true },
-  mindmap:  { label:'Cartes mentales',  key:'M' },
+  dashboard:{ label:'Tableau de bord',  key:'D', pinned:true },
+  mindmap:  { label:'Cartes mentales',   key:'M' },
+  material: { label:'Matériaux Maker',   key:'X', group:'tools' },
+  vault:    { label:'Dossiers',          key:'F' },
 };
 const MAC = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
 const MOD = MAC ? '⌥' : 'Alt';
@@ -1953,7 +3023,7 @@ function closePop(pop, btn){
   btn.setAttribute('aria-expanded','false');
 }
 function closeAll(except){
-  if($('menu') !== except) closePop($('menu'), $('tabAdd'));
+  if($('menu') !== except){ closePop($('menu'), $('tabAdd')); MENU_VIEW = 'root'; }
   if($('account') !== except){ closePop($('account'), $('avBtn')); ACC_VIEW = 'root'; }
   if($('ask') !== except && typeof closeAsk === 'function') closeAsk();
   if(typeof MEM === 'object') for(const m of Object.values(MEM))
@@ -1961,19 +3031,41 @@ function closeAll(except){
 }
 
 /* ---- Menu + ---- */
+let MENU_VIEW = 'root';
+const GROUPS = { tools: { label:'Outils UEFN', icon:'tools' } };
+
+const pageRow = (id, m) => {
+  const open = TABS.includes(id);
+  return `<button class="menu-row" role="menuitem" data-open="${id}" ${open?'disabled':''}>
+    ${svg(id,16)}<span>${m.label}</span>
+    ${open ? '<span class="open-flag">Ouvert</span>' : `<span class="keys"><span>${MOD}</span><span>${m.key}</span></span>`}
+  </button>`;
+};
+const foot = `<div class="menu-sep"></div>
+  <div class="menu-foot">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    ${MOD} W ferme l'onglet ouvert
+  </div>`;
+
 function menuHTML(){
-  const rows = Object.entries(META).filter(([id])=>!META[id].pinned).map(([id,m])=>{
-    const open = TABS.includes(id);
-    return `<button class="menu-row" role="menuitem" data-open="${id}" ${open?'disabled':''}>
-      ${svg(id,16)}<span>${m.label}</span>
-      ${open ? '<span class="open-flag">Ouvert</span>' : `<span class="keys"><span>${MOD}</span><span>${m.key}</span></span>`}
-    </button>`;
-  }).join('');
-  return (rows || `<div class="ask-none" style="padding:12px 10px">Aucune page pour l'instant. On les construira une par une.</div>`) + `<div class="menu-sep"></div>
-    <div class="menu-foot">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      ${MOD} W ferme l'onglet ouvert
-    </div>`;
+  /* Un deuxième étage : les catégories ouvrent leur propre menu. */
+  if(MENU_VIEW !== 'root'){
+    const g = GROUPS[MENU_VIEW];
+    const rows = Object.entries(META).filter(([,m]) => m.group === MENU_VIEW).map(([id,m]) => pageRow(id,m)).join('');
+    return `<div class="menu-back">
+        <button data-menu="root" aria-label="Retour">${svg('back',14)}</button>
+        <span class="t">${g.label}</span>
+      </div>${rows}${foot}`;
+  }
+  const rows = Object.entries(META).filter(([,m]) => !m.pinned && !m.group).map(([id,m]) => pageRow(id,m)).join('');
+  const cats = Object.entries(GROUPS).filter(([k]) => Object.values(META).some(m => m.group === k))
+    .map(([k,g]) => `<button class="menu-row cat" role="menuitem" data-menu="${k}">
+        ${svg(g.icon,16)}<span>${g.label}</span>
+        <span class="n">${Object.values(META).filter(m => m.group === k).length}</span>
+        <span class="ch">${svg('chev',13)}</span>
+      </button>`).join('');
+  return (rows + cats || `<div class="ask-none" style="padding:12px 10px">Aucune page pour l'instant. On les construira une par une.</div>`)
+    + (rows && cats ? '' : '') + foot;
 }
 
 /* ---- Compte ---- */
@@ -2434,6 +3526,14 @@ window.addEventListener('pointerdown', eyesTo, {passive:true});
    À tenir à jour à CHAQUE mise à jour : une entrée en tête, rien d'autre à faire.
    Grid lit ce tableau, en déduit la version courante et prévient si elle est neuve. */
 const PATCH = [
+  { v:'1.2', d:'18 juillet 2026', items:[
+    ['Dossiers', 'une base de connaissances : arbre de dossiers, sous-dossiers, et vos images et PDF dedans.'],
+    ['Aperçu', 'les images s\u2019ouvrent en plein écran, se téléchargent, se rangent.'],
+  ]},
+  { v:'1.1', d:'18 juillet 2026', items:[
+    ['Outils UEFN', 'une catégorie dans le +, qui ouvre son propre menu.'],
+    ['Matériaux Maker', 'générateur de tuiles en relief : molette chromatique, damier, dashes, export 2048. Déposez une texture, il la reproduit.'],
+  ]},
   { v:'1.0', d:'18 juillet 2026', items:[
     ['Cinq formes', 'bulle, carte, rond, losange, nuage — dans une barre d\u2019outils en verre, en bas à gauche.'],
     ['Télécharger en PNG', 'la carte est redessinée sur un canevas, en double résolution.'],
@@ -3008,10 +4108,13 @@ $('tabAdd').addEventListener('click', e=>{
   e.stopPropagation();
   const on = $('menu').classList.contains('on');
   if(on) return closePop($('menu'), $('tabAdd'));
+  MENU_VIEW = 'root';
   openPop($('menu'), $('tabAdd'));
   popSize($('menu'), menuHTML(), 262);
 });
 $('menu').addEventListener('click', e=>{
+  const c = e.target.closest('[data-menu]');
+  if(c){ MENU_VIEW = c.dataset.menu; popSize($('menu'), menuHTML(), 262); return; }
   const r = e.target.closest('[data-open]');
   if(r && !r.hasAttribute('disabled')) go(r.dataset.open);
 });
@@ -3287,7 +4390,7 @@ async function enter(id){
   auth.classList.remove('on');
   shell.classList.add('on');
   paintAvatars();
-  await loadNotes(); await loadMaps(); await loadSeen(); paintMem(); paintBadge();
+  await loadNotes(); await loadMaps(); await loadVault(); await loadSeen(); paintMem(); paintBadge();
   setTimeout(()=>{ BUB.bounce(); BUB.flash('happy', 1200); checkDue(); }, 900);
   const saved = await Store.get('grid:tabs:'+id);
   TABS = (saved?.tabs || []).filter(t=>META[t]);
