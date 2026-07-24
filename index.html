@@ -1125,6 +1125,46 @@ body.vault-drop .vt-main{outline:2px dashed var(--btn-lo);outline-offset:6px;bor
 .auth-alt2{text-align:center;font-size:12.5px;color:var(--muted);margin-top:16px}
 .auth-alt2 button{color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:2px}
 
+
+.gbtn.busy{pointer-events:none;opacity:.9;position:relative}
+.gbtn.busy::after{
+  content:"";position:absolute;right:16px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;
+  background:currentColor;animation:pulseWait 1s ease-in-out infinite;
+}
+@keyframes pulseWait{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.1)}}
+
+/* Le panneau vert reste lisible en thème sombre : ses couleurs ne suivent pas le thème. */
+.auth-step.on{background:#FFFFFF;box-shadow:0 6px 20px rgba(0,0,0,.22);transform:translateY(-3px)}
+.auth-step.on .num{background:#15171C;color:#FFFFFF}
+.auth-step.on .tx{color:#15171C;font-weight:500}
+
+
+/* ---------- Écran de maintenance ---------- */
+#maint{
+  position:fixed;inset:0;z-index:95;display:none;place-items:center;padding:28px;
+  background:var(--paper);
+}
+#maint.on{display:grid;animation:fadeUp .4s ease}
+.mt-card{text-align:center;max-width:400px}
+.mt-pill{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:var(--card);
+  border-radius:99px;padding:7px 15px;margin-bottom:30px;
+  box-shadow:inset 0 0 0 1px var(--hair), 0 4px 14px rgba(20,23,30,.05)}
+.mt-pill .dot{width:7px;height:7px;border-radius:50%;background:#FF9A22;
+  box-shadow:0 0 0 3px rgba(255,154,34,.34), 0 0 8px #FF9A22;animation:dotLive 1.5s ease-out infinite}
+.mt-blob{display:block;width:112px;height:112px;margin:0 auto 4px;animation:float 4.2s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+#maint h1{font-family:var(--display);font-size:28px;font-weight:600;letter-spacing:-.03em;line-height:1.15;margin-top:16px}
+#maint p{color:var(--dim);font-size:14.5px;line-height:1.55;margin-top:12px;white-space:pre-wrap}
+.mt-bar{position:relative;height:5px;border-radius:99px;background:var(--hair);overflow:hidden;margin:28px auto 0;max-width:260px}
+.mt-bar i{position:absolute;top:0;left:0;height:100%;width:38%;border-radius:99px;
+  background:linear-gradient(90deg,transparent,var(--amber),transparent);
+  animation:sweep 1.9s cubic-bezier(.5,0,.5,1) infinite}
+@keyframes sweep{0%{transform:translateX(-120%)}100%{transform:translateX(340%)}}
+.mt-retry{margin-top:26px;font-family:var(--mono);font-size:11.5px;color:var(--muted);
+  padding:8px 16px;border-radius:99px;box-shadow:inset 0 0 0 1px var(--hair);transition:.15s}
+.mt-retry:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--muted)}
+
 /* ---------- Les artefacts de sa mémoire ---------- */
 .mem-wrap{display:none}
 .mem-wrap.on{display:block;animation:memBorn .55s cubic-bezier(.34,1.5,.5,1)}
@@ -1542,6 +1582,202 @@ h1 em{font-style:normal;color:var(--muted)}
   .pop-inner{max-height:60dvh}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ================= GRID 2.0 — Creator Business OS ================= */
+:root{
+  --grid-blue:#168BFF;--grid-blue2:#57B8FF;--grid-blue-soft:rgba(22,139,255,.10);
+  --grid-green:#18B979;--grid-red:#F15B54;--grid-orange:#F6A723;--grid-purple:#7B61FF;
+  --grid-panel:rgba(255,255,255,.72);--grid-panel-strong:rgba(255,255,255,.92);
+}
+[data-theme="dark"]{--grid-panel:rgba(23,26,32,.76);--grid-panel-strong:rgba(23,26,32,.95)}
+.shell.on{max-width:1500px;margin:0 auto}
+#view{scrollbar-width:thin}
+.os{display:flex;flex-direction:column;gap:14px;padding-bottom:28px}
+.os-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:6px 2px 4px}
+.os-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.os-title{font-family:var(--display);font-size:clamp(30px,4vw,52px);font-weight:600;letter-spacing:-.045em;line-height:.98}
+.os-title em{font-style:normal;color:var(--muted);font-weight:400}
+.os-sub{font-size:13px;color:var(--muted);margin-top:10px;max-width:680px;line-height:1.5}
+.os-actions{display:flex;gap:8px;flex:none}.os-actions .gbtn{padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:12.5px}
+.os-ghost{height:38px;padding:0 14px;border-radius:99px;background:var(--grid-panel);box-shadow:inset 0 0 0 1px var(--hair);font-size:12.5px;color:var(--dim)}
+.os-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-7{grid-column:span 7}.span-6{grid-column:span 6}.span-5{grid-column:span 5}.span-4{grid-column:span 4}.span-3{grid-column:span 3}
+.os-card{position:relative;background:var(--grid-panel);-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);border-radius:20px;box-shadow:inset 0 0 0 1px var(--glass-rim),var(--shadow);overflow:hidden}
+.os-card.pad{padding:18px}.os-card.blue{background:linear-gradient(145deg,rgba(22,139,255,.14),var(--grid-panel) 64%)}
+.os-card::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.8),transparent);pointer-events:none}
+.kpi{min-height:142px;display:flex;flex-direction:column;justify-content:space-between}.kpi-top{display:flex;align-items:center;justify-content:space-between}.kpi-l{font-size:11.5px;color:var(--muted)}.kpi-ic{width:30px;height:30px;border-radius:10px;background:var(--soft);display:grid;place-items:center;color:var(--dim)}
+.kpi-v{font-family:var(--display);font-size:31px;font-weight:600;letter-spacing:-.035em;font-variant-numeric:tabular-nums}.kpi-v small{font-size:15px;color:var(--muted);font-weight:500}.kpi-d{font-family:var(--mono);font-size:10.5px;color:var(--muted)}.kpi-d.good{color:var(--grid-green)}.kpi-d.bad{color:var(--grid-red)}
+.os-ch{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}.os-ch h3{font-family:var(--display);font-size:15px;font-weight:600;letter-spacing:-.01em}.os-ch .cap{font-size:10.5px;color:var(--muted)}
+.spark{height:180px;position:relative}.spark svg{width:100%;height:100%;overflow:visible}.spark .gridline{stroke:var(--hair);stroke-width:1}.spark .line{fill:none;stroke:var(--grid-blue);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.spark .area{fill:url(#osGrad)}
+.biz-list{display:flex;flex-direction:column}.biz-row{display:grid;grid-template-columns:minmax(0,1fr) 110px 90px;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--hair)}.biz-row:first-child{border-top:0}.biz-name{min-width:0}.biz-name b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.biz-name span{font-family:var(--mono);font-size:9.5px;color:var(--muted)}.biz-val{text-align:right;font-family:var(--mono);font-size:12px}.biz-share{height:7px;background:var(--track);border-radius:99px;overflow:hidden}.biz-share i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--grid-blue),var(--grid-blue2))}
+.health{display:flex;align-items:center;gap:16px}.health-ring{--p:72;width:88px;height:88px;border-radius:50%;background:conic-gradient(var(--grid-blue) calc(var(--p)*1%),var(--track) 0);display:grid;place-items:center;position:relative}.health-ring::after{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--card)}.health-ring b{z-index:1;font-family:var(--display);font-size:22px}.health-copy h4{font-size:13px;margin-bottom:4px}.health-copy p{font-size:11.5px;color:var(--muted);line-height:1.45}
+.next-list{display:flex;flex-direction:column;gap:7px}.next-item{display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:12px;background:var(--soft)}.next-dot{width:8px;height:8px;border-radius:50%;background:var(--grid-blue);box-shadow:0 0 0 4px var(--grid-blue-soft)}.next-item .txt{flex:1;min-width:0}.next-item b{display:block;font-size:12.5px}.next-item span{font-size:10.5px;color:var(--muted)}
+.grid-insight{display:flex;gap:13px;align-items:flex-start;padding:16px}.grid-face{width:42px;height:42px;flex:none}.grid-insight h3{font-family:var(--display);font-size:15px;margin-bottom:4px}.grid-insight p{font-size:12.5px;color:var(--dim);line-height:1.5}.grid-insight strong{color:var(--ink)}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:99px;font-family:var(--mono);font-size:9.5px;background:var(--soft);color:var(--muted)}.pill.green{color:var(--grid-green);background:rgba(24,185,121,.09)}.pill.red{color:var(--grid-red);background:rgba(241,91,84,.09)}
+.form-row{display:grid;grid-template-columns:1.2fr .8fr .8fr auto;gap:8px;margin-bottom:13px}.os-input,.os-select{width:100%;border:0;outline:0;background:var(--soft);color:var(--ink);border-radius:11px;padding:10px 11px;box-shadow:inset 0 0 0 1px var(--hair);font-size:12.5px}.os-input:focus,.os-select:focus{box-shadow:inset 0 0 0 1.5px var(--grid-blue)}.form-row .gbtn{padding:0 16px}
+.table{width:100%;border-collapse:collapse}.table th{text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:500;padding:9px 10px;border-bottom:1px solid var(--hair)}.table td{padding:11px 10px;border-bottom:1px solid var(--hair);font-size:12.5px}.table tr:last-child td{border-bottom:0}.table .num{text-align:right;font-family:var(--mono)}.table button{width:26px;height:26px;border-radius:8px;color:var(--muted)}.table button:hover{background:var(--hover);color:var(--grid-red)}
+.project-board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.lane{background:var(--soft);border-radius:15px;padding:10px;min-height:260px;box-shadow:inset 0 0 0 1px var(--hair)}.lane-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}.lane-h b{font-size:11.5px}.lane-h span{font-family:var(--mono);font-size:9.5px;color:var(--muted)}.proj{background:var(--card);border-radius:12px;padding:11px;margin-bottom:8px;box-shadow:0 2px 8px rgba(20,23,30,.05),inset 0 0 0 1px var(--hair)}.proj .nm{font-size:12.5px;font-weight:600}.proj .desc{font-size:10.5px;color:var(--muted);line-height:1.4;margin:4px 0 10px}.proj .foot{display:flex;align-items:center;justify-content:space-between}.proj .money{font-family:var(--mono);font-size:9.5px}.proj .move{font-size:9.5px;color:var(--grid-blue);padding:4px 6px;border-radius:6px}.proj .move:hover{background:var(--grid-blue-soft)}
+.forecast-bars{display:flex;align-items:flex-end;gap:8px;height:230px;padding-top:20px}.fbar{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:7px}.fbar .v{font-family:var(--mono);font-size:9px;color:var(--muted)}.fbar i{width:min(34px,75%);min-height:3px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,var(--grid-blue2),var(--grid-blue));box-shadow:0 8px 24px var(--grid-blue-soft)}.fbar span{font-size:9px;color:var(--muted)}
+.scenario{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.scenario button{padding:13px;border-radius:13px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--hair);text-align:left}.scenario button.on{box-shadow:inset 0 0 0 1.5px var(--grid-blue);background:var(--grid-blue-soft)}.scenario b{display:block;font-size:12px}.scenario span{font-size:10.5px;color:var(--muted)}
+@media(max-width:1050px){.span-8,.span-7,.span-6,.span-5,.span-4,.span-3{grid-column:span 6}.project-board{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.os-head{align-items:flex-start;flex-direction:column}.os-actions{width:100%;overflow:auto}.os-grid{display:block}.os-card{margin-bottom:10px}.form-row{grid-template-columns:1fr 1fr}.form-row .gbtn{height:40px}.project-board{grid-template-columns:1fr}.biz-row{grid-template-columns:1fr 92px}.biz-share{display:none}.scenario{grid-template-columns:1fr}.table-wrap{overflow:auto}.table{min-width:620px}}
+
+
+
+/* =========================================================
+   GRID NOTCH — v2.1
+   Dynamic control surface: compact -> conversation -> alert
+   ========================================================= */
+.grid-mid{
+  --notch-w:224px;
+  --notch-h:44px;
+  --notch-radius:24px;
+}
+.tabbar .grid-mid{
+  position:absolute;left:50%;top:-1px;bottom:auto;
+  transform:translateX(-50%);
+  display:block;width:var(--notch-w);height:var(--notch-h);z-index:40;
+  transition:width .52s cubic-bezier(.2,.9,.2,1),height .52s cubic-bezier(.2,.9,.2,1),transform .35s cubic-bezier(.2,.9,.2,1);
+}
+.tabbar .tabs{max-width:calc(50% - 170px)}
+.grid-notch{
+  position:absolute;inset:0;overflow:hidden;
+  border-radius:var(--notch-radius);
+  color:#f7f8fb;background:#050607;
+  box-shadow:0 2px 2px rgba(0,0,0,.16),0 14px 34px rgba(0,0,0,.20),inset 0 0 0 1px rgba(255,255,255,.055);
+  transition:border-radius .48s cubic-bezier(.2,.9,.2,1),box-shadow .35s ease,background .35s ease;
+  isolation:isolate;
+}
+.grid-notch::before{
+  content:"";position:absolute;inset:-80px -100px auto;height:150px;pointer-events:none;
+  background:radial-gradient(circle at 50% 30%,rgba(42,164,255,.16),transparent 58%);
+  opacity:.8;transition:opacity .3s ease;
+}
+.grid-mid:hover:not(.is-open):not(.is-alert){transform:translateX(-50%) translateY(-1px) scale(1.018)}
+.grid-mid.is-open{--notch-w:520px;--notch-h:356px;--notch-radius:31px}
+.grid-mid.is-alert{--notch-w:500px;--notch-h:214px;--notch-radius:30px}
+.grid-mid.is-open .grid-notch,.grid-mid.is-alert .grid-notch{
+  box-shadow:0 3px 4px rgba(0,0,0,.20),0 26px 70px rgba(0,0,0,.34),inset 0 0 0 1px rgba(255,255,255,.07);
+}
+
+/* Compact header */
+.notch-head{
+  position:absolute;left:0;right:0;top:0;height:44px;display:flex;align-items:center;
+  padding:4px 6px 4px 5px;gap:8px;z-index:4;
+}
+.grid-tab{
+  position:relative;display:flex;align-items:center;gap:8px;min-width:0;height:36px;flex:1;
+  padding:0 5px;border-radius:20px;color:#fff;background:transparent;box-shadow:none;
+  -webkit-backdrop-filter:none;backdrop-filter:none;transition:none;text-align:left;
+}
+.grid-tab:hover,.grid-tab[aria-expanded="true"]{transform:none;box-shadow:none}
+.gt-blob{width:32px;height:32px;flex:none;display:grid;place-items:center;filter:drop-shadow(0 0 9px rgba(42,164,255,.36))}
+.gt-blob .blob{width:30px;height:30px}
+.notch-copy{display:flex;flex-direction:column;min-width:0;line-height:1.05}
+.gt-name{font-family:var(--display);font-weight:650;font-size:12.5px;color:#fff;letter-spacing:.005em}
+.notch-status{font-size:9.5px;color:rgba(255,255,255,.44);margin-top:3px;max-width:104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gt-dot{width:6px;height:6px;margin-left:auto;margin-right:4px;box-shadow:0 0 0 3px var(--dot-soft),0 0 11px var(--dot-c)}
+.grid-tab .badge{top:1px;left:29px;right:auto;border-color:#050607;width:9px;min-width:9px;height:9px}
+
+.notch-mini{
+  height:29px;display:flex;align-items:center;gap:6px;padding:0 9px;border-radius:15px;
+  background:rgba(255,255,255,.075);color:rgba(255,255,255,.72);font-family:var(--mono);font-size:9.5px;
+  border:1px solid rgba(255,255,255,.055);white-space:nowrap;transition:background .18s,color .18s,transform .18s;
+}
+.notch-mini:hover{background:rgba(255,255,255,.12);color:#fff;transform:scale(1.025)}
+.notch-mini .pulse{width:5px;height:5px;border-radius:50%;background:#37B0FF;box-shadow:0 0 7px #37B0FF}
+.notch-clock{display:none;color:rgba(255,255,255,.38);font-size:9px;font-family:var(--mono);padding-right:2px}
+.grid-mid.is-open .notch-clock,.grid-mid.is-alert .notch-clock{display:block}
+
+/* + lives inside the island */
+.grid-mid .plus-holder{position:relative;flex:none}
+.grid-plus{
+  width:29px;height:29px;border-radius:50%;display:grid;place-items:center;color:rgba(255,255,255,.68);
+  background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.055);transition:.18s;
+}
+.grid-plus:hover{background:#fff;color:#050607;transform:rotate(90deg) scale(1.03)}
+.grid-mid .plus-holder .pop{top:40px;right:0;left:auto}
+
+/* Expanded conversation: existing Grid ask becomes the island body */
+.grid-mid .ask{
+  position:absolute;left:14px;right:14px;top:54px;width:auto;z-index:3;
+  opacity:0;transform:translateY(-5px) scale(.985);transform-origin:top center;pointer-events:none;
+  transition:opacity .2s ease .08s,transform .36s cubic-bezier(.2,.9,.2,1) .06s;
+}
+.grid-mid .ask.on{opacity:1;transform:none;pointer-events:auto}
+.ask-bar{
+  height:48px;border-radius:17px;padding:0 13px 0 15px;
+  background:rgba(255,255,255,.095);-webkit-backdrop-filter:none;backdrop-filter:none;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),inset 0 1px 0 rgba(255,255,255,.055);
+}
+.ask-bar > svg{color:rgba(255,255,255,.42)}
+.ask-bar input{color:#fff;font-size:13.5px}
+.ask-bar input::placeholder{color:rgba(255,255,255,.35)}
+.ask-bar .kbd{background:rgba(255,255,255,.09);color:rgba(255,255,255,.38)}
+.ask-list{
+  margin-top:8px;max-height:234px;border-radius:18px;padding:6px;background:rgba(255,255,255,.045);
+  -webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.045);
+}
+.ask-row{color:rgba(255,255,255,.58)}
+.ask-row.cursor,.ask-row:hover{background:rgba(255,255,255,.085);color:#fff}
+.ask-sec,.ask-none,.skill .ex,.note-when,.ask-ans .none,.ask-prev .when,.ask-conf .q,.ask-conf .hint{color:rgba(255,255,255,.35)}
+.skill{color:rgba(255,255,255,.62)}
+.skill .ex,.kbd{background:rgba(255,255,255,.075)}
+.ask-prev,.ask-conf{background:rgba(255,255,255,.055);box-shadow:inset 0 0 0 1px rgba(255,255,255,.055)}
+.ask-prev .what,.ask-ans .said,.ask-conf .what{color:#fff}
+.ask-row .tick{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.13)}
+
+/* Alert mode replaces the floating reminder bubble */
+.grid-mid .nudge{
+  position:absolute;left:16px;right:16px;top:58px;width:auto;z-index:5;padding:0;
+  background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none;border-radius:0;
+  opacity:0;transform:translateY(-8px) scale(.985);transform-origin:top center;pointer-events:none;
+  transition:opacity .2s ease .08s,transform .35s cubic-bezier(.2,.9,.2,1) .05s;
+}
+.grid-mid .nudge.on{opacity:1;transform:none;pointer-events:auto}
+.nudge .lab{font-size:9px;color:#ff7568;letter-spacing:.15em}
+.nudge .txt{font-family:var(--display);font-size:19px;color:#fff;margin:9px 0 4px;line-height:1.25;letter-spacing:-.02em}
+.nudge .sub{color:rgba(255,255,255,.38)}
+.nudge .acts{margin-top:16px;gap:8px}
+.nudge .acts button{padding:10px 14px;border-radius:12px}
+.nudge .later{background:rgba(255,255,255,.085);color:rgba(255,255,255,.70)}
+.nudge .later:hover{background:rgba(255,255,255,.14);color:#fff}
+.grid-mid.is-alert .grid-notch::after{
+  content:"";position:absolute;left:0;right:0;top:0;height:2px;
+  background:linear-gradient(90deg,transparent,#ff6254,transparent);opacity:.85;animation:notchAlert 1.7s ease-in-out infinite;
+}
+@keyframes notchAlert{0%,100%{opacity:.35;transform:scaleX(.5)}50%{opacity:1;transform:scaleX(1)}}
+
+/* Context line shown only while expanded */
+.notch-context{
+  position:absolute;left:18px;right:18px;bottom:9px;height:18px;display:flex;align-items:center;gap:8px;
+  color:rgba(255,255,255,.26);font-size:9.5px;opacity:0;transform:translateY(4px);transition:.25s .15s;pointer-events:none;
+}
+.grid-mid.is-open .notch-context{opacity:1;transform:none}
+.notch-context b{font-weight:500;color:rgba(255,255,255,.48)}
+.notch-context .line{height:1px;flex:1;background:rgba(255,255,255,.07)}
+
+/* make tone feedback affect the island, while keeping Grid blue character */
+.grid-mid:has(.grid-tab[data-tone="green"]) .grid-notch{box-shadow:0 3px 4px rgba(0,0,0,.2),0 22px 65px rgba(0,0,0,.32),inset 0 0 0 1px rgba(43,212,137,.16)}
+.grid-mid:has(.grid-tab[data-tone="orange"]) .grid-notch{box-shadow:0 3px 4px rgba(0,0,0,.2),0 22px 65px rgba(0,0,0,.32),inset 0 0 0 1px rgba(255,154,34,.18)}
+.grid-mid:has(.grid-tab[data-tone="red"]) .grid-notch{box-shadow:0 3px 4px rgba(0,0,0,.2),0 22px 65px rgba(0,0,0,.32),inset 0 0 0 1px rgba(255,95,79,.24)}
+
+@media(max-width:720px){
+  .tabbar .grid-mid{position:fixed;left:50%;top:calc(8px + env(safe-area-inset-top,0px));order:unset;display:block;z-index:70;transform:translateX(-50%);width:min(224px,calc(100vw - 24px));height:44px}
+  .grid-mid.is-open{width:calc(100vw - 20px);height:min(430px,calc(100dvh - 90px))}
+  .grid-mid.is-alert{width:calc(100vw - 20px);height:220px}
+  .tabbar .tabs{order:1;max-width:none;padding-top:48px}
+  .tabbar{padding-top:2px}
+  .grid-mid .ask,.grid-mid .nudge{position:absolute;left:12px;right:12px;top:54px;width:auto!important}
+  .ask-list{max-height:min(290px,calc(100dvh - 180px))}
+  .gt-name{display:block}
+  .notch-status{max-width:88px}
+  .notch-mini{display:none}
+  .grid-mid .plus-holder{display:block}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tabbar .grid-mid,.grid-notch,.grid-mid .ask,.grid-mid .nudge,.grid-plus{transition-duration:.01ms!important;animation:none!important}
+}
 </style>
 </head>
 <body>
@@ -1633,28 +1869,40 @@ h1 em{font-style:normal;color:var(--muted)}
       <div class="pop" id="account" role="menu"><div class="pop-inner"><div class="pop-pad" id="accountBody"></div></div></div>
     </div>
 
-    <!-- Grid est au centre, seul, au-dessus de tout le reste -->
-    <div class="pop-wrap grid-mid">
-      <button class="grid-tab" id="bubBtn" data-tone-host data-tone="blue" aria-expanded="false" aria-label="Parler à Grid">
-        <span class="gt-blob" id="gtBlob"></span>
-        <span class="gt-name">Grid</span>
-        <span class="gt-dot"></span>
-      </button>
-      <div class="ask" id="ask">
-        <div class="ask-bar">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-          <input id="askInput" placeholder="Demandez quelque chose à Grid" autocomplete="off" spellcheck="false">
-          <span class="kbd">↵</span>
+    <!-- GRID Notch — l’agent devient une surface de contrôle dynamique -->
+    <div class="pop-wrap grid-mid" id="gridNotchHost">
+      <div class="grid-notch" id="gridNotch">
+        <div class="notch-head">
+          <button class="grid-tab" id="bubBtn" data-tone-host data-tone="blue" aria-expanded="false" aria-label="Parler à Grid">
+            <span class="gt-blob" id="gtBlob"></span>
+            <span class="notch-copy">
+              <span class="gt-name">Grid</span>
+              <span class="notch-status" id="notchStatus">Disponible</span>
+            </span>
+            <span class="gt-dot"></span>
+          </button>
+          <button class="notch-mini" id="notchPulse" type="button" aria-label="Voir les tâches en attente">
+            <span class="pulse"></span><span id="notchPending">0</span>
+          </button>
+          <span class="notch-clock" id="notchClock"></span>
+          <div class="pop-wrap plus-holder">
+            <button class="grid-plus" id="tabAdd" aria-expanded="false" aria-haspopup="menu" aria-label="Créer, clôturer, ouvrir">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+            <div class="pop" id="menu" role="menu"><div class="pop-inner"><div class="pop-pad" id="menuBody"></div></div></div>
+          </div>
         </div>
-        <div class="ask-list" id="askList"></div>
-      </div>
-      <div class="nudge" id="nudge"></div>
 
-      <div class="pop-wrap plus-holder">
-        <button class="grid-plus" id="tabAdd" aria-expanded="false" aria-haspopup="menu" aria-label="Créer, clôturer, ouvrir">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
-        <div class="pop" id="menu" role="menu"><div class="pop-inner"><div class="pop-pad" id="menuBody"></div></div></div>
+        <div class="ask" id="ask">
+          <div class="ask-bar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <input id="askInput" placeholder="Demandez quelque chose à Grid" autocomplete="off" spellcheck="false">
+            <span class="kbd">↵</span>
+          </div>
+          <div class="ask-list" id="askList"></div>
+        </div>
+        <div class="nudge" id="nudge"></div>
+        <div class="notch-context"><span id="notchPage">Tableau de bord</span><span class="line"></span><b>Entrée pour exécuter</b></div>
       </div>
     </div>
   </div>
@@ -1664,6 +1912,18 @@ h1 em{font-style:normal;color:var(--muted)}
 
 <input type="file" id="picker" accept="image/*" hidden>
 <div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div>
+
+<!-- Ce que l'app admin peut allumer à distance -->
+<div id="maint">
+  <div class="mt-card">
+    <div class="mt-pill"><span class="dot"></span><span id="mtTag">Maintenance</span></div>
+    <span class="mt-blob" id="maintBlob" aria-hidden="true"></span>
+    <h1 id="mtTitle">Grid fait le ménage.</h1>
+    <p id="mtMsg">On revient très vite.</p>
+    <div class="mt-bar"><i></i></div>
+    <button class="mt-retry" id="mtRetry">Réessayer</button>
+  </div>
+</div>
 <input type="file" id="vtFile" accept="image/*,application/pdf" multiple hidden>
 <div class="lightbox" id="lightbox">
   <div class="lb-bar">
@@ -3761,7 +4021,7 @@ function go(id){
   if(!META[id]) id = 'dashboard';
   if(!TABS.includes(id)) TABS.push(id);
   ACTIVE = id;
-  renderTabs(); renderView(); saveTabs(); closeAll();
+  renderTabs(); renderView(); saveTabs(); closeAll(); syncGridNotch();
 }
 function closeTab(id){
   if(META[id].pinned) return;
@@ -4292,6 +4552,11 @@ window.addEventListener('pointerdown', eyesTo, {passive:true});
    À tenir à jour à CHAQUE mise à jour : une entrée en tête, rien d'autre à faire.
    Grid lit ce tableau, en déduit la version courante et prévient si elle est neuve. */
 const PATCH = [
+  { v:'2.1', d:'24 juillet 2026', items:[
+    ['GRID Notch', 'Grid devient une surface de contrôle dynamique qui se déploie au lieu d’ouvrir une bulle.'],
+    ['États vivants', 'conversation, rappel urgent, page active et compteur de tâches modifient la notch en temps réel.'],
+    ['Mouvement', 'la capsule s’étire avec une animation élastique, sans casser la logique existante de Grid.'],
+  ]},
   { v:'1.5', d:'19 juillet 2026', items:[
     ['Grid prend le relais', 'le + est passé à côté de lui : clôture, îles et pages sortent de sa bulle.'],
     ['Le grand widget', 'les îles sont dans la carte, à gauche de la courbe — un clic filtre tout.'],
@@ -4549,6 +4814,8 @@ const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':
 
 function openAsk(){
   closeAll($('ask'));
+  $('gridNotchHost')?.classList.remove('is-alert');
+  $('gridNotchHost')?.classList.add('is-open');
   $('ask').classList.add('on');
   $('bubBtn').setAttribute('aria-expanded','true');
   BUB.locked = true; BUB.look(0, 2.4); BUB.set('squint'); BUB.bounce();
@@ -4559,6 +4826,7 @@ function closeAsk(){
   if(!$('ask') || !$('ask').classList.contains('on')) return;
   $('ask').classList.remove('on');
   $('bubBtn').setAttribute('aria-expanded','false');
+  $('gridNotchHost')?.classList.remove('is-open');
   BUB.locked = false; BUB.set('idle'); BUB.look(0,0);
 }
 
@@ -4797,6 +5065,8 @@ function showNudge(n){
       <button class="later" data-nudge="later" data-id="${n.id}">Dans 10 min</button>
     </div>`;
   closeAsk();
+  $('gridNotchHost')?.classList.remove('is-open');
+  $('gridNotchHost')?.classList.add('is-alert');
   NUDGING = n.id;
   $('nudge').classList.add('on');
   BUB.tone('red');                 // il reste rouge tant qu'on ne répond pas
@@ -4805,6 +5075,7 @@ function showNudge(n){
 }
 function closeNudge(){
   $('nudge').classList.remove('on');
+  $('gridNotchHost')?.classList.remove('is-alert');
   NUDGING = null;
   BUB.tone('blue'); BUB.set('idle');
 }
@@ -4873,6 +5144,35 @@ $('askInput').addEventListener('keydown', e=>{
   else if(e.key === 'Escape'){ closeAsk(); }
 });
 
+
+
+/* ================= GRID Notch telemetry ================= */
+function syncGridNotch(){
+  const page = $('notchPage'), status = $('notchStatus'), count = $('notchPending'), clock = $('notchClock');
+  if(page) page.textContent = META[ACTIVE]?.label || 'GRID';
+  const waiting = typeof pending === 'function' ? pending().length : 0;
+  if(count) count.textContent = waiting;
+  if(status){
+    if(NUDGING) status.textContent = 'Action requise';
+    else if($('ask')?.classList.contains('on')) status.textContent = 'À votre écoute';
+    else status.textContent = waiting ? `${waiting} élément${waiting>1?'s':''} en attente` : (META[ACTIVE]?.label || 'Disponible');
+  }
+  if(clock) clock.textContent = new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit'}).format(new Date());
+}
+setInterval(syncGridNotch, 15000);
+document.addEventListener('click',()=>setTimeout(syncGridNotch,0));
+$('notchPulse')?.addEventListener('click', e=>{
+  e.stopPropagation();
+  const waiters = typeof pending === 'function' ? pending() : [];
+  if(waiters.length){
+    openAsk();
+    $('askInput').value = 'mes tâches';
+    ASK_CUR = 0; paintAsk();
+  }else{
+    BUB.flash('happy',800); BUB.bounce();
+  }
+  syncGridNotch();
+});
 
 /* ================= Écoutes ================= */
 $('tabs').addEventListener('click', e=>{
@@ -5153,22 +5453,44 @@ async function submit(){
 
   USERS = (await Store.get(K_USERS)) || {};
   const id = pseudo.toLowerCase();
+  const label = btn.textContent;
   btn.disabled = true;
+  btn.classList.add('busy');
+  btn.textContent = MODE === 'create' ? 'Création du compte…' : 'Vérification…';
+  AUTH_BUB.tone('orange'); AUTH_BUB.set(AUTH_BUB.locked ? 'shut' : 'think');
+  const t0 = Date.now();
+  /* Une vérification instantanée donne l'impression qu'il n'y a aucun contrôle.
+     On laisse le hachage respirer, et on garde un plancher de temps constant —
+     ça masque aussi l'écart entre « pseudo inconnu » et « mot de passe faux ». */
+  const settle = async () => { const rest = 900 - (Date.now() - t0); if(rest > 0) await wait(rest); };
+  const fail = async msg => {
+    await settle();
+    btn.classList.remove('busy'); btn.textContent = label; btn.disabled = false;
+    AUTH_BUB.tone(AUTH_BUB.locked ? 'purple' : 'blue'); AUTH_BUB.set(AUTH_BUB.locked ? 'shut' : 'idle');
+    showErr(msg);
+  };
   try{
     if(MODE === 'create'){
-      if(USERS[id]){ MODE = 'login'; paintAuth(); return showErr('Ce pseudo existe déjà. Connectez-vous.'); }
-      if(gaugePw() < 3) return showErr('Mot de passe trop faible pour protéger un business.');
+      if(USERS[id]){ await settle(); MODE = 'login'; paintAuth(); btn.disabled = false; btn.classList.remove('busy'); AUTH_BUB.tone('blue'); return showErr('Ce pseudo existe déjà. Connectez-vous.'); }
+      if(gaugePw() < 3) return fail('Mot de passe trop faible pour protéger un business.');
       const s = salt();
       USERS[id] = { pseudo, salt:s, hash: await hash(pw, s), photo:null, created:Date.now() };
       await Store.set(K_USERS, USERS);
     } else {
       const u = USERS[id];
-      if(!u) return showErr('Aucun profil à ce pseudo sur ce navigateur.');
-      if(!eq(await hash(pw, u.salt), u.hash)) return showErr('Mot de passe incorrect.');
+      if(!u) return fail('Identifiants incorrects.');
+      if(!eq(await hash(pw, u.salt), u.hash)) return fail('Identifiants incorrects.');
     }
+    await settle();
+    btn.textContent = 'Bienvenue';
+    AUTH_BUB.locked = false; AUTH_BUB.tone('green'); AUTH_BUB.set('happy'); AUTH_BUB.bounce();
+    await wait(420);
     await Store.set(K_SESSION, id);
     await enter(id);
-  } finally { btn.disabled = false; }
+    btn.classList.remove('busy'); btn.textContent = label; btn.disabled = false;
+  } catch(err){
+    await fail('Quelque chose a coincé. Réessayez.');
+  }
 }
 
 async function enter(id){
@@ -5195,6 +5517,147 @@ async function signOut(){
   auth.classList.add('on');
   fPass.focus();
 }
+
+
+/* ================= Maintenance =================
+   Deux sources, dans cet ordre :
+   1. `grid:system` — écrit par l'app admin ouverte sur le même navigateur.
+   2. `status.json` — posé à côté de index.html, il vaut pour tout le monde.
+   Le distant gagne : c'est lui qui fait autorité. */
+let MAINT_BUB = null;
+async function readStatus(){
+  let st = (await Store.get('grid:system')) || null;
+  try{
+    const r = await fetch('status.json?t=' + Date.now(), { cache:'no-store' });
+    if(r.ok){
+      const remote = await r.json();
+      if(remote && typeof remote === 'object') st = remote;   // le fichier fait autorité
+    }
+  } catch(e){ /* pas de status.json : on garde le local */ }
+  return st;
+}
+function showMaint(st){
+  $('mtTag').textContent   = st.tag   || 'Maintenance';
+  $('mtTitle').textContent = st.title || 'Grid fait le ménage.';
+  $('mtMsg').textContent   = st.message || 'On revient très vite.';
+  if(!MAINT_BUB){
+    MAINT_BUB = new Blob($('maintBlob'));
+    LIVE.push(MAINT_BUB);
+  }
+  MAINT_BUB.tone('orange');
+  MAINT_BUB.set('think');
+  $('maint').classList.add('on');
+  boot.classList.remove('on');
+  auth.classList.remove('on');
+  shell.classList.remove('on');
+}
+async function checkMaint(){
+  const st = await readStatus();
+  if(st && st.maintenance){ showMaint(st); return true; }
+  $('maint').classList.remove('on');
+  return false;
+}
+$('mtRetry').addEventListener('click', async ()=>{
+  const btn = $('mtRetry');
+  btn.textContent = 'Vérification…'; btn.disabled = true;
+  await wait(700);
+  const still = await checkMaint();
+  btn.disabled = false; btn.textContent = 'Réessayer';
+  if(!still) location.reload();
+});
+/* on revérifie régulièrement : la levée de maintenance se voit sans recharger */
+setInterval(async ()=>{
+  const on = $('maint').classList.contains('on');
+  const st = await readStatus();
+  if(on && !(st && st.maintenance)) location.reload();
+  else if(!on && st && st.maintenance) showMaint(st);
+}, 30000);
+
+
+/* ================= GRID 2.0 — Creator Business OS ================= */
+ICON.expenses = '<path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h5"/>';
+ICON.studio = '<path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/>';
+ICON.forecast = '<path d="M4 18l5-6 4 3 7-9"/><path d="M16 6h4v4"/>';
+META.studio   = { label:'Studio', key:'S' };
+META.expenses = { label:'Dépenses', key:'E' };
+META.forecast = { label:'Prévisions', key:'P' };
+META.dashboard.label = 'Command Center';
+META.revenue.label = 'Revenus UEFN';
+
+const BIZ_DEFAULT = () => ({
+  expenses:[],
+  projects:[
+    {id:'p1',name:'Nouvelle île',desc:'Concept, prototype et validation du core loop.',stage:'idea',budget:0},
+    {id:'p2',name:'Update live',desc:'Préparer la prochaine mise à jour de contenu.',stage:'build',budget:0}
+  ],
+  target:5000,
+  cash:0,
+  taxRate:24,
+  scenario:'base'
+});
+let BIZ = BIZ_DEFAULT();
+const bizKey = () => 'grid:business:' + (SESSION.id || 'guest');
+function bizLoad(){ try{ BIZ = {...BIZ_DEFAULT(), ...(JSON.parse(localStorage.getItem(bizKey())||'null')||{})}; }catch(e){ BIZ=BIZ_DEFAULT(); } return BIZ; }
+function bizSave(){ try{ localStorage.setItem(bizKey(), JSON.stringify(BIZ)); }catch(e){} }
+const money = n => Math.round((Number(n)||0)*100)/100;
+const expenseTotal = () => (BIZ.expenses||[]).reduce((s,x)=>s+(Number(x.amount)||0),0);
+const monthExpense = () => { const m=today().slice(0,7); return (BIZ.expenses||[]).filter(x=>(x.date||'').slice(0,7)===m).reduce((s,x)=>s+(Number(x.amount)||0),0); };
+const monthRevenue = () => { const m=today().slice(0,7); return REV.closes.filter(x=>(x.date||'').slice(0,7)===m).reduce((s,x)=>s+x.retention+x.purchases,0); };
+const profitTotal = () => grandTotal()-expenseTotal();
+const fmtMoney = n => (Number(n)||0).toLocaleString('fr-FR',{maximumFractionDigits:0});
+const bizEsc = s => esc(String(s??''));
+
+function osSpark(days=30){
+  const S=dailySeries(days); const W=760,H=180,P=12; const vals=S.map(x=>x.v); const max=Math.max(1,...vals); const X=i=>P+(W-P*2)*(vals.length<2?0:i/(vals.length-1)); const Y=v=>H-P-(H-P*2)*(v/max);
+  const line=vals.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' '); const area=line+` L ${X(vals.length-1)} ${H-P} L ${X(0)} ${H-P} Z`;
+  return `<div class="spark"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><linearGradient id="osGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#168BFF" stop-opacity=".24"/><stop offset="1" stop-color="#168BFF" stop-opacity="0"/></linearGradient></defs><line class="gridline" x1="0" y1="${H*.33}" x2="${W}" y2="${H*.33}"/><line class="gridline" x1="0" y1="${H*.66}" x2="${W}" y2="${H*.66}"/><path class="area" d="${area}"/><path class="line" d="${line}"/></svg></div>`;
+}
+function gridMini(){ return `<span class="grid-face">${blobSVG('gridMiniBlob')}</span>`; }
+function stageLabel(s){return ({idea:'Idées',build:'Production',test:'Test / QA',live:'Live'})[s]||s}
+
+PAGES.dashboard = () => {
+  bizLoad();
+  const rev=grandTotal(), exp=expenseTotal(), profit=rev-exp, mrev=monthRevenue(), mexp=monthExpense(), mprofit=mrev-mexp;
+  const target=Math.max(1,Number(BIZ.target)||1), progress=Math.min(100,Math.round(mrev/target*100));
+  const margin=rev>0?Math.round(profit/rev*100):0; const avg=mexp||((exp/Math.max(1,BIZ.expenses.length))*4); const runway=avg>0?Math.max(0,(Number(BIZ.cash)||0)/avg):0;
+  const maps=[...REV.maps].map(m=>({...m,t:mapTotal(m.id)})).sort((a,b)=>b.t-a.t);
+  const health=Math.max(18,Math.min(99,Math.round(45 + Math.min(30,progress*.3) + Math.min(20,margin*.2) + Math.min(10,REV.maps.length*2))));
+  const insight = mrev===0 ? 'Commencez par clôturer vos revenus du jour : Grid construira ensuite votre rythme de studio.' : mprofit>=0 ? `Vous êtes rentable ce mois-ci. Le levier prioritaire est maintenant de pousser l’île qui génère le plus de revenu.` : `Vos coûts du mois dépassent vos revenus de <strong>${fmtMoney(Math.abs(mprofit))} €</strong>. Grid recommande de geler les dépenses non essentielles.`;
+  return `<div class="os">
+    <header class="os-head"><div><div class="os-eyebrow">Creator Business OS · ${bizEsc(SESSION.pseudo)}</div><h1 class="os-title">Pilote ton studio.<br><em>Pas juste tes maps.</em></h1><p class="os-sub">GRID rassemble revenus UEFN, coûts, production et décisions dans un seul cockpit.</p></div><div class="os-actions"><button class="os-ghost" data-open="studio">Ouvrir le studio</button><button class="gbtn" data-rev="close-day">${svg('coin',14)} Clôturer aujourd’hui</button></div></header>
+    <div class="os-grid">
+      <section class="os-card pad kpi span-3"><div class="kpi-top"><span class="kpi-l">Revenus cumulés</span><span class="kpi-ic">${svg('revenue',14)}</span></div><div class="kpi-v">${fmtMoney(rev)} <small>€</small></div><div class="kpi-d good">${REV.maps.length} île${REV.maps.length>1?'s':''} suivie${REV.maps.length>1?'s':''}</div></section>
+      <section class="os-card pad kpi span-3"><div class="kpi-top"><span class="kpi-l">Profit net</span><span class="kpi-ic">${svg('coin',14)}</span></div><div class="kpi-v">${fmtMoney(profit)} <small>€</small></div><div class="kpi-d ${profit>=0?'good':'bad'}">Marge ${margin}% · coûts ${fmtMoney(exp)} €</div></section>
+      <section class="os-card pad kpi span-3"><div class="kpi-top"><span class="kpi-l">Objectif mensuel</span><span class="kpi-ic">${svg('fit',14)}</span></div><div class="kpi-v">${progress}<small>%</small></div><div class="kpi-d">${fmtMoney(mrev)} € / ${fmtMoney(target)} €</div></section>
+      <section class="os-card pad kpi span-3"><div class="kpi-top"><span class="kpi-l">Runway estimé</span><span class="kpi-ic">${svg('vault',14)}</span></div><div class="kpi-v">${runway?runway.toFixed(1):'—'} <small>${runway?'mois':''}</small></div><div class="kpi-d">Trésorerie ${fmtMoney(BIZ.cash)} €</div></section>
+      <section class="os-card pad span-8"><div class="os-ch"><div><h3>Revenue pulse</h3><span class="cap">30 derniers jours · revenus journaliers</span></div><span class="pill ${mprofit>=0?'green':'red'}">${mprofit>=0?'+':''}${fmtMoney(mprofit)} € net ce mois</span></div>${osSpark(30)}</section>
+      <section class="os-card pad blue span-4"><div class="os-ch"><div><h3>Business health</h3><span class="cap">Lecture synthétique par Grid</span></div></div><div class="health"><div class="health-ring" style="--p:${health}"><b>${health}</b></div><div class="health-copy"><h4>${health>75?'Solide':health>55?'En construction':'À sécuriser'}</h4><p>Combine rentabilité, objectif, activité et diversification de tes îles.</p></div></div><div style="margin-top:17px">${gridMini()}<div style="display:inline-block;vertical-align:top;margin-left:9px;width:calc(100% - 60px);font-size:11.5px;color:var(--dim);line-height:1.45">${insight}</div></div></section>
+      <section class="os-card pad span-7"><div class="os-ch"><div><h3>Portefeuille d’îles</h3><span class="cap">Contribution au revenu total</span></div><button class="os-ghost" data-rev="add-map">+ Île</button></div><div class="biz-list">${maps.length?maps.slice(0,6).map(m=>`<div class="biz-row"><div class="biz-name"><b>${bizEsc(m.name)}</b><span>${bizEsc(m.code||'code non renseigné')}</span></div><div class="biz-val">${fmtMoney(m.t)} €</div><div class="biz-share"><i style="width:${rev?Math.max(2,m.t/rev*100):0}%"></i></div></div>`).join(''):'<div class="dash-empty">Ajoutez votre première île pour commencer à mesurer le business.</div>'}</div></section>
+      <section class="os-card pad span-5"><div class="os-ch"><div><h3>Priorités studio</h3><span class="cap">Ce qui mérite votre attention</span></div></div><div class="next-list">${(BIZ.projects||[]).slice(0,4).map(p=>`<div class="next-item"><span class="next-dot"></span><div class="txt"><b>${bizEsc(p.name)}</b><span>${stageLabel(p.stage)} · budget ${fmtMoney(p.budget)} €</span></div></div>`).join('')||'<div class="dash-empty">Aucun projet actif.</div>'}</div></section>
+      <section class="os-card span-12"><div class="grid-insight">${gridMini()}<div><h3>GRID · décision du jour</h3><p>${insight} <strong>${progress<70?'Objectif mensuel : '+progress+'% atteint.':'Objectif mensuel en bonne voie.'}</strong></p></div></div></section>
+    </div>
+  </div>`;
+};
+
+PAGES.expenses = () => { bizLoad(); const total=expenseTotal(); const month=monthExpense(); const cats={}; (BIZ.expenses||[]).forEach(x=>cats[x.category]=(cats[x.category]||0)+Number(x.amount||0)); return `<div class="os"><header class="os-head"><div><div class="os-eyebrow">Finance · dépenses</div><h1 class="os-title">Savoir où part<br><em>chaque euro.</em></h1><p class="os-sub">Freelance, assets, logiciels, acquisition, sous-traitance : gardez les coûts du studio visibles.</p></div></header><div class="os-grid"><section class="os-card pad kpi span-3"><div class="kpi-l">Dépenses totales</div><div class="kpi-v">${fmtMoney(total)} <small>€</small></div><div class="kpi-d">${BIZ.expenses.length} transaction${BIZ.expenses.length!==1?'s':''}</div></section><section class="os-card pad kpi span-3"><div class="kpi-l">Ce mois</div><div class="kpi-v">${fmtMoney(month)} <small>€</small></div><div class="kpi-d">Impact direct sur le profit</div></section><section class="os-card pad kpi span-3"><div class="kpi-l">Profit global</div><div class="kpi-v">${fmtMoney(profitTotal())} <small>€</small></div><div class="kpi-d ${profitTotal()>=0?'good':'bad'}">Revenus − dépenses</div></section><section class="os-card pad kpi span-3"><div class="kpi-l">Poste principal</div><div class="kpi-v" style="font-size:22px">${bizEsc(Object.entries(cats).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—')}</div><div class="kpi-d">Catégorie la plus coûteuse</div></section><section class="os-card pad span-12"><div class="os-ch"><h3>Ajouter une dépense</h3><span class="cap">Enregistrée localement dans votre espace</span></div><form class="form-row" id="expForm"><input class="os-input" name="label" placeholder="Ex. Freelance Verse" required><input class="os-input" name="amount" type="number" min="0" step="0.01" placeholder="Montant €" required><select class="os-select" name="category"><option>Freelance</option><option>Logiciels</option><option>Assets</option><option>Marketing</option><option>Matériel</option><option>Autre</option></select><button class="gbtn" type="submit">Ajouter</button></form><div class="table-wrap"><table class="table"><thead><tr><th>Dépense</th><th>Catégorie</th><th>Date</th><th class="num">Montant</th><th></th></tr></thead><tbody>${[...(BIZ.expenses||[])].reverse().map(x=>`<tr><td><b>${bizEsc(x.label)}</b></td><td>${bizEsc(x.category)}</td><td>${bizEsc(x.date)}</td><td class="num">−${fmtMoney(x.amount)} €</td><td class="num"><button data-exp-del="${x.id}" aria-label="Supprimer">${svg('trash',13)}</button></td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:26px">Aucune dépense enregistrée.</td></tr>'}</tbody></table></div></section></div></div>`; };
+
+PAGES.studio = () => { bizLoad(); const stages=['idea','build','test','live']; return `<div class="os"><header class="os-head"><div><div class="os-eyebrow">Studio · production</div><h1 class="os-title">De l’idée au live.<br><em>Sans perdre le business.</em></h1><p class="os-sub">Un pipeline léger pour relier production UEFN, budget et lancement.</p></div></header><section class="os-card pad"><div class="os-ch"><h3>Nouveau projet</h3><span class="cap">Map, update, prototype ou opération live</span></div><form class="form-row" id="projForm"><input class="os-input" name="name" placeholder="Nom du projet" required><input class="os-input" name="desc" placeholder="Objectif / livrable"><input class="os-input" name="budget" type="number" min="0" placeholder="Budget €"><button class="gbtn" type="submit">Créer</button></form><div class="project-board">${stages.map(s=>{const list=(BIZ.projects||[]).filter(p=>p.stage===s);return `<div class="lane"><div class="lane-h"><b>${stageLabel(s)}</b><span>${list.length}</span></div>${list.map(p=>`<article class="proj"><div class="nm">${bizEsc(p.name)}</div><div class="desc">${bizEsc(p.desc||'Aucune description')}</div><div class="foot"><span class="money">${fmtMoney(p.budget)} €</span><button class="move" data-proj-move="${p.id}">${s==='live'?'Archiver':'→ '+stageLabel(stages[stages.indexOf(s)+1])}</button></div></article>`).join('')||'<div style="padding:18px 4px;color:var(--muted);font-size:11px;text-align:center">Vide</div>'}</div>`}).join('')}</div></section></div>`; };
+
+function forecastMonths(mult){ const base=Math.max(100, monthRevenue() || (grandTotal()/Math.max(1,new Set(REV.closes.map(c=>c.date.slice(0,7))).size))); return Array.from({length:6},(_,i)=>Math.round(base*Math.pow(mult,i+1))); }
+PAGES.forecast = () => { bizLoad(); const mul={safe:1.02,base:1.08,growth:1.16}[BIZ.scenario||'base']; const vals=forecastMonths(mul), max=Math.max(...vals,1); return `<div class="os"><header class="os-head"><div><div class="os-eyebrow">Planning · forecast</div><h1 class="os-title">Voir avant<br><em>de dépenser.</em></h1><p class="os-sub">Une projection simple basée sur votre rythme actuel. Ce n’est pas une promesse de revenus : c’est un outil de décision.</p></div></header><div class="os-grid"><section class="os-card pad span-4"><div class="os-ch"><h3>Hypothèse</h3></div><div class="scenario">${[['safe','Prudent','+2% / mois'],['base','Base','+8% / mois'],['growth','Croissance','+16% / mois']].map(([k,n,d])=>`<button class="${BIZ.scenario===k?'on':''}" data-scenario="${k}"><b>${n}</b><span>${d}</span></button>`).join('')}</div><div style="height:16px"></div><div class="os-ch"><h3>Paramètres studio</h3></div><label style="font-size:11px;color:var(--muted)">Objectif mensuel (€)</label><input class="os-input" id="bizTarget" type="number" value="${Number(BIZ.target)||0}" style="margin:7px 0 12px"><label style="font-size:11px;color:var(--muted)">Trésorerie disponible (€)</label><input class="os-input" id="bizCash" type="number" value="${Number(BIZ.cash)||0}" style="margin:7px 0 12px"><label style="font-size:11px;color:var(--muted)">Provision fiscale (%)</label><input class="os-input" id="bizTax" type="number" value="${Number(BIZ.taxRate)||0}" style="margin:7px 0 12px"><button class="gbtn" data-biz-save style="padding:10px 16px">Enregistrer</button></section><section class="os-card pad span-8"><div class="os-ch"><div><h3>Projection 6 mois</h3><span class="cap">Scénario ${BIZ.scenario||'base'}</span></div><span class="pill">Total ${fmtMoney(vals.reduce((a,b)=>a+b,0))} €</span></div><div class="forecast-bars">${vals.map((v,i)=>`<div class="fbar"><div class="v">${fmtMoney(v)}€</div><i style="height:${Math.max(4,v/max*100)}%"></i><span>M+${i+1}</span></div>`).join('')}</div></section><section class="os-card pad span-12"><div class="grid-insight">${gridMini()}<div><h3>GRID · lecture du scénario</h3><p>Avec ce scénario, le revenu mensuel projeté atteint <strong>${fmtMoney(vals[5])} €</strong> à M+6. Gardez une réserve de trésorerie avant d’augmenter les coûts fixes et comparez chaque recrutement au revenu supplémentaire qu’il doit rendre possible.</p></div></div></section></div></div>`; };
+
+$('view').addEventListener('submit', e=>{
+  if(e.target.id==='expForm'){ e.preventDefault(); const f=new FormData(e.target); BIZ.expenses.push({id:rid(),label:f.get('label'),amount:money(f.get('amount')),category:f.get('category'),date:today(),ts:Date.now()}); bizSave(); renderView(); }
+  if(e.target.id==='projForm'){ e.preventDefault(); const f=new FormData(e.target); BIZ.projects.push({id:rid(),name:f.get('name'),desc:f.get('desc'),budget:money(f.get('budget')),stage:'idea'}); bizSave(); renderView(); }
+});
+$('view').addEventListener('click', e=>{
+  const op=e.target.closest('[data-open]'); if(op && META[op.dataset.open]){ go(op.dataset.open); return; }
+  const del=e.target.closest('[data-exp-del]'); if(del){ BIZ.expenses=BIZ.expenses.filter(x=>x.id!==del.dataset.expDel); bizSave(); renderView(); return; }
+  const mv=e.target.closest('[data-proj-move]'); if(mv){ const p=BIZ.projects.find(x=>x.id===mv.dataset.projMove); if(p){ const stages=['idea','build','test','live']; const i=stages.indexOf(p.stage); if(i===3) BIZ.projects=BIZ.projects.filter(x=>x.id!==p.id); else p.stage=stages[i+1]; bizSave(); renderView(); } return; }
+  const sc=e.target.closest('[data-scenario]'); if(sc){ BIZ.scenario=sc.dataset.scenario; bizSave(); renderView(); return; }
+  if(e.target.closest('[data-biz-save]')){ BIZ.target=money($('bizTarget')?.value); BIZ.cash=money($('bizCash')?.value); BIZ.taxRate=money($('bizTax')?.value); bizSave(); BUB.tone('green'); BUB.flash('happy',900); renderView(); }
+});
+
 
 /* ================= Lancement ================= */
 /* Après 20h, Grid met son bonnet et dort. C'est vous qui le réveillez. */
@@ -5262,6 +5725,7 @@ async function bootOut(){
   boot.classList.remove('on','out','gate');
 }
 async function runBoot(){
+  if(await checkMaint()) return 'maint';   // rien ne démarre si c'est fermé
   boot.classList.add('on');
   ASLEEP = NIGHT();
   BOOT_BUB.night(ASLEEP); AUTH_BUB.night(ASLEEP);
@@ -5292,7 +5756,7 @@ async function runBoot(){
 
 (async function start(){
   await applyTheme((await Store.get(K_THEME)) === 'dark', false);
-  await runBoot();
+  if(await runBoot() === 'maint') return;   // fermé : on n'ouvre rien
 
   USERS = (await Store.get(K_USERS)) || {};
   const last = await Store.get(K_SESSION);
