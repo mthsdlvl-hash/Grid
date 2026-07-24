@@ -1779,6 +1779,127 @@ h1 em{font-style:normal;color:var(--muted)}
   .tabbar .grid-mid,.grid-notch,.grid-mid .ask,.grid-mid .nudge,.grid-plus{transition-duration:.01ms!important;animation:none!important}
 }
 </style>
+
+<style id="grid-focus-edition">
+/* =========================================================
+   GRID FOCUS EDITION — quiet power
+   ========================================================= */
+:root{
+  --paper:#F4F5F7;--card:#FFFFFF;--hair:#E8EAEE;--soft:#F7F8FA;
+  --shadow:0 1px 2px rgba(18,22,31,.035),0 8px 24px rgba(18,22,31,.045);
+  --shadow-lift:0 1px 3px rgba(18,22,31,.04),0 16px 44px rgba(18,22,31,.075);
+  --r:16px;
+}
+[data-theme="dark"]{--paper:#101216;--card:#171A20;--hair:#252932;--soft:#1B1E24}
+body{background:var(--paper);overflow:hidden}
+.app{padding:0;height:100dvh;background:var(--paper)}
+
+/* A single, calm navigation layer. No absolute collision between tabs and Grid. */
+.tabbar{
+  display:grid!important;grid-template-columns:minmax(0,1fr) 224px minmax(0,1fr);
+  align-items:center;gap:18px;height:68px;padding:10px 18px!important;z-index:60;
+  border-bottom:1px solid color-mix(in srgb,var(--hair) 84%,transparent);
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  -webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);
+}
+.nav-zone{display:flex;align-items:center;gap:14px;min-width:0;justify-self:stretch}
+.brand-home{display:flex;align-items:center;gap:9px;flex:none;padding:5px 7px 5px 5px;border-radius:11px;transition:background .16s,transform .16s}
+.brand-home:hover{background:var(--hover)}
+.brand-home:active{transform:scale(.98)}
+.brand-glyph{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--ink);color:var(--card);box-shadow:0 4px 12px rgba(18,22,31,.12)}
+.brand-copy{display:flex;flex-direction:column;text-align:left;line-height:1}
+.brand-copy b{font-family:var(--display);font-size:12.5px;letter-spacing:.04em}
+.brand-copy small{font-size:9px;color:var(--muted);margin-top:4px;white-space:nowrap}
+
+.tabs{gap:4px;padding:0;mask-image:linear-gradient(90deg,#000 calc(100% - 18px),transparent);-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 18px),transparent)}
+.tab{padding:7px 10px;border-radius:10px;background:transparent;box-shadow:none!important;-webkit-backdrop-filter:none;backdrop-filter:none;font-size:12px}
+.tab:hover{background:var(--hover);transform:none;color:var(--ink)}
+.tab[aria-selected="true"]{padding:7px 10px;background:var(--card);box-shadow:inset 0 0 0 1px var(--hair),0 1px 2px rgba(18,22,31,.04)!important;font-weight:550}
+.tab-close{margin-left:0}
+
+.top-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;min-width:0;justify-self:stretch}
+.command-key{height:34px;display:flex;align-items:center;gap:7px;padding:0 8px 0 10px;border-radius:10px;color:var(--muted);background:var(--card);box-shadow:inset 0 0 0 1px var(--hair);font-size:11.5px;transition:.16s;white-space:nowrap}
+.command-key:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--muted)}
+.command-key kbd{font-family:var(--mono);font-size:9px;padding:2px 5px;border-radius:5px;background:var(--key);color:var(--muted)}
+.mem,.av-btn{width:34px;height:34px}
+.mem{border-radius:10px;background:transparent!important;box-shadow:none!important}
+.mem:hover{background:var(--hover)!important;color:var(--ink)}
+.av-btn{padding:2px}
+
+/* Grid's host stays 224x44. Only the black surface morphs, so opening Grid never pushes content. */
+.grid-mid{--notch-w:224px;--notch-h:44px;--notch-radius:23px;width:224px!important;height:44px!important;position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;transform:none!important;display:block!important;justify-self:center;z-index:90}
+.tabbar .grid-mid{width:224px!important;height:44px!important;position:relative!important;left:auto!important;top:auto!important;transform:none!important}
+.grid-mid:hover:not(.is-open):not(.is-alert){transform:none!important}
+.grid-mid.is-open{--notch-w:min(520px,calc(100vw - 40px));--notch-h:356px;--notch-radius:28px}
+.grid-mid.is-alert{--notch-w:min(500px,calc(100vw - 40px));--notch-h:214px;--notch-radius:28px}
+.grid-notch{inset:auto!important;left:50%;top:0;width:var(--notch-w);height:var(--notch-h);transform:translateX(-50%);transition:width .5s cubic-bezier(.2,.9,.2,1),height .5s cubic-bezier(.2,.9,.2,1),border-radius .45s cubic-bezier(.2,.9,.2,1),box-shadow .3s ease;background:#060708}
+.grid-notch::before{opacity:.58}
+.grid-tab{cursor:pointer}
+.notch-mini,.grid-plus{cursor:pointer}
+
+/* This popup is not clipped by .grid-notch anymore. */
+#menu.notch-menu{left:50%;right:auto;top:52px;width:272px;transform:translate(-50%,-8px) scale(.97);transform-origin:50% -8px;z-index:120}
+#menu.notch-menu.on{transform:translate(-50%,0) scale(1)}
+#menu.notch-menu::before{left:calc(50% + 82px);right:auto}
+
+/* Content is allowed to breathe. */
+.view{padding:24px clamp(18px,2.5vw,38px) 38px;scrollbar-gutter:stable;overscroll-behavior:contain}
+.view>*{max-width:1480px;margin-left:auto;margin-right:auto}
+.page-head{padding:4px 2px 22px}
+h1{font-size:clamp(28px,3vw,38px);font-weight:540;letter-spacing:-.04em}
+.eyebrow{font-size:9.5px;letter-spacing:.16em}
+.card,.os-card,.vt-side,.vt-files,.mm-canvas,.modal-card{border:1px solid var(--hair);box-shadow:none!important}
+.card,.os-card{border-radius:16px}
+.os-grid{gap:12px}
+.os-card{padding:18px}
+.metric-val,.kpi-v{letter-spacing:-.035em}
+
+/* Popovers: lighter and easier to hit. */
+.pop{border-radius:16px;background:color-mix(in srgb,var(--card) 92%,transparent);box-shadow:0 18px 55px rgba(16,20,28,.16),inset 0 0 0 1px var(--hair);-webkit-backdrop-filter:blur(24px) saturate(150%);backdrop-filter:blur(24px) saturate(150%)}
+.pop::before{display:none}
+#tasksPop,#notesPop{right:0;left:auto}
+.menu-row,.menu-act{min-height:40px}
+
+/* Inputs and actions share one hit-target language. */
+button{touch-action:manipulation}
+.gbtn,.btn{min-height:36px}
+input,select,textarea{min-height:36px}
+:focus-visible{outline:2px solid #1888ff;outline-offset:2px}
+
+/* Prevent decorative layers from stealing pointer events. */
+.grid-notch::before,.grid-notch::after,.folder-vis .peek,.notch-context,.gt-dot::after{pointer-events:none!important}
+
+@media(max-width:1120px){
+  .tabbar{grid-template-columns:minmax(0,1fr) 210px auto;gap:10px;padding-inline:12px!important}
+  .grid-mid,.tabbar .grid-mid{width:210px!important}
+  .command-key span{display:none}
+  .brand-copy small{display:none}
+  .brand-copy b{font-size:11.5px}
+}
+@media(max-width:820px){
+  .tabbar{grid-template-columns:minmax(0,1fr) 190px auto;height:62px}
+  .brand-copy{display:none}.nav-zone{gap:6px}.brand-glyph{width:32px;height:32px}
+  .tabs .tab span:not(.tab-close){display:none}.tab{width:32px;height:32px;padding:0!important;justify-content:center}
+  .grid-mid,.tabbar .grid-mid{width:190px!important}
+  .notch-status{max-width:68px}.notch-mini{display:none}
+  .command-key{display:none}
+  .view{padding-top:18px}
+}
+@media(max-width:620px){
+  body{overflow:hidden}.tabbar{grid-template-columns:42px 1fr auto;gap:6px;padding:8px 10px!important;height:60px}
+  .nav-zone{display:block}.tabs{display:none}.brand-home{padding:4px}.brand-glyph{width:34px;height:34px}
+  .grid-mid,.tabbar .grid-mid{width:min(224px,calc(100vw - 150px))!important;position:relative!important;left:auto!important;top:auto!important;transform:none!important}
+  .grid-mid.is-open{--notch-w:calc(100vw - 16px);--notch-h:min(430px,calc(100dvh - 78px))}
+  .grid-mid.is-alert{--notch-w:calc(100vw - 16px);--notch-h:220px}
+  .top-actions{gap:2px}.top-actions .mem-wrap{display:none}.av-btn{width:34px;height:34px}
+  .grid-notch{position:absolute!important}
+  #menu.notch-menu{width:min(280px,calc(100vw - 24px));top:50px}
+  .view{padding:16px 12px 28px}
+  .page-head{padding-bottom:16px}
+}
+@media(prefers-reduced-motion:reduce){.grid-notch,#menu.notch-menu{transition-duration:.01ms!important}}
+</style>
+
 </head>
 <body>
 
@@ -1843,37 +1964,22 @@ h1 em{font-style:normal;color:var(--muted)}
 
 <!-- APP -->
 <div class="app" id="shell">
-  <div class="tabbar">
-    <div class="tabs" id="tabs" role="tablist"></div>
-
-    <span class="spacer"></span>
-
-    <div class="pop-wrap mem-wrap" id="memTasksWrap">
-      <button class="mem" id="memTasks" aria-expanded="false" aria-haspopup="menu" aria-label="Mes tâches">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5.5 5.5L20 6"/></svg>
+  <header class="tabbar" aria-label="Navigation principale">
+    <div class="nav-zone">
+      <button class="brand-home" id="brandHome" type="button" aria-label="Retour au tableau de bord">
+        <span class="brand-glyph" aria-hidden="true">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h6v6H5zM13 5h6v6h-6zM5 13h6v6H5zM13 13h6v6h-6z"/></svg>
+        </span>
+        <span class="brand-copy"><b>GRID</b><small>Creator OS</small></span>
       </button>
-      <div class="pop" id="tasksPop" role="menu"><div class="pop-inner"><div class="pop-pad"></div></div></div>
+      <div class="tabs" id="tabs" role="tablist" aria-label="Espaces ouverts"></div>
     </div>
 
-    <div class="pop-wrap mem-wrap" id="memNotesWrap">
-      <button class="mem" id="memNotes" aria-expanded="false" aria-haspopup="menu" aria-label="Mes notes">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6h14M5 11h14M5 16h8"/></svg>
-      </button>
-      <div class="pop" id="notesPop" role="menu"><div class="pop-inner"><div class="pop-pad"></div></div></div>
-    </div>
-
-    <div class="pop-wrap av-holder">
-      <button class="av-btn" id="avBtn" aria-expanded="false" aria-haspopup="menu" aria-label="Mon compte">
-        <span class="av" id="avSmall"></span>
-      </button>
-      <div class="pop" id="account" role="menu"><div class="pop-inner"><div class="pop-pad" id="accountBody"></div></div></div>
-    </div>
-
-    <!-- GRID Notch — l’agent devient une surface de contrôle dynamique -->
+    <!-- GRID Notch — centre nerveux, sans bloquer la navigation -->
     <div class="pop-wrap grid-mid" id="gridNotchHost">
       <div class="grid-notch" id="gridNotch">
         <div class="notch-head">
-          <button class="grid-tab" id="bubBtn" data-tone-host data-tone="blue" aria-expanded="false" aria-label="Parler à Grid">
+          <button class="grid-tab" id="bubBtn" data-tone-host data-tone="blue" aria-expanded="false" aria-controls="ask" aria-label="Parler à Grid">
             <span class="gt-blob" id="gtBlob"></span>
             <span class="notch-copy">
               <span class="gt-name">Grid</span>
@@ -1881,22 +1987,19 @@ h1 em{font-style:normal;color:var(--muted)}
             </span>
             <span class="gt-dot"></span>
           </button>
-          <button class="notch-mini" id="notchPulse" type="button" aria-label="Voir les tâches en attente">
+          <button class="notch-mini" id="notchPulse" type="button" aria-label="Voir les éléments en attente">
             <span class="pulse"></span><span id="notchPending">0</span>
           </button>
           <span class="notch-clock" id="notchClock"></span>
-          <div class="pop-wrap plus-holder">
-            <button class="grid-plus" id="tabAdd" aria-expanded="false" aria-haspopup="menu" aria-label="Créer, clôturer, ouvrir">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-            </button>
-            <div class="pop" id="menu" role="menu"><div class="pop-inner"><div class="pop-pad" id="menuBody"></div></div></div>
-          </div>
+          <button class="grid-plus" id="tabAdd" aria-expanded="false" aria-haspopup="menu" aria-controls="menu" aria-label="Créer ou ouvrir">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
         </div>
 
         <div class="ask" id="ask">
           <div class="ask-bar">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-            <input id="askInput" placeholder="Demandez quelque chose à Grid" autocomplete="off" spellcheck="false">
+            <input id="askInput" placeholder="Demandez quelque chose à Grid" autocomplete="off" spellcheck="false" aria-label="Commande Grid">
             <span class="kbd">↵</span>
           </div>
           <div class="ask-list" id="askList"></div>
@@ -1904,8 +2007,39 @@ h1 em{font-style:normal;color:var(--muted)}
         <div class="nudge" id="nudge"></div>
         <div class="notch-context"><span id="notchPage">Tableau de bord</span><span class="line"></span><b>Entrée pour exécuter</b></div>
       </div>
+
+      <!-- Le menu est volontairement HORS du masque de la notch : aucun clic n'est coupé. -->
+      <div class="pop notch-menu" id="menu" role="menu"><div class="pop-inner"><div class="pop-pad" id="menuBody"></div></div></div>
     </div>
-  </div>
+
+    <div class="top-actions">
+      <button class="command-key" id="cmdBtn" type="button" aria-label="Ouvrir la commande Grid">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <span>Commande</span><kbd>⌘K</kbd>
+      </button>
+
+      <div class="pop-wrap mem-wrap" id="memTasksWrap">
+        <button class="mem" id="memTasks" aria-expanded="false" aria-haspopup="menu" aria-label="Mes tâches">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5.5 5.5L20 6"/></svg>
+        </button>
+        <div class="pop" id="tasksPop" role="menu"><div class="pop-inner"><div class="pop-pad"></div></div></div>
+      </div>
+
+      <div class="pop-wrap mem-wrap" id="memNotesWrap">
+        <button class="mem" id="memNotes" aria-expanded="false" aria-haspopup="menu" aria-label="Mes notes">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6h14M5 11h14M5 16h8"/></svg>
+        </button>
+        <div class="pop" id="notesPop" role="menu"><div class="pop-inner"><div class="pop-pad"></div></div></div>
+      </div>
+
+      <div class="pop-wrap av-holder">
+        <button class="av-btn" id="avBtn" aria-expanded="false" aria-haspopup="menu" aria-label="Mon compte">
+          <span class="av" id="avSmall"></span>
+        </button>
+        <div class="pop" id="account" role="menu"><div class="pop-inner"><div class="pop-pad" id="accountBody"></div></div></div>
+      </div>
+    </div>
+  </header>
 
   <div class="view" id="view"></div>
 </div>
@@ -5658,6 +5792,18 @@ $('view').addEventListener('click', e=>{
   if(e.target.closest('[data-biz-save]')){ BIZ.target=money($('bizTarget')?.value); BIZ.cash=money($('bizCash')?.value); BIZ.taxRate=money($('bizTax')?.value); bizSave(); BUB.tone('green'); BUB.flash('happy',900); renderView(); }
 });
 
+
+
+/* ================= Focus Edition shell wiring ================= */
+$('brandHome')?.addEventListener('click', e => { e.stopPropagation(); go('dashboard'); });
+$('cmdBtn')?.addEventListener('click', e => {
+  e.stopPropagation();
+  $('ask').classList.contains('on') ? closeAsk() : openAsk();
+});
+
+/* Keep the command hint platform-correct. */
+const cmdKbd = $('cmdBtn')?.querySelector('kbd');
+if(cmdKbd) cmdKbd.textContent = MAC ? '⌘K' : 'Ctrl K';
 
 /* ================= Lancement ================= */
 /* Après 20h, Grid met son bonnet et dort. C'est vous qui le réveillez. */
