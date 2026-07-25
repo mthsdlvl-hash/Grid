@@ -1106,6 +1106,7 @@ body.vault-drop .vt-main{outline:2px dashed var(--btn-lo);outline-offset:6px;bor
 .auth-sep::before,.auth-sep::after{content:"";flex:1;height:1px;background:var(--hair)}
 .auth-alt2{text-align:center;font-size:12.5px;color:var(--muted);margin-top:16px}
 .auth-alt2 button{color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.auth-security{margin-top:20px;padding-top:16px;border-top:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);font-size:9.5px;letter-spacing:.04em}.auth-security span{display:flex;align-items:center;gap:6px}.auth-security i{width:6px;height:6px;border-radius:50%;background:#27B979;box-shadow:0 0 8px rgba(39,185,121,.45)}.auth-security b{color:var(--dim);font-weight:600}
 
 .odp-layer{position:absolute;inset:0;z-index:10;display:grid;place-items:center;padding:24px;background:rgba(3,7,28,.64);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);opacity:0;pointer-events:none;transition:opacity .25s ease}
 .odp-layer[hidden]{display:none!important}
@@ -1888,6 +1889,123 @@ input,select,textarea{min-height:36px}
   .page-head{padding-bottom:16px}
 }
 @media(prefers-reduced-motion:reduce){.grid-notch,#menu.notch-menu{transition-duration:.01ms!important}}
+
+/* =========================================================
+   GRID INTERNAL — Dark control room
+   ========================================================= */
+#shell.app{
+  --paper:#050505;--glow:#090909;--card:#181818;--ink:#F2F2F2;--muted:#777;
+  --dim:#B7B7B7;--hair:#292929;--track:#242424;--hover:#1E1E1E;
+  --soft:#141414;--key:#202020;--field:#111;--glass:rgba(20,20,20,.88);
+  --glass-hi:rgba(34,34,34,.96);--glass-pop:rgba(19,19,19,.96);
+  --glass-rim:rgba(255,255,255,.085);--glass-top:rgba(255,255,255,.055);
+  --shadow:none;--shadow-lift:0 18px 50px rgba(0,0,0,.35);--shadow-pop:0 24px 70px rgba(0,0,0,.55);
+  display:none;padding:0;height:100vh;height:100dvh;background:#050505;
+  grid-template-columns:258px minmax(0,1fr);grid-template-rows:66px minmax(0,1fr);
+  overflow:hidden;color:#eee;
+}
+#shell.app.on{display:grid}
+.side-shell{
+  grid-column:1;grid-row:1/3;min-height:0;background:#080808;border-right:1px solid #282828;
+  display:flex;flex-direction:column;padding:17px 12px 12px;z-index:30
+}
+.side-brand{height:42px;display:flex;align-items:center;gap:11px;padding:0 9px 12px;color:#fff}
+.side-brand-mark{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#f3f3f3;color:#080808;font-family:var(--display);font-size:12px;font-weight:700}
+.side-brand b{font-family:var(--display);font-size:13px;letter-spacing:-.01em}.side-brand span{display:block;font-size:9px;color:#676767;margin-top:2px}
+.side-scroll{flex:1;min-height:0;overflow:auto;padding-top:12px;scrollbar-width:none}.side-scroll::-webkit-scrollbar{display:none}
+.side-section{margin-bottom:21px}.side-label{height:26px;display:flex;align-items:center;justify-content:space-between;padding:0 9px;color:#8a8a8a;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.12em}
+.side-nav{display:flex;flex-direction:column;gap:3px}.side-link{
+  position:relative;width:100%;height:36px;border-radius:9px;padding:0 10px;display:flex;align-items:center;gap:11px;
+  color:#9a9a9a;font-size:11.5px;text-align:left;transition:background .15s,color .15s
+}
+.side-link:hover{background:#151515;color:#eee}.side-link.on{background:#202020;color:#fff;box-shadow:inset 0 0 0 1px #303030}
+.side-link.on::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:2px;border-radius:2px;background:#438DFF}
+.side-icon{width:16px;height:16px;display:grid;place-items:center;flex:none;color:#a9a9a9}.side-link.on .side-icon{color:#fff}
+.side-icon svg{width:15px;height:15px}
+.side-foot{border-top:1px solid #242424;padding-top:11px}
+.side-user{width:100%;height:47px;border-radius:12px;padding:6px 8px;display:flex;align-items:center;gap:10px;color:#ddd;text-align:left;transition:background .15s}
+.side-user:hover{background:#171717}.side-avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#65CBFF,#096EF0);color:white;font-family:var(--display);font-weight:700;font-size:12px}
+.side-user-copy{min-width:0;flex:1}.side-user-copy b{display:block;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.side-user-copy span{display:block;font-size:9px;color:#666;margin-top:3px}
+
+#shell .tabbar{
+  position:relative;grid-column:2;grid-row:1;height:66px;min-height:66px;padding:0 22px!important;
+  background:#080808!important;border-bottom:0!important;box-shadow:none!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;z-index:25
+}
+#shell .nav-zone,#shell .tabs{display:none!important}
+#shell .top-actions{position:absolute;right:18px;left:auto;width:42px;height:100%;display:flex;align-items:center;justify-content:flex-end}
+#shell .command-key{
+  width:min(330px,100%);height:36px;border-radius:10px;background:#151515;color:#777;
+  box-shadow:inset 0 0 0 1px #2b2b2b;padding:0 12px;font-size:11px
+}
+#shell .command-key{display:none!important}
+#shell .command-key span{display:block!important;margin-right:auto}
+#shell .command-key kbd{background:#272727;color:#aaa;border-radius:6px;padding:3px 6px}
+#shell .top-actions .mem-wrap{display:none!important}
+#shell .top-actions .av-holder{display:block!important;position:relative;left:auto;bottom:auto;width:auto;height:auto;z-index:80}
+#shell .top-actions .av-holder>.av-btn{display:block}
+#shell .top-actions .av-holder>#account{position:absolute;left:auto;right:-4px;top:45px;bottom:auto;transform-origin:calc(100% - 24px) top}
+#shell .grid-mid,#shell .tabbar .grid-mid{position:absolute!important;left:50%!important;top:11px!important;transform:translateX(-50%)!important;margin:0!important;justify-self:auto!important;width:224px!important}
+#shell .grid-notch{background:#141414;box-shadow:inset 0 0 0 1px #2c2c2c}
+#shell .grid-notch::before{opacity:.22}
+#shell #menu.notch-menu{right:0;left:auto}
+
+#shell .view{
+  grid-column:2;grid-row:2;padding:22px 28px 56px;background:#050505;overflow:auto;
+  scrollbar-color:#333 transparent
+}
+#shell .view>*{max-width:none;margin-left:auto;margin-right:auto}
+#shell .page-head{border-bottom:1px solid #242424;padding-bottom:19px;margin-bottom:22px}
+#shell .page-head h1{font-size:20px;color:#f0f0f0}
+#shell .page-head p{color:#777}
+#shell .card,#shell .os-card,#shell .hero-card,#shell .rev-card,#shell .vault-card{
+  background:#181818!important;border:1px solid #2a2a2a!important;box-shadow:none!important
+}
+#shell .os{max-width:none}
+#shell .os-head{padding:0 0 26px;border-bottom:1px solid #242424;margin-bottom:22px}
+#shell .os>.os-head{display:none}
+#shell .os-eyebrow{color:#666}
+#shell .os-title{font-size:34px;line-height:1.02;color:#f3f3f3}
+#shell .os-title em{color:#777}
+#shell .os-sub{color:#777;max-width:560px}
+#shell .os-card{border-radius:15px}
+#shell .os-card.blue{background:#15171C!important}
+#shell .kpi-v{color:#f5f5f5}
+#shell .kpi-l,#shell .cap,#shell .kpi-d{color:#777}
+#shell .biz-row,#shell .next-item{border-color:#292929}
+#shell .gbtn{background:#f1f1f1;color:#111;box-shadow:none}
+#shell .gbtn:hover{background:#fff;transform:translateY(-1px)}
+#shell .os-ghost{background:#151515;color:#aaa;border:1px solid #2c2c2c}
+#shell input,#shell select,#shell textarea{background:transparent!important;color:var(--ink)!important;border:1px solid var(--hair)!important;border-radius:8px!important;box-shadow:none!important}
+#shell input:focus,#shell select:focus,#shell textarea:focus{border-color:#555!important;box-shadow:0 0 0 2px rgba(100,150,255,.08)!important}
+#shell .pin,#shell .os-input,#shell .os-select{background:transparent!important;box-shadow:inset 0 0 0 1px var(--hair)!important;border-radius:8px!important}
+#shell .pin input{border:0!important;box-shadow:none!important}
+#shell .pill{background:#222;color:#aaa}
+#shell #tabAdd{display:none!important}
+.side-foot{display:none}
+.side-map-switch{position:relative;width:100%;margin-bottom:12px}.side-map-btn{width:100%;height:42px;border-radius:11px;background:#151515;border:1px solid #2b2b2b;color:#eee;display:flex;align-items:center;gap:10px;padding:0 11px;text-align:left;transition:.16s}.side-map-btn:hover,.side-map-btn[aria-expanded="true"]{background:#1d1d1d;border-color:#3a3a3a}.side-map-dot{width:23px;height:23px;border-radius:8px;display:grid;place-items:center;background:#232323;color:#8CBFFF;font-size:11px}.side-map-copy{min-width:0;flex:1}.side-map-copy small{display:block;font-size:8px;color:#666;text-transform:uppercase;letter-spacing:.1em}.side-map-copy b{display:block;font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}.side-map-menu{position:absolute;left:0;right:0;top:49px;z-index:100;padding:6px;border-radius:12px;background:#181818;border:1px solid #303030;box-shadow:0 18px 50px rgba(0,0,0,.55);opacity:0;pointer-events:none;transform:translateY(-5px);transition:.16s}.side-map-menu.on{opacity:1;pointer-events:auto;transform:none}.side-map-option{width:100%;height:35px;border-radius:8px;padding:0 9px;display:flex;align-items:center;gap:9px;color:#999;font-size:10.5px;text-align:left}.side-map-option:hover,.side-map-option.on{background:#252525;color:#fff}.side-map-option i{width:6px;height:6px;border-radius:50%;background:#438DFF}.side-map-option span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side-map-create{margin-top:5px;border-top:1px solid #303030;padding-top:5px;color:#8CBFFF}.side-map-create i{display:grid;place-items:center;width:18px;height:18px;background:#263B59;border-radius:6px;font-style:normal}
+.theme-gallery{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.theme-choice{padding:7px;border:1px solid var(--hair);border-radius:11px;text-align:left;background:var(--soft)}.theme-choice[aria-selected="true"]{border-color:#2C86FF;box-shadow:0 0 0 2px rgba(44,134,255,.12)}.theme-preview{height:62px;border-radius:7px;border:1px solid rgba(120,120,120,.25);display:grid;grid-template-columns:18px 1fr;overflow:hidden;margin-bottom:7px}.theme-preview i{background:var(--tp-side)}.theme-preview span{background:var(--tp-main);position:relative}.theme-preview span::before,.theme-preview span::after{content:"";position:absolute;left:8px;right:8px;height:7px;border:1px solid var(--tp-line);border-radius:3px}.theme-preview span::before{top:10px}.theme-preview span::after{top:25px;height:20px}.theme-choice b{font-size:10.5px}.theme-choice small{display:block;color:var(--muted);font-size:9px;margin-top:2px}.danger-zone{margin-top:18px;padding-top:15px;border-top:1px solid var(--hair)}.danger-zone h4{font-size:11px;color:var(--coral)}.danger-zone p{font-size:10px;color:var(--muted);line-height:1.45;margin:5px 0 10px}.danger-btn{width:100%;padding:9px;border-radius:8px;background:rgba(240,101,90,.08);color:var(--coral);border:1px solid rgba(240,101,90,.22)}.reset-confirm{margin-top:10px;padding:10px;border-radius:9px;background:var(--soft);border:1px solid var(--hair)}.reset-confirm input{width:100%;padding:9px!important;font-size:11px!important;margin:7px 0!important}
+
+#shell[data-ui-theme="light"]{--paper:#F3F3F2;--card:#FFF;--ink:#151515;--muted:#888;--dim:#555;--hair:#E2E2E0;--track:#E8E8E6;--hover:#F0F0EE;--soft:#F6F6F4;--key:#ECECEA;--field:#FAFAF8;color:#151515;background:#F3F3F2}
+#shell[data-ui-theme="light"] .side-shell{background:#F8F8F6;border-color:#DFDFDC}#shell[data-ui-theme="light"] .tabbar{background:#F8F8F6!important}#shell[data-ui-theme="light"] .view{background:#F3F3F2}#shell[data-ui-theme="light"] .side-link{color:#666}#shell[data-ui-theme="light"] .side-link:hover{background:#EEEDEA;color:#171717}#shell[data-ui-theme="light"] .side-link.on{background:#E8E8E5;color:#111;box-shadow:inset 0 0 0 1px #D8D8D5}#shell[data-ui-theme="light"] .side-map-btn{background:#FFF;border-color:#DDD;color:#171717}#shell[data-ui-theme="light"] .side-map-menu{background:#FFF;border-color:#DDD;box-shadow:0 18px 50px rgba(0,0,0,.12)}#shell[data-ui-theme="light"] .side-map-option:hover,#shell[data-ui-theme="light"] .side-map-option.on{background:#F0F0EE;color:#111}#shell[data-ui-theme="light"] .os-card,#shell[data-ui-theme="light"] .card,#shell[data-ui-theme="light"] .hero-card,#shell[data-ui-theme="light"] .rev-card,#shell[data-ui-theme="light"] .vault-card{background:#FFF!important;border-color:#E0E0DE!important}#shell[data-ui-theme="light"] .os-card.blue{background:#F7F8FB!important}#shell[data-ui-theme="light"] .kpi-v,#shell[data-ui-theme="light"] .page-head h1{color:#151515}#shell[data-ui-theme="light"] .pill{background:#F0F0EE;color:#666}#shell[data-ui-theme="light"] .biz-row,#shell[data-ui-theme="light"] .next-item{border-color:#E5E5E2}
+
+@media(max-width:900px){
+  #shell.app{grid-template-columns:76px minmax(0,1fr)}
+  .side-shell{padding-inline:9px}.side-brand{justify-content:center;padding-inline:0}.side-brand>div:last-child,.side-label span,.side-label b,.side-link span:not(.side-icon),.side-user-copy{display:none}
+  .side-map-btn{justify-content:center;padding:0}.side-map-copy,.side-map-btn>span:last-child{display:none}.side-map-menu{width:210px;right:auto}
+  .side-link{justify-content:center;padding:0}.side-link.on::before{left:-1px}.side-user{justify-content:center;padding:5px}
+  #shell .view{padding:28px 24px 54px}
+}
+@media(max-width:620px){
+  #shell.app{grid-template-columns:1fr;grid-template-rows:60px minmax(0,1fr) 62px}
+  .side-shell{grid-column:1;grid-row:3;border-right:0;border-top:1px solid #292929;padding:7px 9px;display:block}
+  .side-brand,.side-map-switch,.side-label,.side-foot,.side-section:not(:first-child){display:none}.side-scroll{padding:0;overflow:visible}.side-section{margin:0}.side-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:3px}.side-link{height:46px;flex-direction:column;gap:3px;font-size:8px}.side-link span:not(.side-icon){display:block}.side-link:nth-child(n+6){display:none}.side-link.on::before{left:25%;right:25%;top:auto;bottom:-7px;width:auto;height:2px}
+  #shell .tabbar{grid-column:1;grid-row:1;height:60px;min-height:60px;padding:0 10px!important}
+  #shell .top-actions{left:auto;right:10px;width:38px}.command-key{display:none!important}
+  #shell .grid-mid,#shell .tabbar .grid-mid{width:158px!important}.notch-copy{display:none}.notch-mini{display:none}
+  #shell .view{grid-column:1;grid-row:2;padding:20px 14px 38px}.os-title{font-size:29px!important}
+}
 </style>
 
 </head>
@@ -1936,6 +2054,7 @@ input,select,textarea{min-height:36px}
           <span id="authErrTxt"></span>
         </div>
         <div class="auth-alt2" id="authAlt"></div>
+        <div class="auth-security"><span><i></i>Connexion locale chiffrée</span><span>Propulsé par <b>LVXTON</b> · GRID v2.3.0</span></div>
       </div>
     </div>
     <aside class="auth-visual" aria-label="GRID, votre copilote business animé">
@@ -1958,6 +2077,44 @@ input,select,textarea{min-height:36px}
 
 <!-- APP -->
 <div class="app" id="shell">
+  <aside class="side-shell" aria-label="Navigation GRID">
+    <div class="side-map-switch">
+      <button class="side-map-btn" id="mapScopeBtn" type="button" aria-expanded="false" aria-haspopup="menu">
+        <span class="side-map-dot">◇</span><span class="side-map-copy"><small>Dashboard</small><b id="mapScopeLabel">Toutes les cartes</b></span><span aria-hidden="true">⌄</span>
+      </button>
+      <div class="side-map-menu" id="mapScopeMenu" role="menu"></div>
+    </div>
+    <div class="side-scroll">
+      <section class="side-section">
+        <div class="side-label"><span>Naviguer</span><b>⌃</b></div>
+        <nav class="side-nav">
+          <button class="side-link on" data-side-page="dashboard"><span class="side-icon">▦</span><span>Tableau de bord</span></button>
+          <button class="side-link" data-side-page="studio"><span class="side-icon">▦</span><span>Studio & projets</span></button>
+          <button class="side-link" data-side-page="mindmap"><span class="side-icon">⌘</span><span>Cartes mentales</span></button>
+          <button class="side-link" data-side-page="material"><span class="side-icon">◆</span><span>Matériaux Maker</span></button>
+          <button class="side-link" data-side-page="vault"><span class="side-icon">●</span><span>Dossiers</span></button>
+          <button class="side-link" data-side-page="revenue"><span class="side-icon">↗</span><span>Revenus</span></button>
+          <button class="side-link" data-side-page="expenses"><span class="side-icon">↘</span><span>Dépenses</span></button>
+          <button class="side-link" data-side-page="forecast"><span class="side-icon">≋</span><span>Prévisions</span></button>
+        </nav>
+      </section>
+      <section class="side-section">
+        <div class="side-label"><span>Plus</span><b>⌃</b></div>
+        <nav class="side-nav">
+          <button class="side-link" id="sideTheme"><span class="side-icon">◐</span><span>Apparence</span></button>
+          <button class="side-link" id="sideCommand"><span class="side-icon">⌕</span><span>Commande GRID</span></button>
+          <button class="side-link" id="sideHelp"><span class="side-icon">?</span><span>Aide & raccourcis</span></button>
+        </nav>
+      </section>
+    </div>
+    <div class="side-foot">
+      <button class="side-user" id="sideProfile">
+        <span class="side-avatar" id="sideAvatar">G</span>
+        <span class="side-user-copy"><b id="sideUserName">Créateur GRID</b><span>Compte local sécurisé</span></span>
+        <span aria-hidden="true">⌄</span>
+      </button>
+    </div>
+  </aside>
   <header class="tabbar" aria-label="Navigation principale">
     <div class="nav-zone">
       <button class="brand-home" id="brandHome" type="button" aria-label="Retour au tableau de bord">
@@ -2117,6 +2274,7 @@ let USERS = {};
 /* ================= Thème ================= */
 async function applyTheme(dark, save=true){
   document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  $('shell')?.setAttribute('data-ui-theme',dark?'dark':'light');
   if(save) await Store.set(K_THEME, dark ? 'dark' : 'light');
 }
 const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
@@ -4144,6 +4302,21 @@ function renderView(){
   v.classList.remove('swap'); void v.offsetWidth; v.classList.add('swap');
   v.scrollTop = 0;
   MOUNT[ACTIVE]?.();          // certaines pages ont besoin de se brancher après coup
+  syncSideNav();
+}
+function syncSideNav(){
+  document.querySelectorAll('[data-side-page]').forEach(el=>el.classList.toggle('on',el.dataset.sidePage===ACTIVE));
+  const name = $('sideUserName'), avatar = $('sideAvatar');
+  if(name) name.textContent = SESSION.pseudo || 'Créateur GRID';
+  if(avatar) avatar.textContent = (SESSION.pseudo || 'G').trim().charAt(0).toUpperCase();
+  paintMapScope();
+}
+function paintMapScope(){
+  if(DASH_ISL && !REV.maps.some(m=>m.id===DASH_ISL)) DASH_ISL = null;
+  const selected = REV.maps.find(m=>m.id===DASH_ISL);
+  const label = $('mapScopeLabel'), menu = $('mapScopeMenu');
+  if(label) label.textContent = selected?.name || 'Toutes les cartes';
+  if(menu) menu.innerHTML = `<button class="side-map-option ${!DASH_ISL?'on':''}" data-map-scope="" role="menuitem"><i></i><span>Toutes les cartes</span></button>` + REV.maps.map(m=>`<button class="side-map-option ${DASH_ISL===m.id?'on':''}" data-map-scope="${m.id}" role="menuitem"><i></i><span>${esc(m.name)}</span></button>`).join('') + `<button class="side-map-option side-map-create" data-map-create role="menuitem"><i>+</i><span>Créer une nouvelle carte</span></button>`;
 }
 function go(id){
   if(!META[id]) id = 'dashboard';
@@ -4223,7 +4396,7 @@ function menuHTML(){
 }
 
 /* ---- Compte ---- */
-let ACC_VIEW = 'root';
+let ACC_VIEW = 'root', RESET_ARMED = false;
 const initial = () => (SESSION.pseudo[0] || '?').toUpperCase();
 const avInner = () => SESSION.photo ? `<img src="${SESSION.photo}" alt="">` : initial();
 
@@ -4267,12 +4440,14 @@ const ACC = {
       <span class="pan-title">Réglages</span>
     </div>
     <div class="pan-body">
-      <div class="row-toggle">
-        <div>
-          <div class="t">Mode sombre</div>
-          <div class="d">Pour les sessions de dev qui finissent tard.</div>
-        </div>
-        <button class="sw" id="swDark" role="switch" aria-checked="${isDark()}" aria-label="Mode sombre"></button>
+      <div class="pan-lab" style="margin-top:0">Galerie de thèmes</div>
+      <div class="pan-hint">Choisissez l’ambiance de votre espace GRID.</div>
+      <div class="theme-gallery" role="listbox" aria-label="Thème de l’interface">
+        <button class="theme-choice" data-theme-choice="dark" aria-selected="${isDark()}" role="option"><span class="theme-preview" style="--tp-side:#080808;--tp-main:#181818;--tp-line:#383838"><i></i><span></span></span><b>Noir</b><small>Control room</small></button>
+        <button class="theme-choice" data-theme-choice="light" aria-selected="${!isDark()}" role="option"><span class="theme-preview" style="--tp-side:#F4F4F2;--tp-main:#FFFFFF;--tp-line:#D9D9D6"><i></i><span></span></span><b>Blanc</b><small>Studio clair</small></button>
+      </div>
+      <div class="danger-zone"><h4>Zone sensible</h4><p>Efface les données de travail de ce compte sans supprimer vos identifiants.</p>
+        ${RESET_ARMED?`<div class="reset-confirm"><b style="font-size:10px">Protection anti-erreur</b><p>Tapez <strong>RÉINITIALISER</strong> pour confirmer.</p><input id="resetPhrase" type="text" autocomplete="off" placeholder="RÉINITIALISER"><button class="danger-btn" data-act="reset-confirm">Effacer définitivement</button><button class="mini quiet" data-act="reset-cancel" style="width:100%;margin-top:6px">Annuler</button><div class="pan-msg" id="pMsg"></div></div>`:`<button class="danger-btn" data-act="reset-start">Réinitialiser mes données</button>`}
       </div>
     </div>` }),
 };
@@ -5397,6 +5572,15 @@ $('account').addEventListener('click', async e=>{
   const msg = $('pMsg');
   const say = (t, ok) => { if(msg){ msg.textContent = t; msg.className = 'pan-msg ' + (ok ? 'ok' : 'err'); } };
 
+  if(act.dataset.act === 'reset-start'){ RESET_ARMED = true; return paintAcc('settings'); }
+  if(act.dataset.act === 'reset-cancel'){ RESET_ARMED = false; return paintAcc('settings'); }
+  if(act.dataset.act === 'reset-confirm'){
+    if(($('resetPhrase')?.value||'').trim().toUpperCase() !== 'RÉINITIALISER') return say('Saisissez exactement RÉINITIALISER.',false);
+    const id=SESSION.id;
+    await Promise.all([`grid:maps:${id}`,`grid:vault:${id}`,`grid:rev:${id}`,`grid:tabs:${id}`,`grid:notes:${id}`,`grid:seen:${id}`,`grid:business:${id}`].map(k=>Store.del(k)));
+    RESET_ARMED=false; location.reload(); return;
+  }
+
   if(act.dataset.act === 'photo') return $('picker').click();
 
   if(act.dataset.act === 'nophoto'){
@@ -5439,10 +5623,10 @@ $('account').addEventListener('click', async e=>{
   }
 });
 $('account').addEventListener('click', async e=>{
-  if(e.target.closest('#swDark')){
-    const on = !isDark();
-    await applyTheme(on);
-    e.target.closest('#swDark').setAttribute('aria-checked', String(on));
+  const theme=e.target.closest('[data-theme-choice]');
+  if(theme){
+    await applyTheme(theme.dataset.themeChoice === 'dark');
+    BUB.flash('happy',700); paintAcc('settings');
   }
 });
 
@@ -5696,7 +5880,8 @@ async function enter(id){
   const saved = await Store.get('grid:tabs:'+id);
   TABS = (saved?.tabs || []).filter(t=>META[t]);
   if(!TABS.includes('dashboard')) TABS.unshift('dashboard');
-  ACTIVE = META[saved?.active] ? saved.active : 'dashboard';
+  DASH_ISL = null;
+  ACTIVE = 'dashboard';
   go(ACTIVE);
 }
 async function signOut(){
@@ -5799,8 +5984,8 @@ const profitTotal = () => grandTotal()-expenseTotal();
 const fmtMoney = n => (Number(n)||0).toLocaleString('fr-FR',{maximumFractionDigits:0});
 const bizEsc = s => esc(String(s??''));
 
-function osSpark(days=30){
-  const S=dailySeries(days); const W=760,H=180,P=12; const vals=S.map(x=>x.v); const max=Math.max(1,...vals); const X=i=>P+(W-P*2)*(vals.length<2?0:i/(vals.length-1)); const Y=v=>H-P-(H-P*2)*(v/max);
+function osSpark(days=30,mapId=null){
+  const S=dailySeries(days,mapId); const W=760,H=180,P=12; const vals=S.map(x=>x.v); const max=Math.max(1,...vals); const X=i=>P+(W-P*2)*(vals.length<2?0:i/(vals.length-1)); const Y=v=>H-P-(H-P*2)*(v/max);
   const line=vals.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' '); const area=line+` L ${X(vals.length-1)} ${H-P} L ${X(0)} ${H-P} Z`;
   return `<div class="spark"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><linearGradient id="osGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#168BFF" stop-opacity=".24"/><stop offset="1" stop-color="#168BFF" stop-opacity="0"/></linearGradient></defs><line class="gridline" x1="0" y1="${H*.33}" x2="${W}" y2="${H*.33}"/><line class="gridline" x1="0" y1="${H*.66}" x2="${W}" y2="${H*.66}"/><path class="area" d="${area}"/><path class="line" d="${line}"/></svg></div>`;
 }
@@ -5809,20 +5994,21 @@ function stageLabel(s){return ({idea:'Idées',build:'Production',test:'Test / QA
 
 PAGES.dashboard = () => {
   bizLoad();
-  const rev=grandTotal(), exp=expenseTotal(), profit=rev-exp, mrev=monthRevenue(), mexp=monthExpense(), mprofit=mrev-mexp;
+  if(DASH_ISL && !REV.maps.some(m=>m.id===DASH_ISL)) DASH_ISL=null;
+  const scoped=!!DASH_ISL, selected=REV.maps.find(m=>m.id===DASH_ISL);
+  const rev=scoped?mapTotal(DASH_ISL):grandTotal(), exp=scoped?0:expenseTotal(), profit=rev-exp;
+  const monthKey=today().slice(0,7), mrev=REV.closes.filter(x=>(x.date||'').slice(0,7)===monthKey&&(!scoped||x.mapId===DASH_ISL)).reduce((s,x)=>s+x.retention+x.purchases,0), mexp=scoped?0:monthExpense(), mprofit=mrev-mexp;
   const target=Math.max(1,Number(BIZ.target)||1), progress=Math.min(100,Math.round(mrev/target*100));
   const margin=rev>0?Math.round(profit/rev*100):0; const avg=mexp||((exp/Math.max(1,BIZ.expenses.length))*4); const runway=avg>0?Math.max(0,(Number(BIZ.cash)||0)/avg):0;
-  const maps=[...REV.maps].map(m=>({...m,t:mapTotal(m.id)})).sort((a,b)=>b.t-a.t);
+  const maps=[...REV.maps].filter(m=>!scoped||m.id===DASH_ISL).map(m=>({...m,t:mapTotal(m.id)})).sort((a,b)=>b.t-a.t);
   const health=Math.max(18,Math.min(99,Math.round(45 + Math.min(30,progress*.3) + Math.min(20,margin*.2) + Math.min(10,REV.maps.length*2))));
   const insight = mrev===0 ? 'Commencez par clôturer vos revenus du jour : Grid construira ensuite votre rythme de studio.' : mprofit>=0 ? `Vous êtes rentable ce mois-ci. Le levier prioritaire est maintenant de pousser l’île qui génère le plus de revenu.` : `Vos coûts du mois dépassent vos revenus de <strong>${fmtMoney(Math.abs(mprofit))} €</strong>. Grid recommande de geler les dépenses non essentielles.`;
-  return `<div class="os">
-    <header class="os-head"><div><div class="os-eyebrow">Creator Business OS · ${bizEsc(SESSION.pseudo)}</div><h1 class="os-title">Pilote ton studio.<br><em>Pas juste tes maps.</em></h1><p class="os-sub">GRID rassemble revenus UEFN, coûts, production et décisions dans un seul cockpit.</p></div><div class="os-actions"><button class="os-ghost" data-open="studio">Ouvrir le studio</button><button class="gbtn" data-rev="close-day">${svg('coin',14)} Clôturer aujourd’hui</button></div></header>
-    <div class="os-grid">
-      <section class="os-card pad kpi span-3"><div class="kpi-top"><span class="kpi-l">Revenus cumulés</span><span class="kpi-ic">${svg('revenue',14)}</span></div><div class="kpi-v">${fmtMoney(rev)} <small>€</small></div><div class="kpi-d good">${REV.maps.length} île${REV.maps.length>1?'s':''} suivie${REV.maps.length>1?'s':''}</div></section>
+  return `<div class="os"><div class="os-grid">
+      <section class="os-card pad kpi span-3"><div class="kpi-top"><span class="kpi-l">Revenus cumulés</span><span class="kpi-ic">${svg('revenue',14)}</span></div><div class="kpi-v">${fmtMoney(rev)} <small>€</small></div><div class="kpi-d good">${scoped?bizEsc(selected?.name||'Carte sélectionnée'):`${REV.maps.length} île${REV.maps.length>1?'s':''} suivie${REV.maps.length>1?'s':''}`}</div></section>
       <section class="os-card pad kpi span-3"><div class="kpi-top"><span class="kpi-l">Profit net</span><span class="kpi-ic">${svg('coin',14)}</span></div><div class="kpi-v">${fmtMoney(profit)} <small>€</small></div><div class="kpi-d ${profit>=0?'good':'bad'}">Marge ${margin}% · coûts ${fmtMoney(exp)} €</div></section>
       <section class="os-card pad kpi span-3"><div class="kpi-top"><span class="kpi-l">Objectif mensuel</span><span class="kpi-ic">${svg('fit',14)}</span></div><div class="kpi-v">${progress}<small>%</small></div><div class="kpi-d">${fmtMoney(mrev)} € / ${fmtMoney(target)} €</div></section>
       <section class="os-card pad kpi span-3"><div class="kpi-top"><span class="kpi-l">Runway estimé</span><span class="kpi-ic">${svg('vault',14)}</span></div><div class="kpi-v">${runway?runway.toFixed(1):'—'} <small>${runway?'mois':''}</small></div><div class="kpi-d">Trésorerie ${fmtMoney(BIZ.cash)} €</div></section>
-      <section class="os-card pad span-8"><div class="os-ch"><div><h3>Revenue pulse</h3><span class="cap">30 derniers jours · revenus journaliers</span></div><span class="pill ${mprofit>=0?'green':'red'}">${mprofit>=0?'+':''}${fmtMoney(mprofit)} € net ce mois</span></div>${osSpark(30)}</section>
+      <section class="os-card pad span-8"><div class="os-ch"><div><h3>Revenue pulse</h3><span class="cap">30 derniers jours · ${scoped?bizEsc(selected?.name||'carte sélectionnée'):'toutes les cartes'}</span></div><span class="pill ${mprofit>=0?'green':'red'}">${mprofit>=0?'+':''}${fmtMoney(mprofit)} € net ce mois</span></div>${osSpark(30,DASH_ISL)}</section>
       <section class="os-card pad blue span-4"><div class="os-ch"><div><h3>Business health</h3><span class="cap">Lecture synthétique par Grid</span></div></div><div class="health"><div class="health-ring" style="--p:${health}"><b>${health}</b></div><div class="health-copy"><h4>${health>75?'Solide':health>55?'En construction':'À sécuriser'}</h4><p>Combine rentabilité, objectif, activité et diversification de tes îles.</p></div></div><div style="margin-top:17px">${gridMini()}<div style="display:inline-block;vertical-align:top;margin-left:9px;width:calc(100% - 60px);font-size:11.5px;color:var(--dim);line-height:1.45">${insight}</div></div></section>
       <section class="os-card pad span-7"><div class="os-ch"><div><h3>Portefeuille d’îles</h3><span class="cap">Contribution au revenu total</span></div><button class="os-ghost" data-rev="add-map">+ Île</button></div><div class="biz-list">${maps.length?maps.slice(0,6).map(m=>`<div class="biz-row"><div class="biz-name"><b>${bizEsc(m.name)}</b><span>${bizEsc(m.code||'code non renseigné')}</span></div><div class="biz-val">${fmtMoney(m.t)} €</div><div class="biz-share"><i style="width:${rev?Math.max(2,m.t/rev*100):0}%"></i></div></div>`).join(''):'<div class="dash-empty">Ajoutez votre première île pour commencer à mesurer le business.</div>'}</div></section>
       <section class="os-card pad span-5"><div class="os-ch"><div><h3>Priorités studio</h3><span class="cap">Ce qui mérite votre attention</span></div></div><div class="next-list">${(BIZ.projects||[]).slice(0,4).map(p=>`<div class="next-item"><span class="next-dot"></span><div class="txt"><b>${bizEsc(p.name)}</b><span>${stageLabel(p.stage)} · budget ${fmtMoney(p.budget)} €</span></div></div>`).join('')||'<div class="dash-empty">Aucun projet actif.</div>'}</div></section>
@@ -5854,6 +6040,30 @@ $('view').addEventListener('click', e=>{
 
 /* ================= Focus Edition shell wiring ================= */
 $('brandHome')?.addEventListener('click', e => { e.stopPropagation(); go('dashboard'); });
+$('shell')?.addEventListener('click', e => {
+  const side = e.target.closest('[data-side-page]');
+  if(side){ e.stopPropagation(); go(side.dataset.sidePage); }
+  const scope = e.target.closest('[data-map-scope]');
+  if(scope){ e.stopPropagation(); DASH_ISL = scope.dataset.mapScope || null; $('mapScopeMenu').classList.remove('on'); $('mapScopeBtn').setAttribute('aria-expanded','false'); go('dashboard'); }
+  if(e.target.closest('[data-map-create]')){ e.stopPropagation(); $('mapScopeMenu').classList.remove('on'); $('mapScopeBtn').setAttribute('aria-expanded','false'); revAddMap(); }
+});
+$('mapScopeBtn')?.addEventListener('click', e=>{
+  e.stopPropagation(); paintMapScope(); const on=$('mapScopeMenu').classList.toggle('on'); $('mapScopeBtn').setAttribute('aria-expanded',String(on));
+});
+$('sideTheme')?.addEventListener('click', e => {
+  e.stopPropagation(); openPop($('account'),$('avBtn')); paintAcc('settings');
+});
+$('sideCommand')?.addEventListener('click', e => {
+  e.stopPropagation(); $('ask').classList.contains('on') ? closeAsk() : openAsk();
+});
+$('sideHelp')?.addEventListener('click', e => {
+  e.stopPropagation(); openAsk(); $('askInput').value = 'Que peux-tu faire ?'; paintAsk();
+});
+$('sideProfile')?.addEventListener('click', e => {
+  e.stopPropagation();
+  const on = $('account').classList.contains('on');
+  if(on) closePop($('account'),$('avBtn')); else { openPop($('account'),$('avBtn')); paintAcc('root'); }
+});
 $('cmdBtn')?.addEventListener('click', e => {
   e.stopPropagation();
   $('ask').classList.contains('on') ? closeAsk() : openAsk();
