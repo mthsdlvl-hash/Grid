@@ -899,7 +899,8 @@ body.vault-drop .vt-main{outline:2px dashed var(--btn-lo);outline-offset:6px;bor
 .cl-map{padding:12px 0;border-top:1px solid var(--hair)}
 .cl-map .nm{font-size:13px;font-weight:500;margin-bottom:9px;display:flex;align-items:center;gap:7px}
 .cl-map .nm .c{font-family:var(--mono);font-size:9.5px;color:var(--muted);font-weight:400}
-.cl-two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.cl-two{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+@media(max-width:560px){.cl-two{grid-template-columns:1fr}}
 .cl-f label{display:block;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
 .cl-inp{display:flex;align-items:center;gap:6px;padding:9px 11px;border-radius:10px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--hair);transition:box-shadow .15s}
 .cl-inp:focus-within{box-shadow:inset 0 0 0 1.5px var(--btn-lo)}
@@ -1990,7 +1991,44 @@ input,select,textarea{min-height:36px}
 #shell[data-ui-theme="light"]{--paper:#F3F3F2;--card:#FFF;--ink:#151515;--muted:#888;--dim:#555;--hair:#E2E2E0;--track:#E8E8E6;--hover:#F0F0EE;--soft:#F6F6F4;--key:#ECECEA;--field:#FAFAF8;color:#151515;background:#F3F3F2}
 #shell[data-ui-theme="light"] .side-shell{background:#F8F8F6;border-color:#DFDFDC}#shell[data-ui-theme="light"] .tabbar{background:#F8F8F6!important}#shell[data-ui-theme="light"] .view{background:#F3F3F2}#shell[data-ui-theme="light"] .side-link{color:#666}#shell[data-ui-theme="light"] .side-link:hover{background:#EEEDEA;color:#171717}#shell[data-ui-theme="light"] .side-link.on{background:#E8E8E5;color:#111;box-shadow:inset 0 0 0 1px #D8D8D5}#shell[data-ui-theme="light"] .side-map-btn{background:#FFF;border-color:#DDD;color:#171717}#shell[data-ui-theme="light"] .side-map-menu{background:#FFF;border-color:#DDD;box-shadow:0 18px 50px rgba(0,0,0,.12)}#shell[data-ui-theme="light"] .side-map-option:hover,#shell[data-ui-theme="light"] .side-map-option.on{background:#F0F0EE;color:#111}#shell[data-ui-theme="light"] .os-card,#shell[data-ui-theme="light"] .card,#shell[data-ui-theme="light"] .hero-card,#shell[data-ui-theme="light"] .rev-card,#shell[data-ui-theme="light"] .vault-card{background:#FFF!important;border-color:#E0E0DE!important}#shell[data-ui-theme="light"] .os-card.blue{background:#F7F8FB!important}#shell[data-ui-theme="light"] .kpi-v,#shell[data-ui-theme="light"] .page-head h1{color:#151515}#shell[data-ui-theme="light"] .pill{background:#F0F0EE;color:#666}#shell[data-ui-theme="light"] .biz-row,#shell[data-ui-theme="light"] .next-item{border-color:#E5E5E2}
 
+/* GRID compact : moins de bruit, trois espaces utiles. */
+#shell .grid-mid.is-open{--notch-h:292px;--notch-w:min(460px,calc(100vw - 40px))}
+#shell .grid-mid .ask{left:12px;right:12px;top:53px}
+#shell .grid-notch{transform-origin:top center!important}
+#shell .grid-mid,#shell .tabbar .grid-mid,#shell .grid-mid.is-open,#shell .grid-mid.is-alert{position:fixed!important;left:calc(50vw + 129px)!important;right:auto!important;top:11px!important;bottom:auto!important;transform:translateX(-50%)!important;margin:0!important}
+#shell .grid-mid .grid-notch,#shell .grid-mid.is-open .grid-notch,#shell .grid-mid.is-alert .grid-notch{left:50%!important;right:auto!important;top:0!important;transform:translateX(-50%)!important}
+#shell .grid-mid.is-open .grid-tab{position:absolute;left:50%;top:4px;width:36px;min-width:36px;flex:none;padding:0 2px;transform:translateX(-50%)!important}
+#shell .grid-mid.is-open .notch-copy,#shell .grid-mid.is-open .gt-dot,#shell .grid-mid.is-open .notch-mini,#shell .grid-mid.is-open .notch-clock{opacity:0;pointer-events:none}
+#shell .grid-mid .grid-tab{transition:left .38s cubic-bezier(.2,.9,.2,1),transform .38s cubic-bezier(.2,.9,.2,1),width .38s ease}
+#shell .ask-bar{height:27px;margin:0 11px;border:0!important;border-radius:0;background:transparent!important;box-shadow:none!important;padding:0;gap:0}
+#shell .ask-bar input{font-size:11px!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:0!important;background:transparent!important}
+#shell .ask-list{max-height:177px;margin-top:7px;border-radius:13px;background:transparent;box-shadow:none;padding:2px}
+#shell .notch-context{display:none!important}
+.grid-home{padding:4px 2px}.grid-home-title{font-size:10px;color:rgba(255,255,255,.42);text-transform:uppercase;letter-spacing:.12em;margin:3px 4px 9px}.grid-home-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.grid-home-btn{min-height:78px;padding:11px 9px;border-radius:12px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.055);color:rgba(255,255,255,.72);text-align:left;display:flex;flex-direction:column;justify-content:space-between;transition:.15s}.grid-home-btn:hover{background:rgba(255,255,255,.10);color:#fff}.grid-home-btn i{font-style:normal;font-size:16px}.grid-home-btn b{font-size:10.5px;font-weight:500}.grid-panel-head{display:flex;align-items:center;gap:9px;padding:3px 3px 9px;color:#fff;font-size:11.5px;font-weight:600}.grid-back{width:25px;height:25px;border-radius:8px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.7)}.grid-close-action{width:100%;min-height:48px;padding:10px 12px;border-radius:11px;display:flex;align-items:center;gap:11px;text-align:left;color:rgba(255,255,255,.76);transition:.15s}.grid-close-action:hover{background:rgba(255,255,255,.07);color:#fff}.grid-close-action i{width:29px;height:29px;border-radius:9px;display:grid;place-items:center;background:rgba(45,139,255,.13);color:#58A7FF;font-style:normal}.grid-close-action b{display:block;font-size:11px}.grid-close-action small{display:block;color:rgba(255,255,255,.35);font-size:9.5px;margin-top:3px}
+#shell[data-ui-theme="light"] .grid-notch{background:#FFF;box-shadow:0 18px 55px rgba(20,25,35,.16),inset 0 0 0 1px #DDD}
+#shell[data-ui-theme="light"] .grid-notch::before{opacity:.04}
+#shell[data-ui-theme="light"] .gt-name,#shell[data-ui-theme="light"] .notch-status{color:#222}
+#shell[data-ui-theme="light"] .gt-dot{background:#168BFF}
+#shell[data-ui-theme="light"] .ask-bar{background:transparent;box-shadow:none;border-bottom-color:#E0E0DD}
+#shell[data-ui-theme="light"] .ask-bar input{color:#171717!important}
+#shell[data-ui-theme="light"] .ask-bar input::placeholder{color:#999}
+#shell[data-ui-theme="light"] .ask-bar .kbd{background:#E8E8E5;color:#777}
+#shell[data-ui-theme="light"] .grid-home-title{color:#999}
+#shell[data-ui-theme="light"] .grid-home-btn{background:#F5F5F3;border-color:#E6E6E3;color:#555}
+#shell[data-ui-theme="light"] .grid-home-btn:hover{background:#ECECEA;color:#111}
+#shell[data-ui-theme="light"] .grid-panel-head{color:#171717}
+#shell[data-ui-theme="light"] .grid-back{background:#EFEFEC;color:#555}
+#shell[data-ui-theme="light"] .grid-close-action{color:#444}
+#shell[data-ui-theme="light"] .grid-close-action:hover{background:#F2F2EF;color:#111}
+#shell[data-ui-theme="light"] .grid-close-action small{color:#999}
+
+.grid-home-btn{min-height:60px!important;padding:9px!important}
+.closure-page{max-width:1120px!important}.closure-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:10px 2px 24px;border-bottom:1px solid var(--hair)}.closure-head h1{font-size:28px;letter-spacing:-.035em;margin:5px 0 6px}.closure-head p{font-size:11px;color:var(--muted)}.ticket-list{display:grid;gap:8px;padding-top:18px}.ticket-row{width:100%;min-height:76px;padding:14px 16px;border-radius:13px;border:1px solid var(--hair);background:var(--card);display:grid;grid-template-columns:36px minmax(160px,1fr) 120px 110px;align-items:center;gap:12px;text-align:left;color:var(--ink);transition:.16s}.ticket-row:hover{border-color:#3B82F6;transform:translateY(-1px)}.ticket-mark{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:rgba(45,139,255,.12);color:#58A7FF}.ticket-main b,.ticket-main small{display:block}.ticket-main b{font-size:12px}.ticket-main small{font:9px var(--mono);color:var(--muted);margin-top:5px}.ticket-row strong{text-align:right;font:600 13px var(--mono)}.ticket-open{text-align:right;font-size:9.5px;color:var(--muted)}.ticket-empty{min-height:280px;border:1px dashed var(--hair);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:var(--muted)}.ticket-empty b{color:var(--ink);font-size:14px}.ticket-empty span{font-size:10.5px;margin-bottom:8px}.receipt{max-width:520px;margin:auto;padding:5px 2px;color:var(--ink)}.receipt-brand{text-align:center;padding:9px 0 22px;border-bottom:1px dashed var(--hair)}.receipt-brand span{display:block;font-size:22px;font-weight:800;letter-spacing:.18em}.receipt-brand b,.receipt-brand small{display:block;font:9px var(--mono);color:var(--muted);margin-top:5px}.receipt-map{padding:17px 0;border-bottom:1px dashed var(--hair)}.receipt-map-name{display:flex;justify-content:space-between;gap:10px}.receipt-map-name b{font-size:12px}.receipt-map-name small{font:9px var(--mono);color:var(--muted)}.receipt-lines{display:grid;gap:6px;margin-top:12px}.receipt-lines span,.receipt-sub{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted)}.receipt-lines b,.receipt-sub b{color:var(--ink);font-family:var(--mono)}.receipt-sub{margin-top:12px;padding-top:10px;border-top:1px solid var(--hair);font-weight:650}.receipt-total{display:flex;justify-content:space-between;align-items:end;padding:22px 0 12px}.receipt-total span{font-size:10px;letter-spacing:.12em}.receipt-total strong{font:700 24px var(--mono)}.receipt-foot{text-align:center;padding-top:14px;border-top:1px dashed var(--hair);font-size:8.5px;color:var(--muted)}
+.period-tools{margin-top:18px;padding:15px;border:1px solid var(--hair);border-radius:14px;background:var(--card);display:grid;grid-template-columns:minmax(130px,1fr) minmax(130px,1fr) auto auto;gap:9px;align-items:end}.period-field label{display:block;font-size:9px;color:var(--muted);margin:0 0 6px 2px}.period-field input{width:100%;height:36px;padding:0 10px!important}.period-btn{height:36px;padding:0 13px;border-radius:9px;border:1px solid var(--hair);background:var(--soft);color:var(--ink);font-size:10px;white-space:nowrap}.period-btn:hover{border-color:#3B82F6}.receipt-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 4px}.receipt-actions button{height:38px;border-radius:9px;border:1px solid var(--hair);background:var(--soft);color:var(--ink);font-size:10px}.receipt-actions button:hover{border-color:#3B82F6}.close-processing{position:fixed;inset:0;z-index:250;background:rgba(3,4,5,.54);display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .22s}.close-processing.on{opacity:1;pointer-events:auto}.close-processing-card{min-width:210px;padding:20px 24px;border-radius:22px;background:#121314;border:1px solid rgba(255,255,255,.1);text-align:center;color:#fff;box-shadow:0 30px 90px rgba(0,0,0,.5)}.close-processing-agent{width:60px;height:60px;margin:0 auto 10px;display:grid;place-items:center;filter:drop-shadow(0 0 16px rgba(255,150,35,.45))}.close-processing-agent .blob{width:58px;height:58px}.close-processing-card b{display:block;font-size:12px}.close-processing-card span{display:block;color:#888;font-size:9.5px;margin-top:5px}.close-processing.done .close-processing-agent{filter:drop-shadow(0 0 18px rgba(43,212,137,.52))}.close-processing.done .close-processing-card{border-color:rgba(43,212,137,.28)}#shell.closure-busy{transform:scale(.975);filter:saturate(.75) brightness(.72);transition:transform .4s cubic-bezier(.2,.9,.2,1),filter .35s}.view{transition:transform .35s ease}
+.ticket-row{grid-template-columns:36px minmax(150px,1fr) 105px 150px 70px!important}.ticket-main{color:var(--ink);text-align:left}.ticket-downloads{display:flex;gap:5px}.ticket-downloads button,.ticket-open{height:29px;padding:0 8px;border-radius:7px;background:var(--soft);border:1px solid var(--hair);color:var(--muted);font-size:9px;white-space:nowrap}.ticket-downloads button:hover,.ticket-open:hover{color:var(--ink);border-color:#3B82F6}
 @media(max-width:900px){
+  #shell .grid-mid,#shell .tabbar .grid-mid,#shell .grid-mid.is-open,#shell .grid-mid.is-alert{left:calc(50vw + 38px)!important}
+  .period-tools{grid-template-columns:1fr 1fr}.period-btn{width:100%}
   #shell.app{grid-template-columns:76px minmax(0,1fr)}
   .side-shell{padding-inline:9px}.side-brand{justify-content:center;padding-inline:0}.side-brand>div:last-child,.side-label span,.side-label b,.side-link span:not(.side-icon),.side-user-copy{display:none}
   .side-map-btn{justify-content:center;padding:0}.side-map-copy,.side-map-btn>span:last-child{display:none}.side-map-menu{width:210px;right:auto}
@@ -1998,6 +2036,7 @@ input,select,textarea{min-height:36px}
   #shell .view{padding:28px 24px 54px}
 }
 @media(max-width:620px){
+  #shell .grid-mid,#shell .tabbar .grid-mid,#shell .grid-mid.is-open,#shell .grid-mid.is-alert{left:50vw!important}
   #shell.app{grid-template-columns:1fr;grid-template-rows:60px minmax(0,1fr) 62px}
   .side-shell{grid-column:1;grid-row:3;border-right:0;border-top:1px solid #292929;padding:7px 9px;display:block}
   .side-brand,.side-map-switch,.side-label,.side-foot,.side-section:not(:first-child){display:none}.side-scroll{padding:0;overflow:visible}.side-section{margin:0}.side-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:3px}.side-link{height:46px;flex-direction:column;gap:3px;font-size:8px}.side-link span:not(.side-icon){display:block}.side-link:nth-child(n+6){display:none}.side-link.on::before{left:25%;right:25%;top:auto;bottom:-7px;width:auto;height:2px}
@@ -2005,6 +2044,7 @@ input,select,textarea{min-height:36px}
   #shell .top-actions{left:auto;right:10px;width:38px}.command-key{display:none!important}
   #shell .grid-mid,#shell .tabbar .grid-mid{width:158px!important}.notch-copy{display:none}.notch-mini{display:none}
   #shell .view{grid-column:1;grid-row:2;padding:20px 14px 38px}.os-title{font-size:29px!important}
+  .closure-head{align-items:flex-start;flex-direction:column}.ticket-row{grid-template-columns:34px 1fr auto}.ticket-row strong{grid-column:3}.ticket-open{display:none}.receipt-total strong{font-size:19px}
 }
 </style>
 
@@ -2054,7 +2094,7 @@ input,select,textarea{min-height:36px}
           <span id="authErrTxt"></span>
         </div>
         <div class="auth-alt2" id="authAlt"></div>
-        <div class="auth-security"><span><i></i>Connexion locale chiffrée</span><span>Propulsé par <b>LVXTON</b> · GRID v2.3.0</span></div>
+        <div class="auth-security"><span><i></i>Connexion locale chiffrée</span><span>Propulsé par <b>LVXTON</b> · GRID v2.6.3</span></div>
       </div>
     </div>
     <aside class="auth-visual" aria-label="GRID, votre copilote business animé">
@@ -2089,21 +2129,10 @@ input,select,textarea{min-height:36px}
         <div class="side-label"><span>Naviguer</span><b>⌃</b></div>
         <nav class="side-nav">
           <button class="side-link on" data-side-page="dashboard"><span class="side-icon">▦</span><span>Tableau de bord</span></button>
-          <button class="side-link" data-side-page="studio"><span class="side-icon">▦</span><span>Studio & projets</span></button>
-          <button class="side-link" data-side-page="mindmap"><span class="side-icon">⌘</span><span>Cartes mentales</span></button>
-          <button class="side-link" data-side-page="material"><span class="side-icon">◆</span><span>Matériaux Maker</span></button>
           <button class="side-link" data-side-page="vault"><span class="side-icon">●</span><span>Dossiers</span></button>
           <button class="side-link" data-side-page="revenue"><span class="side-icon">↗</span><span>Revenus</span></button>
           <button class="side-link" data-side-page="expenses"><span class="side-icon">↘</span><span>Dépenses</span></button>
           <button class="side-link" data-side-page="forecast"><span class="side-icon">≋</span><span>Prévisions</span></button>
-        </nav>
-      </section>
-      <section class="side-section">
-        <div class="side-label"><span>Plus</span><b>⌃</b></div>
-        <nav class="side-nav">
-          <button class="side-link" id="sideTheme"><span class="side-icon">◐</span><span>Apparence</span></button>
-          <button class="side-link" id="sideCommand"><span class="side-icon">⌕</span><span>Commande GRID</span></button>
-          <button class="side-link" id="sideHelp"><span class="side-icon">?</span><span>Aide & raccourcis</span></button>
         </nav>
       </section>
     </div>
@@ -2148,11 +2177,7 @@ input,select,textarea{min-height:36px}
         </div>
 
         <div class="ask" id="ask">
-          <div class="ask-bar">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-            <input id="askInput" placeholder="Demandez quelque chose à Grid" autocomplete="off" spellcheck="false" aria-label="Commande Grid">
-            <span class="kbd">↵</span>
-          </div>
+          <div class="ask-bar"><input id="askInput" placeholder="Demander quelque chose" autocomplete="off" spellcheck="false" aria-label="Commande Grid"></div>
           <div class="ask-list" id="askList"></div>
         </div>
         <div class="nudge" id="nudge"></div>
@@ -2989,7 +3014,7 @@ function mxRender(canvas,size,c){
 /* ---- La page ---- */
 PAGES.material = () => `
   <div class="page-head" style="padding-top:4px">
-    <h1>Matériaux Maker. <em>Des tuiles en relief, prêtes pour UEFN.</em></h1>
+    <h1>Outils UEFN. <em>Des tuiles en relief, prêtes pour vos créations.</em></h1>
   </div>
 
   <section class="card" style="margin-bottom:14px">
@@ -3796,7 +3821,7 @@ PAGES.dashboard = () => {
   const shown = DASH_ISL ? mapTotal(DASH_ISL) : total;
   const cur = DASH_ISL ? REV.maps.find(m => m.id === DASH_ISL) : null;
   const tday = REV.closes.filter(c => c.date === today() && (!DASH_ISL || c.mapId === DASH_ISL))
-                         .reduce((s,c) => s + c.retention + c.purchases, 0);
+                         .reduce((s,c) => s + closeAmount(c), 0);
   const spans = [[7,'7 j'],[30,'30 j'],[90,'90 j']];
   const maps = REV.maps.map((m,i) => ({ ...m, t: mapTotal(m.id), c: islColor(i) })).sort((a,b) => b.t - a.t);
   const feed = [...REV.closes].sort((a,b) => b.ts - a.ts).slice(0, 7);
@@ -3856,7 +3881,7 @@ PAGES.dashboard = () => {
         <div class="dash-cardh"><h3>Entrées</h3></div>
         ${feed.length ? feed.map(c => {
           const m = REV.maps.find(x => x.id === c.mapId);
-          const amt = c.retention + c.purchases;
+          const amt = closeAmount(c);
           return `<div class="flow-row in">
             <span class="ic">${svg('coin',15)}</span>
             <div class="bd"><div class="t">${esc(m?m.name:'Île supprimée')}</div><div class="s">${fmtClose(c.date)}</div></div>
@@ -3912,8 +3937,9 @@ const today = () => { const d = new Date(); return d.getFullYear()+'-'+String(d.
 const eur = n => (Math.round(n*100)/100).toLocaleString('fr-FR', { minimumFractionDigits:2, maximumFractionDigits:2 });
 const eur0 = n => Math.round(n).toLocaleString('fr-FR');
 
-const mapTotal = id => REV.closes.filter(c => c.mapId === id).reduce((s,c) => s + c.retention + c.purchases, 0);
-const grandTotal = () => REV.closes.reduce((s,c) => s + c.retention + c.purchases, 0);
+const closeAmount = c => (Number(c?.retention)||0)+(Number(c?.purchases)||0)+(Number(c?.annexe)||0);
+const mapTotal = id => REV.closes.filter(c => c.mapId === id).reduce((s,c) => s + closeAmount(c), 0);
+const grandTotal = () => REV.closes.reduce((s,c) => s + closeAmount(c), 0);
 /* somme par jour, sur la fenêtre */
 function dailySeries(days, mapId){
   const end = new Date(); end.setHours(0,0,0,0);
@@ -3921,7 +3947,7 @@ function dailySeries(days, mapId){
   for(let i = days-1; i >= 0; i--){
     const d = new Date(end); d.setDate(end.getDate()-i);
     const key = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    const v = REV.closes.filter(c => c.date === key && (!mapId || c.mapId === mapId)).reduce((s,c) => s + c.retention + c.purchases, 0);
+    const v = REV.closes.filter(c => c.date === key && (!mapId || c.mapId === mapId)).reduce((s,c) => s + closeAmount(c), 0);
     out.push({ date:key, d, v });
   }
   return out;
@@ -4030,7 +4056,7 @@ PAGES.revenue = () => {
       <div class="rv-ch"><h3>Mouvements</h3></div>
       ${feed.length ? feed.map(c => {
         const m = REV.maps.find(x => x.id === c.mapId);
-        const amt = c.retention + c.purchases;
+        const amt = closeAmount(c);
         return `<div class="rv-mv">
           <span class="ic">${svg('coin',15)}</span>
           <div class="bd"><div class="t">${esc(m?m.name:'Île supprimée')}</div><div class="s">Clôture · ${fmtClose(c.date)}</div></div>
@@ -4040,6 +4066,53 @@ PAGES.revenue = () => {
     </section>
   </div>`;
 };
+
+const closureTickets = () => {
+  const groups = new Map();
+  [...REV.closes].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).forEach(c=>{
+    const key=c.ticketId||c.date;
+    if(!groups.has(key)) groups.set(key,{id:key,date:c.date,ts:c.ts||0,rows:[]});
+    groups.get(key).rows.push(c);
+  });
+  return [...groups.values()];
+};
+const ticketNumber = t => 'GRID-' + String(t.date||'').replaceAll('-','') + '-' + String(t.id||'').slice(-4).toUpperCase();
+PAGES.closures = () => {
+  const tickets=closureTickets();
+  const newest=tickets[0]?.date||today(), oldest=tickets[tickets.length-1]?.date||newest;
+  return `<div class="os closure-page">
+    <header class="closure-head"><div><div class="os-eyebrow">Comptabilité quotidienne</div><h1>Historique des clôtures</h1><p>Chaque fin de journée génère un ticket complet, conservé ici.</p></div><button class="gbtn" data-ticket-action="new">Clôturer la journée</button></header>
+    <div class="period-tools"><div class="period-field"><label>DU</label><input id="periodFrom" type="date" value="${oldest}"></div><div class="period-field"><label>AU</label><input id="periodTo" type="date" value="${newest}"></div><button class="period-btn" data-period-export="ticket">Créer et télécharger le ticket</button><button class="period-btn" data-period-export="statement">Créer et télécharger le relevé</button></div>
+    <section class="ticket-list">${tickets.length?tickets.map(t=>{
+      const total=t.rows.reduce((s,c)=>s+closeAmount(c),0);
+      return `<article class="ticket-row"><span class="ticket-mark">↗</span><button class="ticket-main" data-ticket-id="${esc(t.id)}"><b>${fmtClose(t.date)}</b><small>${ticketNumber(t)} · ${t.rows.length} carte${t.rows.length>1?'s':''}</small></button><strong>${eur(total)} €</strong><div class="ticket-downloads"><button data-row-ticket="${esc(t.id)}">Ticket ↓</button><button data-row-statement="${esc(t.id)}">Relevé ↓</button></div><button class="ticket-open" data-ticket-id="${esc(t.id)}">Détails →</button></article>`;
+    }).join(''):`<div class="ticket-empty"><b>Aucun ticket pour le moment</b><span>Votre première clôture apparaîtra automatiquement ici.</span><button class="gbtn" data-ticket-action="new">Créer une clôture</button></div>`}</section>
+  </div>`;
+};
+function openClosureTicket(id){
+  const t=closureTickets().find(x=>String(x.id)===String(id)); if(!t) return;
+  const rows=t.rows.map(c=>{const m=REV.maps.find(x=>x.id===c.mapId);return `<div class="receipt-map"><div class="receipt-map-name"><b>${esc(m?.name||'Carte supprimée')}</b>${m?.code?`<small>${esc(m.code)}</small>`:''}</div><div class="receipt-lines"><span>Rétention <b>${eur(Number(c.retention)||0)} €</b></span><span>Achats in-game <b>${eur(Number(c.purchases)||0)} €</b></span><span>Revenu annexe <b>${eur(Number(c.annexe)||0)} €</b></span></div><div class="receipt-sub"><span>Sous-total</span><b>${eur(closeAmount(c))} €</b></div></div>`}).join('');
+  const total=t.rows.reduce((s,c)=>s+closeAmount(c),0);
+  $('modalCard').innerHTML=`<div class="pn-h"><span class="pn-t">Ticket de clôture</span><button class="pn-x" data-modal-x aria-label="Fermer">×</button></div><div class="pn-body"><article class="receipt"><div class="receipt-brand"><span>GRID</span><b>${ticketNumber(t)}</b><small>${fmtClose(t.date)}</small></div>${rows}<div class="receipt-total"><span>TOTAL JOURNÉE</span><strong>${eur(total)} €</strong></div><div class="receipt-actions"><button data-download-ticket="${esc(t.id)}">Télécharger le ticket</button><button data-download-statement="${esc(t.id)}">Relevé bancaire du jour</button></div><div class="receipt-foot">Clôture enregistrée localement · Propulsé par LVXTON</div></article></div>`;
+  $('modal').classList.add('on');
+}
+function downloadClosureDoc(filename, body, wide=false){
+  const css=wide?'body{font-family:Arial,sans-serif;color:#111;margin:32px}':'body{font-family:monospace;color:#111;margin:0 auto;padding:18px;width:76mm}';
+  const doc=`<!doctype html><html lang="fr"><meta charset="utf-8"><title>${esc(filename)}</title><style>${css}h1{font-size:${wide?'22px':'20px'};letter-spacing:.12em;margin:0 0 4px}.meta{color:#666;font-size:11px;margin-bottom:22px}.line{display:flex;justify-content:space-between;gap:18px;padding:7px 0;border-bottom:1px dashed #bbb;font-size:11px}.section{margin-top:16px;font-weight:bold;font-size:12px}.total{display:flex;justify-content:space-between;border-top:2px solid #111;margin-top:18px;padding-top:12px;font-size:16px;font-weight:bold}table{width:100%;border-collapse:collapse;font-size:11px}th,td{text-align:left;padding:9px;border-bottom:1px solid #ddd}th:last-child,td:last-child{text-align:right}.foot{text-align:center;color:#777;font-size:9px;margin-top:24px}@media print{body{margin:0 auto}}</style><body>${body}</body></html>`;
+  const url=URL.createObjectURL(new Blob([doc],{type:'text/html;charset=utf-8'})), a=document.createElement('a'); a.href=url;a.download=filename;a.style.display='none';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1800);
+}
+function exportClosureRange(from,to,type){
+  const rows=REV.closes.filter(c=>(!from||c.date>=from)&&(!to||c.date<=to)).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  if(!rows.length){ BUB.flash('squint',700); return; }
+  const total=rows.reduce((s,c)=>s+closeAmount(c),0), label=from===to?fmtClose(from):`${fmtClose(from)} — ${fmtClose(to)}`;
+  if(type==='ticket'){
+    const lines=rows.map(c=>{const m=REV.maps.find(x=>x.id===c.mapId);return `<div class="section">${esc(m?.name||'Carte supprimée')} · ${fmtClose(c.date)}</div><div class="line"><span>Rétention</span><b>${eur(Number(c.retention)||0)} €</b></div><div class="line"><span>Achats in-game</span><b>${eur(Number(c.purchases)||0)} €</b></div><div class="line"><span>Revenu annexe</span><b>${eur(Number(c.annexe)||0)} €</b></div>`}).join('');
+    downloadClosureDoc(`GRID-ticket-${from}-${to}.html`,`<h1>GRID</h1><div class="meta">TICKET DE CAISSE · ${label}</div>${lines}<div class="total"><span>TOTAL</span><span>${eur(total)} €</span></div><div class="foot">Propulsé par LVXTON · Document imprimable</div>`);
+  } else {
+    let balance=0; const lines=rows.map(c=>{const m=REV.maps.find(x=>x.id===c.mapId), amount=closeAmount(c);balance+=amount;return `<tr><td>${c.date}</td><td>Revenus carte · ${esc(m?.name||'Carte supprimée')}</td><td>Crédit</td><td>${eur(amount)} €</td><td>${eur(balance)} €</td></tr>`}).join('');
+    downloadClosureDoc(`GRID-releve-${from}-${to}.html`,`<h1>RELEVÉ GRID</h1><div class="meta">Compte créateur · ${esc(SESSION.pseudo||'Créateur GRID')} · Période ${label}</div><table><thead><tr><th>Date</th><th>Opération</th><th>Type</th><th>Montant</th><th>Solde</th></tr></thead><tbody>${lines}</tbody></table><div class="total"><span>SOLDE DE FIN</span><span>${eur(total)} €</span></div><div class="foot">Relevé généré automatiquement par GRID · Propulsé par LVXTON</div>`,true);
+  }
+}
 const fmtClose = d => { const [y,mo,da] = d.split('-'); return new Date(+y,+mo-1,+da).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'}); };
 const refreshRev = () => { if(ACTIVE === 'revenue' || ACTIVE === 'dashboard') renderView(); };
 
@@ -4071,6 +4144,17 @@ async function revMake(){
 
 /* ---- Clôturer la journée ---- */
 let CL_DAY = null;
+async function closureProcessing(saveWork){
+  closeModal(); closeAsk();
+  const layer=document.createElement('div'); layer.className='close-processing'; layer.innerHTML='<div class="close-processing-card"><div class="close-processing-agent"></div><b>GRID vérifie la clôture…</b><span>Calcul et génération du ticket</span></div>'; document.body.appendChild(layer);
+  const mini=new Blob(layer.querySelector('.close-processing-agent')); mini.tone('orange'); mini.set('think');
+  $('shell').classList.add('closure-busy'); BUB.tone('orange'); BUB.set('think');
+  requestAnimationFrame(()=>layer.classList.add('on'));
+  await wait(900); await saveWork();
+  layer.classList.add('done'); layer.querySelector('b').textContent='Clôture validée'; layer.querySelector('span').textContent='Ticket et relevé prêts'; mini.tone('green'); mini.set('happy'); mini.bounce(); BUB.tone('green'); BUB.set('happy'); BUB.bounce();
+  await wait(850); layer.classList.remove('on'); $('shell').classList.remove('closure-busy');
+  await wait(230); mini.destroy(); layer.remove(); BUB.tone('blue'); BUB.set('idle');
+}
 function revCloseDay(){
   if(!REV.maps.length) return revAddMap();
   CL_DAY = today();
@@ -4081,7 +4165,7 @@ function revCloseDay(){
       <button class="pn-x" data-modal-x aria-label="Fermer" style="margin-left:8px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
     <div class="pn-body">
-      <div class="cl-sub">Pour chaque île, ce qu'elle a rapporté aujourd'hui, à la louche. Laissez vide si zéro.</div>
+      <div class="cl-sub">Pour chaque île, ajoutez les revenus du jour. Le revenu annexe couvre les prestations, affiliations ou autres gains liés à la carte.</div>
       ${REV.maps.map(m => {
         const a = already[m.id];
         return `<div class="cl-map" data-clmap="${m.id}">
@@ -4089,6 +4173,7 @@ function revCloseDay(){
           <div class="cl-two">
             <div class="cl-f"><label>Rétention</label><div class="cl-inp"><span class="cur">€</span><input type="text" inputmode="decimal" data-clret value="${a?a.retention:''}" placeholder="0"></div></div>
             <div class="cl-f"><label>Achats in-game</label><div class="cl-inp"><span class="cur">€</span><input type="text" inputmode="decimal" data-clbuy value="${a?a.purchases:''}" placeholder="0"></div></div>
+            <div class="cl-f"><label>Revenu annexe</label><div class="cl-inp"><span class="cur">€</span><input type="text" inputmode="decimal" data-claux value="${a?a.annexe||'':''}" placeholder="0"></div></div>
           </div>
         </div>`;
       }).join('')}
@@ -4100,21 +4185,21 @@ function revCloseDay(){
   const recalc = () => {
     let t = 0;
     $('modalCard').querySelectorAll('[data-clmap]').forEach(row => {
-      t += num(row.querySelector('[data-clret]').value) + num(row.querySelector('[data-clbuy]').value);
+      t += num(row.querySelector('[data-clret]').value) + num(row.querySelector('[data-clbuy]').value) + num(row.querySelector('[data-claux]').value);
     });
     $('clTot').textContent = '€ ' + eur(t);
   };
   $('modalCard').querySelectorAll('input').forEach(i => i.addEventListener('input', recalc));
   recalc();
   $('clSave').addEventListener('click', async () => {
+    const previous = REV.closes.find(c => c.date === CL_DAY);
+    const ticketId = previous?.ticketId || rid();
     REV.closes = REV.closes.filter(c => c.date !== CL_DAY);   // on remplace la clôture du jour
     $('modalCard').querySelectorAll('[data-clmap]').forEach(row => {
-      const ret = num(row.querySelector('[data-clret]').value), buy = num(row.querySelector('[data-clbuy]').value);
-      if(ret || buy) REV.closes.push({ id:rid(), date:CL_DAY, mapId:row.dataset.clmap, retention:ret, purchases:buy, ts:Date.now() });
+      const ret = num(row.querySelector('[data-clret]').value), buy = num(row.querySelector('[data-clbuy]').value), aux = num(row.querySelector('[data-claux]').value);
+      if(ret || buy || aux) REV.closes.push({ id:rid(), ticketId, date:CL_DAY, mapId:row.dataset.clmap, retention:ret, purchases:buy, annexe:aux, ts:Date.now() });
     });
-    await saveRev(); closeModal(); refreshRev();
-    BUB.tone('green'); BUB.set('happy'); BUB.bounce();
-    setTimeout(()=>{ BUB.tone('blue'); BUB.set('idle'); }, 1400);
+    await closureProcessing(async()=>{ await saveRev(); refreshRev(); });
   });
   setTimeout(()=> $('modalCard').querySelector('input')?.focus(), 60);
 }
@@ -4146,6 +4231,18 @@ $('view').addEventListener('click', e => {
   if(da){ da.dataset.dash === 'add' ? revAddMap() : revCloseDay(); }
 });
 $('view').addEventListener('click', async e => {
+  if(ACTIVE === 'closures'){
+    const rowTicket=e.target.closest('[data-row-ticket]');
+    if(rowTicket){ const t=closureTickets().find(x=>String(x.id)===rowTicket.dataset.rowTicket); if(t) exportClosureRange(t.date,t.date,'ticket'); return; }
+    const rowStatement=e.target.closest('[data-row-statement]');
+    if(rowStatement){ const t=closureTickets().find(x=>String(x.id)===rowStatement.dataset.rowStatement); if(t) exportClosureRange(t.date,t.date,'statement'); return; }
+    const ticket=e.target.closest('[data-ticket-id]');
+    if(ticket){ openClosureTicket(ticket.dataset.ticketId); return; }
+    if(e.target.closest('[data-ticket-action="new"]')){ revCloseDay(); return; }
+    const exp=e.target.closest('[data-period-export]');
+    if(exp){ const from=$('periodFrom')?.value, to=$('periodTo')?.value; if(!from||!to||from>to){ BUB.flash('squint',700); return; } exportClosureRange(from,to,exp.dataset.periodExport); return; }
+    return;
+  }
   if(ACTIVE !== 'revenue') return;
   const sp = e.target.closest('[data-span]');
   if(sp){ RV_SPAN = +sp.dataset.span; renderView(); return; }
@@ -4162,6 +4259,10 @@ $('view').addEventListener('click', async e => {
   else if(a.dataset.rev === 'close-day') revCloseDay();
 });
 $('modal').addEventListener('click', e => { if(e.target.closest('#rvMake')) revMake(); });
+$('modal').addEventListener('click', e => {
+  const ticket=e.target.closest('[data-download-ticket]'); if(ticket){ const t=closureTickets().find(x=>String(x.id)===ticket.dataset.downloadTicket); if(t) exportClosureRange(t.date,t.date,'ticket'); return; }
+  const statement=e.target.closest('[data-download-statement]'); if(statement){ const t=closureTickets().find(x=>String(x.id)===statement.dataset.downloadStatement); if(t) exportClosureRange(t.date,t.date,'statement'); }
+});
 $('modal').addEventListener('keydown', e => { if(e.key === 'Enter' && (e.target.id === 'rvName' || e.target.id === 'rvCode')) revMake(); });
 
 /* ================= Le bureau ================= */
@@ -4236,6 +4337,7 @@ const ICON = {
   chev:'<path d="M9 6l6 6-6 6"/>',
   vault:'<path d="M3 8V6.5A1.5 1.5 0 014.5 5h4L11 7.5h8A1.5 1.5 0 0120.5 9v8.5A1.5 1.5 0 0119 19H5a2 2 0 01-2-2V8z"/>',
   revenue:'<path d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-7"/>',
+  closures:'<path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h3"/>',
   island:'<path d="M12 3C9 6 7 9 7 13a5 5 0 0010 0c0-4-2-7-5-10z"/>',
   coin:'<circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10a2.2 2.2 0 012.5-1.6M14.5 14a2.2 2.2 0 01-2.5 1.6"/>',
   folderMini:'<path d="M2.5 6.5V5.6A1 1 0 013.5 4.6h2.6L7.7 6h6.8a1 1 0 011 1v5.9a1 1 0 01-1 1H3.5a1 1 0 01-1-1V6.5z"/>',
@@ -4271,9 +4373,10 @@ const svg = (k, size=14) =>
 const META = {
   dashboard:{ label:'Tableau de bord',  key:'D', pinned:true },
   mindmap:  { label:'Cartes mentales',   key:'M' },
-  material: { label:'Matériaux Maker',   key:'X' },
+  material: { label:'Outils UEFN',       key:'X' },
   vault:    { label:'Dossiers',          key:'F' },
   revenue:  { label:'Revenus',           key:'R' },
+  closures: { label:'Historique des clôtures', key:'C' },
 };
 const MAC = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
 const MOD = MAC ? '⌥' : 'Alt';
@@ -4880,7 +4983,7 @@ const PATCH = [
   ]},
   { v:'1.1', d:'18 juillet 2026', items:[
     ['Outils UEFN', 'une catégorie dans le +, qui ouvre son propre menu.'],
-    ['Matériaux Maker', 'générateur de tuiles en relief : molette chromatique, damier, dashes, export 2048. Déposez une texture, il la reproduit.'],
+    ['Outils UEFN', 'générateur de tuiles en relief : molette chromatique, damier, dashes, export 2048. Déposez une texture, il la reproduit.'],
   ]},
   { v:'1.0', d:'18 juillet 2026', items:[
     ['Cinq formes', 'bulle, carte, rond, losange, nuage — dans une barre d\u2019outils en verre, en bas à gauche.'],
@@ -4973,7 +5076,7 @@ const ACTIONS = () => [
   { label:'Voir ce qui a changé', tag: isNew() ? 'nouveau' : '', run:()=>openPatch() },
   { label:'Basculer en mode ' + (isDark()?'clair':'sombre'), run:()=>applyTheme(!isDark()) },
 ];
-let ASK_CUR = 0, ASK_HITS = [], ASK_READ = null;
+let ASK_CUR = 0, ASK_HITS = [], ASK_READ = null, GRID_PANEL = 'home';
 
 /* Grid travaille : orange. Grid a noté : vert. Puis il redevient lui-même. */
 async function working(){ BUB.tone('orange'); BUB.set('think'); await wait(300); }
@@ -4987,6 +5090,28 @@ function paintAsk(){
   const raw = $('askInput').value;
   ASK_READ = read(raw);
   const list = $('askList');
+
+  if(!raw.trim()){
+    ASK_HITS=[];
+    if(GRID_PANEL === 'home'){
+      list.innerHTML = `<div class="grid-home"><div class="grid-home-title">Accès rapide</div><div class="grid-home-actions">
+        <button class="grid-home-btn" data-grid-panel="tasks"><i>✓</i><b>Mes tâches</b></button>
+        <button class="grid-home-btn" data-grid-panel="notes"><i>▤</i><b>Mes notes</b></button>
+        <button class="grid-home-btn" data-grid-panel="closes"><i>↗</i><b>Mes clôtures</b></button>
+        <button class="grid-home-btn" data-grid-action="open-studio"><i>▦</i><b>Studio & projets</b></button>
+        <button class="grid-home-btn" data-grid-action="open-mindmap"><i>⌘</i><b>Cartes mentales</b></button>
+        <button class="grid-home-btn" data-grid-action="open-material"><i>◆</i><b>Outils UEFN</b></button>
+      </div></div>`; return;
+    }
+    if(GRID_PANEL === 'closes'){
+      list.innerHTML = `<div class="grid-panel-head"><button class="grid-back" data-grid-panel="home" aria-label="Retour">←</button><span>Mes clôtures</span></div>
+        <button class="grid-close-action" data-grid-action="close-day"><i>+</i><span><b>Clôturer la journée</b><small>Enregistrer les revenus du jour</small></span></button>
+        <button class="grid-close-action" data-grid-action="close-history"><i>↗</i><span><b>Historique des clôtures</b><small>Revoir chaque ticket détaillé</small></span></button>`; return;
+    }
+    const isNotes=GRID_PANEL==='notes', source=isNotes?memos():tasks(), title=isNotes?'Mes notes':'Mes tâches';
+    ASK_HITS=source.map(n=>({note:n}));
+    list.innerHTML=`<div class="grid-panel-head"><button class="grid-back" data-grid-panel="home" aria-label="Retour">←</button><span>${title}</span></div><button class="grid-close-action" data-grid-action="${isNotes?'new-note':'new-task'}"><i>+</i><span><b>${isNotes?'Créer une note':'Créer une tâche'}</b><small>${isNotes?'Garder une information':'Ajouter une action ou un rappel'}</small></span></button>`+(source.length?source.slice(0,4).map((n,i)=>`<button class="ask-row" data-ask="${i}"><span>${esc(n.what)}</span><span class="note-when">${n.due?whenLabel(new Date(n.due),n.hasTime,n.repeat):'sans date'}</span></button>`).join(''):`<div class="ask-none">Aucun élément pour le moment.</div>`); return;
+  }
 
   /* Une question : il répond avec ce qu'il a, ou il dit qu'il ne sait pas. */
   if(ASK_READ.kind === 'question'){
@@ -5122,7 +5247,7 @@ function openAsk(){
   $('ask').classList.add('on');
   $('bubBtn').setAttribute('aria-expanded','true');
   BUB.locked = true; BUB.look(0, 2.4); BUB.set('squint'); BUB.bounce();
-  $('askInput').value = ''; ASK_CUR = 0; paintAsk();
+  $('askInput').value = ''; ASK_CUR = 0; GRID_PANEL='home'; paintAsk();
   setTimeout(()=>$('askInput').focus(), 40);
 }
 function closeAsk(){
@@ -5423,6 +5548,22 @@ $('bubBtn').addEventListener('click', e=>{
   $('ask').classList.contains('on') ? closeAsk() : openAsk();
 });
 $('ask').addEventListener('click', e=>{
+  const panel=e.target.closest('[data-grid-panel]');
+  if(panel){ GRID_PANEL=panel.dataset.gridPanel; ASK_CUR=0; paintAsk(); BUB.flash('curious',500); return; }
+  const quick=e.target.closest('[data-grid-action]');
+  if(quick){
+    if(quick.dataset.gridAction==='new-task'||quick.dataset.gridAction==='new-note'){
+      $('askInput').value=quick.dataset.gridAction==='new-note'?'note que ':'rappelle-moi de ';
+      GRID_PANEL='home'; ASK_CUR=0; paintAsk(); $('askInput').focus(); return;
+    }
+    closeAsk();
+    if(quick.dataset.gridAction==='open-studio') go('studio');
+    if(quick.dataset.gridAction==='open-mindmap') go('mindmap');
+    if(quick.dataset.gridAction==='open-material') go('material');
+    if(quick.dataset.gridAction==='close-day') revCloseDay();
+    if(quick.dataset.gridAction==='close-history') go('closures');
+    return;
+  }
   const c = e.target.closest('[data-conf]');
   if(c){
     if(c.dataset.conf === 'yes') return remember(ASK_READ.kind, ASK_READ.what, ASK_READ.due, ASK_READ.hasTime, ASK_READ.repeat, ASK_READ.urgent);
@@ -5979,7 +6120,7 @@ function bizSave(){ try{ localStorage.setItem(bizKey(), JSON.stringify(BIZ)); }c
 const money = n => Math.round((Number(n)||0)*100)/100;
 const expenseTotal = () => (BIZ.expenses||[]).reduce((s,x)=>s+(Number(x.amount)||0),0);
 const monthExpense = () => { const m=today().slice(0,7); return (BIZ.expenses||[]).filter(x=>(x.date||'').slice(0,7)===m).reduce((s,x)=>s+(Number(x.amount)||0),0); };
-const monthRevenue = () => { const m=today().slice(0,7); return REV.closes.filter(x=>(x.date||'').slice(0,7)===m).reduce((s,x)=>s+x.retention+x.purchases,0); };
+const monthRevenue = () => { const m=today().slice(0,7); return REV.closes.filter(x=>(x.date||'').slice(0,7)===m).reduce((s,x)=>s+closeAmount(x),0); };
 const profitTotal = () => grandTotal()-expenseTotal();
 const fmtMoney = n => (Number(n)||0).toLocaleString('fr-FR',{maximumFractionDigits:0});
 const bizEsc = s => esc(String(s??''));
@@ -5997,7 +6138,7 @@ PAGES.dashboard = () => {
   if(DASH_ISL && !REV.maps.some(m=>m.id===DASH_ISL)) DASH_ISL=null;
   const scoped=!!DASH_ISL, selected=REV.maps.find(m=>m.id===DASH_ISL);
   const rev=scoped?mapTotal(DASH_ISL):grandTotal(), exp=scoped?0:expenseTotal(), profit=rev-exp;
-  const monthKey=today().slice(0,7), mrev=REV.closes.filter(x=>(x.date||'').slice(0,7)===monthKey&&(!scoped||x.mapId===DASH_ISL)).reduce((s,x)=>s+x.retention+x.purchases,0), mexp=scoped?0:monthExpense(), mprofit=mrev-mexp;
+  const monthKey=today().slice(0,7), mrev=REV.closes.filter(x=>(x.date||'').slice(0,7)===monthKey&&(!scoped||x.mapId===DASH_ISL)).reduce((s,x)=>s+closeAmount(x),0), mexp=scoped?0:monthExpense(), mprofit=mrev-mexp;
   const target=Math.max(1,Number(BIZ.target)||1), progress=Math.min(100,Math.round(mrev/target*100));
   const margin=rev>0?Math.round(profit/rev*100):0; const avg=mexp||((exp/Math.max(1,BIZ.expenses.length))*4); const runway=avg>0?Math.max(0,(Number(BIZ.cash)||0)/avg):0;
   const maps=[...REV.maps].filter(m=>!scoped||m.id===DASH_ISL).map(m=>({...m,t:mapTotal(m.id)})).sort((a,b)=>b.t-a.t);
