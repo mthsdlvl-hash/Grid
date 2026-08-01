@@ -2140,7 +2140,7 @@ input,select,textarea{min-height:36px}
           <span id="authErrTxt"></span>
         </div>
         <div class="auth-alt2" id="authAlt"></div>
-        <div class="auth-security"><span><i></i>Connexion locale chiffrée</span><span>Propulsé par <b>LVXTON</b> · GRID v3.6.0</span></div>
+        <div class="auth-security"><span><i></i>Connexion locale chiffrée</span><span>Propulsé par <b>LVXTON</b> · GRID v3.6.1</span></div>
       </div>
     </div>
     <aside class="auth-visual" aria-label="GRID, votre copilote business animé">
@@ -2377,7 +2377,7 @@ const emptyState = (title, body, cta) => `
 /* Les blocs vivent dans un « monde » qu'on déplace et qu'on zoome.
    Le DOM ne connaît que des coordonnées de monde ; l'écran, c'est une affaire de transform. */
 let MAPS = [], MAP_I = 0;
-let MM = { x:0, y:0, z:1 }, MM_SEL = null, MM_LINK = null, MM_SZ = {};
+let MM = { x:0, y:0, z:1 }, MM_SEL = null, MM_LINK = null, MM_SZ = {}, MM_BACK = false;
 const mapsKey  = () => 'grid:maps:' + SESSION.id;
 const saveMaps = () => Store.set(mapsKey(), MAPS);
 async function loadMaps(){ MAPS = (await Store.get(mapsKey())) || []; MAP_I = 0; }
@@ -2450,6 +2450,8 @@ PAGES.mindmap = () => {
       <div class="mm-tool">
         ${SHAPES.map(x=>`<button data-shape="${x.k}" aria-pressed="${MM_SHAPE===x.k}" title="${x.t}" aria-label="${x.t}">${svg('s_'+x.k,15)}</button>`).join('')}
         <span class="sep"></span>
+        <button class="mm-back" data-mmback aria-pressed="${MM_BACK}" title="Flèche de retour" aria-label="Créer une flèche qui revient en arrière">↩</button>
+        <span class="sep"></span>
         <button class="png" data-mm="png" title="Télécharger en PNG">${svg('down',14)}<span>PNG</span></button>
       </div>
       <div class="mm-hint">Double-cliquez le fond pour poser un bloc · tirez un point pour relier</div>
@@ -2511,12 +2513,19 @@ function curve(p, q){
   const [c1x,c1y] = off(p, k), [c2x,c2y] = off(q, k);
   return `M${p.x} ${p.y} C${c1x} ${c1y}, ${c2x} ${c2y}, ${q.x} ${q.y}`;
 }
+function returnGeometry(a,b){
+  const sa=MM_SZ[a.id]||{w:120,h:40},sb=MM_SZ[b.id]||{w:120,h:40};
+  const p={x:a.x+sa.w/2,y:a.y+sa.h},q={x:b.x+sb.w/2,y:b.y+sb.h};
+  const dir=q.x>=p.x?1:-1,drop=Math.max(92,Math.abs(q.x-p.x)*.24+58),low=Math.max(p.y,q.y)+drop;
+  return {p,q,c1:{x:p.x+dir*72,y:low},c2:{x:q.x-dir*72,y:low}};
+}
+function returnCurve(a,b){const g=returnGeometry(a,b);return `M${g.p.x} ${g.p.y} C${g.c1.x} ${g.c1.y}, ${g.c2.x} ${g.c2.y}, ${g.q.x} ${g.q.y}`;}
 function paintLinks(){
   const m = curMap(), by = id => m.nodes.find(n => n.id === id);
   $('mmLinks').innerHTML = m.links.map(l => {
     const a = by(l.a), b = by(l.b);
     if(!a || !b) return '';
-    const d = curve(side(a, b), side(b, a));
+    const d = l.back ? returnCurve(a,b) : curve(side(a, b), side(b, a));
     const sel = MM_SEL === l.id;
     return `<path class="mm-link ${sel?'sel':''}" d="${d}" data-draw="${l.id}" marker-end="url(#${sel?'mmArrowSel':'mmArrow'})"></path>
             <path class="mm-hit" d="${d}" data-link="${l.id}"></path>`;
@@ -2524,7 +2533,8 @@ function paintLinks(){
 }
 function paintPick(){
   document.querySelector('.mm-pick')?.remove();
-  const m = curMap(), n = m.nodes.find(x => x.id === MM_SEL);
+  const m = curMap(), selectedLink=m.links.find(x=>x.id===MM_SEL), n = m.nodes.find(x => x.id === MM_SEL);
+  const backBtn=document.querySelector('[data-mmback]');if(backBtn)backBtn.setAttribute('aria-pressed',String(selectedLink?!!selectedLink.back:MM_BACK));
   if(!n) return;
   const sz = MM_SZ[n.id] || { w:120, h:40 };
   MM_SHAPE = n.shape || 'bulle';
@@ -2636,7 +2646,7 @@ MOUNT.mindmap = () => {
         MM_SZ._ = { w:2, h:2 };
         const g = $('mmGhost');
         g.style.display = '';
-        g.setAttribute('d', curve(side(a, fake), { x:p.x, y:p.y, d:side(fake, a).d }));
+        g.setAttribute('d', MM_BACK ? returnCurve(a,fake) : curve(side(a, fake), { x:p.x, y:p.y, d:side(fake, a).d }));
         const over = document.elementFromPoint?.(cx, cy)?.closest('[data-node]');
         for(const el of $('mmNodes').children)
           el.classList.toggle('sel', el === over && el.dataset.node !== MM_LINK.from);
@@ -2672,8 +2682,8 @@ MOUNT.mindmap = () => {
         const n = { id:nid(), x:Math.round(p.x - 40), y:Math.round(p.y - 18), text:'', color:'plain', shape:MM_SHAPE };
         m.nodes.push(n); to = n.id; MM_BORN = n.id;
       }
-      if(to !== MM_LINK.from && !m.links.some(l => (l.a===MM_LINK.from && l.b===to) || (l.a===to && l.b===MM_LINK.from)))
-        m.links.push({ id:nid(), a:MM_LINK.from, b:to });
+      if(to !== MM_LINK.from && !m.links.some(l => l.a===MM_LINK.from && l.b===to && !!l.back===MM_BACK))
+        m.links.push({ id:nid(), a:MM_LINK.from, b:to, back:MM_BACK });
       MM_SEL = to; MM_LINK = null;
       paintNodes(); touchMap();
       const t = $('mmNodes').querySelector(`[data-text="${to}"]`);
@@ -2775,6 +2785,7 @@ async function exportPNG(){
     x1 = Math.min(x1, n.x); y1 = Math.min(y1, n.y);
     x2 = Math.max(x2, n.x + z.w); y2 = Math.max(y2, n.y + z.h);
   }
+  for(const l of m.links.filter(x=>x.back)){const a=m.nodes.find(n=>n.id===l.a),b=m.nodes.find(n=>n.id===l.b);if(!a||!b)continue;const g=returnGeometry(a,b);x1=Math.min(x1,g.p.x,g.q.x,g.c1.x,g.c2.x);x2=Math.max(x2,g.p.x,g.q.x,g.c1.x,g.c2.x);y2=Math.max(y2,g.c1.y,g.c2.y);}
   const W = x2 - x1 + PAD*2, H = y2 - y1 + PAD*2 + 26;
   const cvs = document.createElement('canvas');
   cvs.width = W * S; cvs.height = H * S;
@@ -2800,11 +2811,9 @@ async function exportPNG(){
   for(const l of m.links){
     const a = by(l.a), b = by(l.b);
     if(!a || !b) continue;
-    const p = side(a, b), q = side(b, a);
-    const k = Math.max(38, Math.hypot(q.x-p.x, q.y-p.y) * 0.38);
-    const off = (pt, k) => pt.d === 'r' ? [pt.x+k, pt.y] : pt.d === 'l' ? [pt.x-k, pt.y]
-                         : pt.d === 'b' ? [pt.x, pt.y+k] : [pt.x, pt.y-k];
-    const [c1x,c1y] = off(p, k), [c2x,c2y] = off(q, k);
+    let p,q,c1x,c1y,c2x,c2y;
+    if(l.back){const g=returnGeometry(a,b);p=g.p;q=g.q;c1x=g.c1.x;c1y=g.c1.y;c2x=g.c2.x;c2y=g.c2.y;}
+    else {p=side(a,b);q=side(b,a);const k=Math.max(38,Math.hypot(q.x-p.x,q.y-p.y)*.38);const off=(pt,v)=>pt.d==='r'?[pt.x+v,pt.y]:pt.d==='l'?[pt.x-v,pt.y]:pt.d==='b'?[pt.x,pt.y+v]:[pt.x,pt.y-v];[c1x,c1y]=off(p,k);[c2x,c2y]=off(q,k);}
     ctx.beginPath();
     ctx.moveTo(p.x, p.y); ctx.bezierCurveTo(c1x, c1y, c2x, c2y, q.x, q.y);
     ctx.stroke();
@@ -2869,6 +2878,7 @@ function fitMap(){
     x1 = Math.min(x1, n.x); y1 = Math.min(y1, n.y);
     x2 = Math.max(x2, n.x + sz.w); y2 = Math.max(y2, n.y + sz.h);
   }
+  for(const l of m.links.filter(x=>x.back)){const a=m.nodes.find(n=>n.id===l.a),b=m.nodes.find(n=>n.id===l.b);if(!a||!b)continue;const g=returnGeometry(a,b);x1=Math.min(x1,g.p.x,g.q.x,g.c1.x,g.c2.x);x2=Math.max(x2,g.p.x,g.q.x,g.c1.x,g.c2.x);y2=Math.max(y2,g.c1.y,g.c2.y);}
   const pad = 60;
   const z = Math.min(1.6, Math.max(.3, Math.min((r.width - pad*2)/(x2-x1 || 1), (r.height - pad*2)/(y2-y1 || 1))));
   glide({ z, x: r.width/2 - (x1 + x2)/2 * z, y: r.height/2 - (y1 + y2)/2 * z }, 380);
@@ -2885,6 +2895,15 @@ $('view').addEventListener('click', async e => {
     $('view').querySelectorAll('[data-shape]').forEach(b => b.setAttribute('aria-pressed', b.dataset.shape === MM_SHAPE));
     const n = curMap()?.nodes.find(x => x.id === MM_SEL);
     if(n){ n.shape = MM_SHAPE; paintNodes(); touchMap(); }   // un bloc choisi : il change de forme
+    return;
+  }
+  const back=e.target.closest('[data-mmback]');
+  if(back){
+    const link=curMap()?.links.find(l=>l.id===MM_SEL);
+    if(link){link.back=!link.back;MM_BACK=!!link.back;paintLinks();touchMap();}
+    else MM_BACK=!MM_BACK;
+    back.setAttribute('aria-pressed',String(link?!!link.back:MM_BACK));
+    back.title=(link?link.back:MM_BACK)?'Flèche de retour activée':'Flèche standard';
     return;
   }
   const col = e.target.closest('[data-col]');
