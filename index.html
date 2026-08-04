@@ -2142,7 +2142,7 @@ input,select,textarea{min-height:36px}
           <span id="authErrTxt"></span>
         </div>
         <div class="auth-alt2" id="authAlt"></div>
-        <div class="auth-security"><span><i></i>Connexion locale chiffrée</span><span>Propulsé par <b>LVXTON</b> · GRID v3.7.0</span></div>
+        <div class="auth-security"><span><i></i>Connexion locale sécurisée</span><span>Propulsé par <b>LVXTON</b> · GRID v3.7.2</span></div>
       </div>
     </div>
     <aside class="auth-visual" aria-label="GRID, votre copilote business animé">
@@ -2317,7 +2317,7 @@ const Store = (() => {
     }
   };
 })();
-const K_USERS='grid:users', K_SESSION='grid:session', K_THEME='grid:theme';
+const K_USERS='grid:users', K_SESSION='grid:session', K_THEME='grid:theme', K_REMEMBER='grid:remembered-login';
 const $ = id => document.getElementById(id);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const wait = ms => new Promise(r=>setTimeout(r, reduce ? Math.min(ms,60) : ms));
@@ -5969,7 +5969,7 @@ async function factoryReset(){
   requestAnimationFrame(()=>layer.classList.add('on'));
 
   const id=SESSION.id;
-  const known=[K_USERS,K_SESSION,K_THEME,'grid:system',`grid:maps:${id}`,`grid:vault:${id}`,`grid:rev:${id}`,`grid:tabs:${id}`,`grid:notes:${id}`,`grid:seen:${id}`,`grid:business:${id}`];
+  const known=[K_USERS,K_SESSION,K_THEME,K_REMEMBER,'grid:system',`grid:maps:${id}`,`grid:vault:${id}`,`grid:rev:${id}`,`grid:tabs:${id}`,`grid:notes:${id}`,`grid:seen:${id}`,`grid:business:${id}`];
   const deletion=(async()=>{
     await Promise.all(known.map(k=>Store.del(k)));
     try{ Object.keys(localStorage).filter(k=>k.startsWith('grid:')).forEach(k=>localStorage.removeItem(k)); }catch(e){}
@@ -6198,6 +6198,7 @@ async function verifyOdp(){
     USERS[id] = { pseudo, salt:s, hash:await hash(pw,s), photo:null, created:Date.now() };
     await Store.set(K_USERS, USERS);
     $('odpLayer').classList.remove('on'); $('odpLayer').hidden = true; pendingRegistration = null;
+    await Store.set(K_REMEMBER,{id,pseudo,pw});
     await Store.set(K_SESSION,id); await enter(id);
     btn.disabled = false; btn.classList.remove('busy'); btn.textContent = 'Vérifier le code';
   }catch(err){
@@ -6253,11 +6254,8 @@ async function submit(){
   btn.classList.add('busy');
   btn.textContent = MODE === 'create' ? 'Création du compte…' : 'Vérification…';
   AUTH_BUB.tone('orange'); AUTH_BUB.set(AUTH_BUB.locked ? 'shut' : 'think');
-  const t0 = Date.now();
-  /* Une vérification instantanée donne l'impression qu'il n'y a aucun contrôle.
-     On laisse le hachage respirer, et on garde un plancher de temps constant —
-     ça masque aussi l'écart entre « pseudo inconnu » et « mot de passe faux ». */
-  const settle = async () => { const rest = 900 - (Date.now() - t0); if(rest > 0) await wait(rest); };
+  /* Réponse immédiate : aucun délai artificiel après le clic. */
+  const settle = async () => {};
   const fail = async msg => {
     await settle();
     btn.classList.remove('busy'); btn.textContent = label; btn.disabled = false;
@@ -6279,6 +6277,7 @@ async function submit(){
       if(!eq(await hash(pw, u.salt), u.hash)) return fail('Identifiants incorrects.');
     }
     await settle();
+    await Store.set(K_REMEMBER,{id,pseudo,pw});
     await Store.set(K_SESSION, id);
     await enter(id);
     btn.classList.remove('busy'); btn.textContent = label; btn.disabled = false;
@@ -6290,43 +6289,29 @@ async function submit(){
 async function enter(id){
   const u = USERS[id];
   SESSION = { id, pseudo:u.pseudo, photo:u.photo || null };
-  const launch = document.createElement('div');
-  launch.className = 'app-launch';
-  launch.dataset.theme = uiTheme();
-  launch.innerHTML = `<div class="app-launch-inner"><div class="app-launch-agent" id="appLaunchAgent"></div><b id="appLaunchTitle">GRID prépare votre espace</b><span id="appLaunchStatus">Synchronisation de vos données</span><div class="app-launch-line"><i></i></div></div>`;
-  document.body.appendChild(launch);
-  auth.classList.remove('on');
-  const launchGrid = new Blob($('appLaunchAgent'));
-  launchGrid.tone('orange'); launchGrid.set('think');
-  requestAnimationFrame(()=>launch.classList.add('on'));
-  const minimum = new Promise(resolve=>setTimeout(resolve,1250));
   paintAvatars();
-  await Promise.all([(async()=>{ await loadNotes(); await loadMaps(); await loadVault(); await loadRev(); await hydrateGridGeneratedFiles(); await loadSeen(); })(), minimum]);
+  await Promise.all([loadNotes(),loadMaps(),loadVault(),loadRev(),loadSeen()]);
+  await hydrateGridGeneratedFiles();
   paintMem(); paintBadge();
   const saved = await Store.get('grid:tabs:'+id);
   TABS = (saved?.tabs || []).filter(t=>META[t]);
   if(!TABS.includes('dashboard')) TABS.unshift('dashboard');
   DASH_ISL = null;
   ACTIVE = 'dashboard';
-  shell.classList.add('on','app-arriving');
+  shell.classList.add('on');
   go(ACTIVE);
-  launchGrid.tone('green'); launchGrid.set('happy'); launchGrid.bounce();
-  launch.classList.add('done');
-  $('appLaunchTitle').textContent = 'Votre espace est prêt';
-  $('appLaunchStatus').textContent = 'Bienvenue dans GRID';
-  await new Promise(resolve=>setTimeout(resolve,560));
-  void shell.offsetWidth;
-  shell.classList.add('app-live');
-  launch.classList.add('leave');
-  setTimeout(()=>{ launchGrid.destroy(); launch.remove(); shell.classList.remove('app-arriving','app-live'); BUB.bounce(); BUB.flash('happy',1200); checkDue(); },850);
+  auth.classList.remove('on');
+  BUB.flash('happy',500);
+  checkDue();
 }
 async function signOut(){
   if(typeof SIM_MODE!=='undefined'&&SIM_MODE){try{REV.closes=JSON.parse(SIM_BACKUP||'[]')}catch(e){}SIM_MODE=false;SIM_BACKUP=null;$('simulationExit').hidden=true;$('shell').classList.remove('simulation-mode');}
   await Store.del(K_SESSION);
+  const remembered = await Store.get(K_REMEMBER);
   closeAll();
   shell.classList.remove('on');
-  fPass.value = ''; fPass.type = 'password'; $('reveal').textContent = 'Voir';
-  fPseudo.value = SESSION.pseudo;
+  fPass.value = remembered?.pw || ''; fPass.type = 'password'; $('reveal').textContent = 'Voir';
+  fPseudo.value = remembered?.pseudo || SESSION.pseudo;
   MODE = 'login'; paintAuth(); eyesOpen();
   auth.classList.add('on');
   fPass.focus();
@@ -6610,18 +6595,19 @@ async function runBoot(){
 
 (async function start(){
   await applyTheme((await Store.get(K_THEME)) || 'light', false);
-  if(await runBoot() === 'maint') return;   // fermé : on n'ouvre rien
+  if(await checkMaint()) return;
 
   USERS = (await Store.get(K_USERS)) || {};
   const last = await Store.get(K_SESSION);
+  const remembered = await Store.get(K_REMEMBER);
 
-  /* Pas de reprise automatique : Grid redemande le mot de passe à chaque lancement. */
   MODE = Object.keys(USERS).length ? 'login' : 'create';
-  if(MODE === 'login') fPseudo.value = (USERS[last] || Object.values(USERS)[0]).pseudo;
+  if(MODE === 'login'){
+    const preferred = remembered?.id && USERS[remembered.id] ? USERS[remembered.id] : (USERS[last] || Object.values(USERS)[0]);
+    fPseudo.value = remembered?.pseudo || preferred.pseudo;
+    fPass.value = remembered?.pw || '';
+  }
   paintAuth();
-
-  await gateWait();          // Grid grandit et attend le clic
-  await bootOut();
   auth.classList.add('on');
   (MODE === 'login' ? fPass : fPseudo).focus();
 })();
