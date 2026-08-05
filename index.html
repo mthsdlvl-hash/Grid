@@ -6366,6 +6366,7 @@ $('mtRetry').addEventListener('click', async ()=>{
 });
 /* on revérifie régulièrement : la levée de maintenance se voit sans recharger */
 setInterval(async ()=>{
+  if(window.__geoLock) return;          // blocage géographique : on ne recharge pas
   const on = $('maint').classList.contains('on');
   const st = await readStatus();
   if(on && !(st && st.maintenance)) location.reload();
@@ -6595,21 +6596,40 @@ async function runBoot(){
 
 (async function start(){
   await applyTheme((await Store.get(K_THEME)) || 'light', false);
-  if(await checkMaint()) return;
 
-  USERS = (await Store.get(K_USERS)) || {};
-  const last = await Store.get(K_SESSION);
-  const remembered = await Store.get(K_REMEMBER);
+  /* ——— Accès géographiquement suspendu ——— */
+  window.__geoLock = true;
+  $('mtTag').textContent   = 'Accès suspendu';
+  $('mtTitle').textContent = 'Grid est indisponible.';
+  $('mtMsg').textContent   = "Oups, le serveur local utilisé pour Grid semble ne plus se trouver sur le territoire européen.\n\nPour des raisons de conformité, l'accès est temporairement bloqué.";
 
-  MODE = Object.keys(USERS).length ? 'login' : 'create';
-  if(MODE === 'login'){
-    const preferred = remembered?.id && USERS[remembered.id] ? USERS[remembered.id] : (USERS[last] || Object.values(USERS)[0]);
-    fPseudo.value = remembered?.pseudo || preferred.pseudo;
-    fPass.value = remembered?.pw || '';
+  const geoBlob = new Blob($('maintBlob')); LIVE.push(geoBlob);
+  geoBlob.tone('red'); geoBlob.set('squint');
+
+  boot.classList.remove('on');
+  auth.classList.remove('on');
+  shell.classList.remove('on');
+  $('maint').classList.add('on');
+
+  const geoBar = document.querySelector('#maint .mt-bar');
+  if(geoBar) geoBar.style.display = 'none';   // on masque la barre de progression
+
+  /* On remplace le bouton pour retirer son ancien comportement (rechargement) */
+  const oldRetry = $('mtRetry');
+  if(oldRetry){
+    const retry = oldRetry.cloneNode(true);
+    oldRetry.replaceWith(retry);
+    retry.textContent = 'Réessayer';
+    retry.addEventListener('click', async ()=>{
+      retry.disabled = true; retry.textContent = 'Vérification…';
+      geoBlob.tone('orange'); geoBlob.set('think');
+      await wait(900);
+      geoBlob.tone('red'); geoBlob.flash('wow', 900);
+      retry.disabled = false; retry.textContent = 'Toujours indisponible';
+      setTimeout(()=>{ retry.textContent = 'Réessayer'; }, 2200);
+    });
   }
-  paintAuth();
-  auth.classList.add('on');
-  (MODE === 'login' ? fPass : fPseudo).focus();
+  return;   // rien d'autre ne se charge : ni compte, ni app
 })();
 </script>
 </body>
