@@ -1157,28 +1157,36 @@ body.vault-drop .vt-main{outline:2px dashed var(--btn-lo);outline-offset:6px;bor
   padding:8px 16px;border-radius:99px;box-shadow:inset 0 0 0 1px var(--hair);transition:.15s}
 .mt-retry:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--muted)}
 
-/* ---------- Terminal de diagnostic (écran de blocage géo) ---------- */
-#geoLog{position:fixed;top:14px;left:14px;z-index:96;
-  width:min(370px,calc(100vw - 28px));max-height:52vh;overflow:hidden;
+/* ---------- Terminaux de diagnostic (écran de blocage géo) ---------- */
+#geoStack{position:fixed;top:14px;left:14px;z-index:96;
+  width:min(370px,calc(100vw - 28px));display:flex;flex-direction:column;gap:10px;
+  max-height:calc(100vh - 28px);pointer-events:none;user-select:none}
+.geoterm{overflow:hidden;
   font-family:var(--mono);font-size:11px;line-height:1.65;letter-spacing:.01em;
   color:#3ddc84;background:rgba(6,10,8,.82);backdrop-filter:blur(6px);
   border:1px solid rgba(61,220,132,.22);border-radius:9px;
-  padding:10px 12px 12px;box-shadow:0 10px 30px rgba(0,0,0,.35);
-  pointer-events:none;user-select:none}
-#geoLog .glhead{display:flex;align-items:center;gap:6px;margin-bottom:8px;
+  padding:10px 12px 12px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+#geoLog{max-height:38vh}
+#geoLog2{max-height:40vh;color:#ff6b5e;border-color:rgba(255,107,94,.30);
+  background:rgba(14,6,6,.82)}
+.geoterm .glhead{display:flex;align-items:center;gap:6px;margin-bottom:8px;
   color:#6f7d76;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase}
-#geoLog .glhead b{width:8px;height:8px;border-radius:50%;background:#ff5f56;flex:none;
+#geoLog2 .glhead{color:#c9736c}
+.geoterm .glhead b{width:8px;height:8px;border-radius:50%;background:#ff5f56;flex:none;
   box-shadow:14px 0 0 #ffbd2e,28px 0 0 #27c93f;margin-right:26px}
-#geoLog .gline{white-space:pre-wrap;word-break:break-word;opacity:0;
+.geoterm .gline{white-space:pre-wrap;word-break:break-word;opacity:0;
   animation:glIn .18s ease forwards;text-shadow:0 0 6px rgba(61,220,132,.28)}
-#geoLog .gline.dim{color:#6f7d76;text-shadow:none}
-#geoLog .gline.warn{color:#ffcf4d;text-shadow:0 0 6px rgba(255,207,77,.25)}
-#geoLog .gline.err{color:#ff6b5e;text-shadow:0 0 6px rgba(255,107,94,.28)}
-#geoLog .gcur{display:inline-block;width:7px;height:13px;vertical-align:-2px;
+.geoterm .gline.dim{color:#6f7d76;text-shadow:none}
+.geoterm .gline.warn{color:#ffcf4d;text-shadow:0 0 6px rgba(255,207,77,.25)}
+.geoterm .gline.err{color:#ff6b5e;text-shadow:0 0 6px rgba(255,107,94,.28)}
+/* Second terminal : tout en rouge */
+#geoLog2 .gline{color:#ff6b5e;text-shadow:0 0 6px rgba(255,107,94,.30)}
+.geoterm .gcur{display:inline-block;width:7px;height:13px;vertical-align:-2px;
   background:#3ddc84;margin-left:2px;animation:glBlink 1s steps(1) infinite}
+#geoLog2 .gcur{background:#ff6b5e}
 @keyframes glIn{from{opacity:0;transform:translateX(-4px)}to{opacity:1;transform:none}}
 @keyframes glBlink{50%{opacity:0}}
-@media (max-width:520px){#geoLog{font-size:10px;max-height:44vh}}
+@media (max-width:520px){.geoterm{font-size:10px}#geoLog{max-height:32vh}#geoLog2{max-height:34vh}}
 
 /* ---------- Les artefacts de sa mémoire ---------- */
 .mem-wrap{display:none}
@@ -6637,32 +6645,43 @@ async function runBoot(){
   const geoBar = document.querySelector('#maint .mt-bar');
   if(geoBar) geoBar.style.display = 'none';   // on masque la barre de progression
 
-  /* ——— Terminal de diagnostic façon log ——— */
-  const geoLog = document.createElement('div');
-  geoLog.id = 'geoLog';
-  geoLog.innerHTML = '<div class="glhead"><b></b>grid-net · diagnostic</div>';
-  document.body.appendChild(geoLog);
-
-  const cursor = document.createElement('span');
-  cursor.className = 'gcur';
+  /* ——— Terminaux de diagnostic façon log ——— */
+  const geoStack = document.createElement('div');
+  geoStack.id = 'geoStack';
+  document.body.appendChild(geoStack);
 
   const T0 = Date.now();
   const stamp = () => {
     const s = ((Date.now() - T0) / 1000).toFixed(3).padStart(7, '0');
     return '[' + s + ']';
   };
-  const glPush = (text, cls) => {
-    const line = document.createElement('div');
-    line.className = 'gline' + (cls ? ' ' + cls : '');
-    line.textContent = text;
-    geoLog.appendChild(line);
-    geoLog.appendChild(cursor);           // le curseur suit toujours la dernière ligne
-    // auto-scroll si ça dépasse
-    while(geoLog.scrollHeight > geoLog.clientHeight && geoLog.children.length > 3){
-      geoLog.children[1].remove();        // on garde l'entête (index 0)
-    }
+
+  // Fabrique un terminal (panneau + fonction push avec curseur qui suit)
+  const makeTerm = (id, headText) => {
+    const el = document.createElement('div');
+    el.id = id; el.className = 'geoterm';
+    el.innerHTML = '<div class="glhead"><b></b>' + headText + '</div>';
+    geoStack.appendChild(el);
+    const cur = document.createElement('span');
+    cur.className = 'gcur';
+    const push = (text, cls) => {
+      const line = document.createElement('div');
+      line.className = 'gline' + (cls ? ' ' + cls : '');
+      line.textContent = text;
+      el.appendChild(line);
+      el.appendChild(cur);                 // le curseur suit toujours la dernière ligne
+      while(el.scrollHeight > el.clientHeight && el.children.length > 3){
+        el.children[1].remove();           // on garde l'entête (index 0)
+      }
+    };
+    return { el, push };
   };
 
+  const term1 = makeTerm('geoLog',  'grid-net · diagnostic');
+  const term2 = makeTerm('geoLog2', 'grid-net · état des serveurs');
+  const glPush = term1.push;               // gardé pour le bouton Réessayer
+
+  /* — Terminal 1 : diagnostic réseau — */
   const GEO_LINES = [
     ['$ gridctl net --scan --region=eu', 'dim'],
     ['init  interface réseau … ok'],
@@ -6680,16 +6699,59 @@ async function runBoot(){
     ['halt  démarrage de Grid interrompu', 'err'],
     ['—— en attente d\'un nœud conforme ——', 'dim'],
   ];
-
   let gi = 0;
   const geoTick = () => {
     if(gi >= GEO_LINES.length){ return; }
     const [txt, cls] = GEO_LINES[gi++];
-    glPush(stamp() + ' ' + txt, cls);
+    term1.push(stamp() + ' ' + txt, cls);
     const base = /scan|ping|geoip|trace/.test(txt) ? 520 : 300;
     setTimeout(geoTick, base + Math.random() * 360);
   };
   setTimeout(geoTick, 260);
+
+  /* — Terminal 2 : état des serveurs (tout en rouge) — */
+  const SRV_NODES = [
+    'eu-west-1a','eu-west-1b','eu-west-1c','eu-west-2a','eu-west-3a',
+    'eu-central-1a','eu-central-1b','eu-central-2a','eu-north-1a','eu-north-1b',
+    'eu-south-1a','eu-south-2a','fr-par-1','fr-par-2','fr-par-3',
+    'de-fra-1','de-fra-2','nl-ams-1','be-bru-1','ie-dub-1',
+    'es-mad-1','it-mil-1','pl-waw-1','se-sto-1','fi-hel-1',
+  ];
+  const SRV_FAILS = [
+    'OFFLINE','DOWN','UNREACHABLE','NO ROUTE','TIMEOUT','CONN REFUSED',
+    'HOST NOT FOUND','LINK LOST','DEAD','503',
+  ];
+  const SRV_HEAD = [
+    '$ gridctl status --all --region=eu',
+    'récupération état du cluster…',
+    'CLUSTER: eu-grid  ·  25 nœuds  ·  0 en ligne',
+    '───────────────────────────────────────────',
+  ];
+  let si = 0, sPhase = 0;
+  const srvTick = () => {
+    if(sPhase === 0){                       // entête
+      if(si < SRV_HEAD.length){ term2.push(stamp() + ' ' + SRV_HEAD[si++]); }
+      else { sPhase = 1; si = 0; }
+      return setTimeout(srvTick, 240 + Math.random() * 220);
+    }
+    if(sPhase === 1){                       // liste des nœuds, tous KO
+      if(si < SRV_NODES.length){
+        const node = SRV_NODES[si++].padEnd(15, ' ');
+        const fail = SRV_FAILS[Math.floor(Math.random() * SRV_FAILS.length)];
+        const ping = Math.random() < .5 ? '  ping —' : '  ping ' + (900 + Math.floor(Math.random()*9099)) + 'ms';
+        term2.push(stamp() + ' ' + node + ' [ ' + fail.padEnd(13,' ') + ']' + ping);
+        return setTimeout(srvTick, 150 + Math.random() * 230);
+      }
+      sPhase = 2;
+    }
+    if(sPhase === 2){                       // verdict
+      term2.push(stamp() + ' ───────────────────────────────────────────');
+      term2.push(stamp() + ' RÉSULTAT: 25/25 nœuds HORS LIGNE');
+      term2.push(stamp() + ' health: 0%  ·  quorum PERDU  ·  service INDISPONIBLE');
+      term2.push(stamp() + ' !! aucun serveur en zone UE — accès refusé');
+    }
+  };
+  setTimeout(srvTick, 620);
 
   /* On remplace le bouton pour retirer son ancien comportement (rechargement) */
   const oldRetry = $('mtRetry');
