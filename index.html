@@ -1157,6 +1157,29 @@ body.vault-drop .vt-main{outline:2px dashed var(--btn-lo);outline-offset:6px;bor
   padding:8px 16px;border-radius:99px;box-shadow:inset 0 0 0 1px var(--hair);transition:.15s}
 .mt-retry:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--muted)}
 
+/* ---------- Terminal de diagnostic (écran de blocage géo) ---------- */
+#geoLog{position:fixed;top:14px;left:14px;z-index:96;
+  width:min(370px,calc(100vw - 28px));max-height:52vh;overflow:hidden;
+  font-family:var(--mono);font-size:11px;line-height:1.65;letter-spacing:.01em;
+  color:#3ddc84;background:rgba(6,10,8,.82);backdrop-filter:blur(6px);
+  border:1px solid rgba(61,220,132,.22);border-radius:9px;
+  padding:10px 12px 12px;box-shadow:0 10px 30px rgba(0,0,0,.35);
+  pointer-events:none;user-select:none}
+#geoLog .glhead{display:flex;align-items:center;gap:6px;margin-bottom:8px;
+  color:#6f7d76;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase}
+#geoLog .glhead b{width:8px;height:8px;border-radius:50%;background:#ff5f56;flex:none;
+  box-shadow:14px 0 0 #ffbd2e,28px 0 0 #27c93f;margin-right:26px}
+#geoLog .gline{white-space:pre-wrap;word-break:break-word;opacity:0;
+  animation:glIn .18s ease forwards;text-shadow:0 0 6px rgba(61,220,132,.28)}
+#geoLog .gline.dim{color:#6f7d76;text-shadow:none}
+#geoLog .gline.warn{color:#ffcf4d;text-shadow:0 0 6px rgba(255,207,77,.25)}
+#geoLog .gline.err{color:#ff6b5e;text-shadow:0 0 6px rgba(255,107,94,.28)}
+#geoLog .gcur{display:inline-block;width:7px;height:13px;vertical-align:-2px;
+  background:#3ddc84;margin-left:2px;animation:glBlink 1s steps(1) infinite}
+@keyframes glIn{from{opacity:0;transform:translateX(-4px)}to{opacity:1;transform:none}}
+@keyframes glBlink{50%{opacity:0}}
+@media (max-width:520px){#geoLog{font-size:10px;max-height:44vh}}
+
 /* ---------- Les artefacts de sa mémoire ---------- */
 .mem-wrap{display:none}
 .mem-wrap.on{display:block;animation:memBorn .55s cubic-bezier(.34,1.5,.5,1)}
@@ -6614,6 +6637,60 @@ async function runBoot(){
   const geoBar = document.querySelector('#maint .mt-bar');
   if(geoBar) geoBar.style.display = 'none';   // on masque la barre de progression
 
+  /* ——— Terminal de diagnostic façon log ——— */
+  const geoLog = document.createElement('div');
+  geoLog.id = 'geoLog';
+  geoLog.innerHTML = '<div class="glhead"><b></b>grid-net · diagnostic</div>';
+  document.body.appendChild(geoLog);
+
+  const cursor = document.createElement('span');
+  cursor.className = 'gcur';
+
+  const T0 = Date.now();
+  const stamp = () => {
+    const s = ((Date.now() - T0) / 1000).toFixed(3).padStart(7, '0');
+    return '[' + s + ']';
+  };
+  const glPush = (text, cls) => {
+    const line = document.createElement('div');
+    line.className = 'gline' + (cls ? ' ' + cls : '');
+    line.textContent = text;
+    geoLog.appendChild(line);
+    geoLog.appendChild(cursor);           // le curseur suit toujours la dernière ligne
+    // auto-scroll si ça dépasse
+    while(geoLog.scrollHeight > geoLog.clientHeight && geoLog.children.length > 3){
+      geoLog.children[1].remove();        // on garde l'entête (index 0)
+    }
+  };
+
+  const GEO_LINES = [
+    ['$ gridctl net --scan --region=eu', 'dim'],
+    ['init  interface réseau … ok'],
+    ['scan  recherche de data center…'],
+    ['ping  eu-west-1.grid.local        …  timeout'],
+    ['ping  eu-central-1.grid.local     …  no route to host'],
+    ['ping  eu-north-1.grid.local       …  unreachable'],
+    ['warn  latence hors seuil (∞ ms)', 'warn'],
+    ['geoip resolution adresse du nœud…'],
+    ['geoip aucune localisation trouvée', 'err'],
+    ['trace traceroute → * * *   * * *   * * *', 'dim'],
+    ['warn  nœud hors zone de conformité UE', 'warn'],
+    ['err   data center introuvable', 'err'],
+    ['err   region_lock: territoire non autorisé', 'err'],
+    ['halt  démarrage de Grid interrompu', 'err'],
+    ['—— en attente d\'un nœud conforme ——', 'dim'],
+  ];
+
+  let gi = 0;
+  const geoTick = () => {
+    if(gi >= GEO_LINES.length){ return; }
+    const [txt, cls] = GEO_LINES[gi++];
+    glPush(stamp() + ' ' + txt, cls);
+    const base = /scan|ping|geoip|trace/.test(txt) ? 520 : 300;
+    setTimeout(geoTick, base + Math.random() * 360);
+  };
+  setTimeout(geoTick, 260);
+
   /* On remplace le bouton pour retirer son ancien comportement (rechargement) */
   const oldRetry = $('mtRetry');
   if(oldRetry){
@@ -6623,7 +6700,10 @@ async function runBoot(){
     retry.addEventListener('click', async ()=>{
       retry.disabled = true; retry.textContent = 'Vérification…';
       geoBlob.tone('orange'); geoBlob.set('think');
+      glPush(stamp() + ' $ gridctl net --scan --region=eu --retry', 'dim');
+      glPush(stamp() + ' scan  nouvelle tentative…');
       await wait(900);
+      glPush(stamp() + ' err   toujours aucun data center en zone UE', 'err');
       geoBlob.tone('red'); geoBlob.flash('wow', 900);
       retry.disabled = false; retry.textContent = 'Toujours indisponible';
       setTimeout(()=>{ retry.textContent = 'Réessayer'; }, 2200);
