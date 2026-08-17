@@ -2497,7 +2497,7 @@ body{user-select:none;-webkit-user-select:none}input,textarea,select,[contentedi
 .modal-card:has(.game-crop-overlay){position:relative}.game-crop-overlay{position:absolute;inset:0;z-index:25;display:grid;grid-template-rows:auto 1fr auto;background:var(--card);border-radius:inherit;overflow:auto}.game-crop-head{height:62px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--hair)}.game-crop-head div b,.game-crop-head div span{display:block}.game-crop-head b{font-size:12px}.game-crop-head span{margin-top:4px;color:var(--muted);font-size:8px}.game-crop-head button{width:34px;height:34px;border-radius:10px;background:var(--soft);border:1px solid var(--hair);color:var(--ink)}.game-crop-body{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(230px,.5fr);gap:16px;padding:18px}.game-crop-stage{min-height:360px;display:grid;place-items:center;padding:16px;border:1px solid var(--hair);border-radius:17px;background:var(--soft)}.game-crop-stage canvas{display:block;width:100%;max-height:58vh;aspect-ratio:16/9;object-fit:contain;border-radius:12px;background:#080808}.game-crop-controls{display:flex;flex-direction:column;gap:17px;padding:17px;border:1px solid var(--hair);border-radius:17px;background:var(--soft)}.game-crop-controls h3{font-size:14px}.game-crop-controls p{color:var(--muted);font-size:9px;line-height:1.55}.game-crop-control label{display:flex;justify-content:space-between;margin-bottom:8px;color:var(--muted);font-size:9px}.game-crop-control input{width:100%;accent-color:var(--btn-lo)}.game-crop-actions{display:flex;justify-content:flex-end;gap:8px;padding:14px 18px;border-top:1px solid var(--hair)}.game-crop-actions button{min-height:43px;padding:0 16px;border-radius:11px;font-size:10px;font-weight:700}.casino-photo-actions #casinoGamePhotoRecrop{display:none}.casino-photo-actions #casinoGamePhotoRecrop.on{display:inline-flex}
 @media(max-width:760px){.casino-summary-with-balance{grid-template-columns:1fr 1fr}.cashout-detail-grid{grid-template-columns:1fr}.cashout-detail-actions{display:grid;grid-template-columns:1fr}.cashout-detail-actions button,.cashout-detail-actions .danger-btn{width:100%;margin:0}.biz-row:has(.casino-game-trend){grid-template-columns:minmax(0,1fr) 86px 104px;gap:8px}.casino-game-trend{width:104px;height:40px}.game-crop-body{grid-template-columns:1fr}.game-crop-stage{min-height:240px}.game-crop-actions{display:grid;grid-template-columns:1fr 1fr}.game-crop-actions button{width:100%}}
 
-/* Landing page publique · GRID v5.7 */
+/* Landing page publique · GRID v5.8 */
 #landing{--lp-bg:#07090d;--lp-panel:#101319;--lp-panel-hi:#151922;--lp-line:rgba(255,255,255,.09);--lp-text:#f5f7fa;--lp-dim:#9198a5;--lp-blue:#4aa8ff;--lp-cyan:#60e4ff;position:fixed;inset:0;z-index:70;display:none;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;background:var(--lp-bg);color:var(--lp-text);font-family:var(--body);scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#313743 transparent}
 #landing.on{display:block;animation:lpEnter .55s ease both}#landing.out{animation:lpLeave .34s ease both;pointer-events:none}body:has(#landing.on){overflow:hidden}
 @keyframes lpEnter{from{opacity:0}to{opacity:1}}@keyframes lpLeave{to{opacity:0;transform:scale(1.012)}}
@@ -2539,6 +2539,18 @@ body{user-select:none;-webkit-user-select:none}input,textarea,select,[contentedi
 .lp-feature-number{font:700 16px var(--display)!important}
 .lp-hero-agent,.lp-glass-shape{pointer-events:none}
 @media(max-width:620px){.lp-hero-agent{right:-24px;top:305px;width:72px;height:72px}.lp-hero-agent .blob{width:72px;height:72px}.lp-glass-shape{top:345px}}
+
+/* Landing v5.8 · interactions, business, pricing et connexion */
+.lp-nav{top:0;transition:transform .36s cubic-bezier(.2,.8,.2,1),background .25s}.lp-nav.nav-hidden{transform:translateY(-115%)}
+.lp-trust{color:#aab4c4}.lp-trust i{width:7px;height:7px;background:#74c9ff;box-shadow:0 0 0 3px rgba(70,163,255,.13),0 0 12px rgba(74,177,255,.8)}
+.lp-feature{isolation:isolate}.lp-feature h3,.lp-feature p,.lp-feature-number{position:relative;z-index:2}.lp-feature:has(.lp-feature-visual) h3,.lp-feature:has(.lp-feature-visual) p{max-width:54%}.lp-feature-visual{right:22px;bottom:22px;width:34%;height:94px;z-index:1;pointer-events:none}.lp-cal-mini{padding:9px;gap:4px}.lp-doc-stack i{width:54px;height:75px}.lp-bars{gap:6px}
+.lp-interface-section{--tablet-y:120px;--tablet-tilt:14deg;--tablet-scale:.9}.lp-interface-section .lp-demo{transform:translateY(var(--tablet-y)) rotateX(var(--tablet-tilt)) scale(var(--tablet-scale));opacity:var(--tablet-opacity,.68);transition:transform .08s linear,opacity .12s linear;will-change:transform,opacity}
+.lp-business-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}.lp-business-gallery article{position:relative;min-height:285px;padding:26px;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:22px;background:linear-gradient(145deg,#0d1015,#080a0d)}.lp-business-gallery article::after{content:"";position:absolute;width:170px;height:170px;right:-80px;bottom:-90px;border-radius:50%;background:rgba(40,126,255,.12);filter:blur(10px)}.lp-business-gallery article.soon{opacity:.62}.lp-business-gallery article.global{border-color:rgba(82,157,255,.35);background:radial-gradient(230px 150px at 100% 100%,rgba(38,120,255,.22),transparent),#0b0e13}.lp-business-state{position:absolute;right:20px;top:20px;padding:6px 8px;border:1px solid rgba(255,255,255,.1);border-radius:99px;color:#6f747e;font:600 7px var(--mono);text-transform:uppercase;letter-spacing:.08em}.lp-business-state.ready{color:#76d7ac;border-color:rgba(63,206,146,.18);background:rgba(42,170,116,.08)}.lp-business-glyph{width:48px;height:48px;display:grid;place-items:center;border:1px solid rgba(136,201,255,.18);border-radius:15px;background:linear-gradient(145deg,rgba(92,183,255,.2),rgba(51,86,255,.06));color:#d8edff;font:700 16px var(--display)}.lp-business-gallery h3{margin-top:44px;font:600 19px var(--display)}.lp-business-gallery p{margin-top:10px;color:#888d97;font-size:11px;line-height:1.65}.lp-business-gallery small{position:absolute;left:26px;bottom:24px;color:#535963;font:500 7px var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.lp-pricing{width:min(1180px,calc(100% - 36px));min-height:260px;margin:65px auto;padding:48px;display:flex;align-items:center;justify-content:space-between;gap:40px;border:1px solid rgba(102,171,255,.22);border-radius:28px;background:radial-gradient(420px 210px at 100% 100%,rgba(39,120,255,.28),transparent),#090c11}.lp-pricing h2{margin-top:13px;font:550 clamp(34px,4vw,52px)/1 var(--display);letter-spacing:-.05em}.lp-pricing p{max-width:610px;margin-top:16px;color:#8c929d;font-size:13px;line-height:1.65}.lp-pricing-badge{flex:none;padding:12px 15px;border:1px solid rgba(255,255,255,.13);border-radius:99px;background:rgba(255,255,255,.04);color:#aeb8c7;font:600 8px var(--mono);text-transform:uppercase;letter-spacing:.1em}
+.lp-welcome{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:#030406;opacity:1;transition:opacity .55s ease,visibility .55s}.lp-welcome.leave{opacity:0;visibility:hidden;pointer-events:none}.lp-welcome>div{text-align:center;animation:lpWelcomeIn .65s cubic-bezier(.2,.9,.2,1) both}.lp-welcome #landingWelcomeBlob{display:block;width:108px;height:108px;margin:0 auto 19px;filter:drop-shadow(0 20px 38px rgba(46,147,255,.38))}.lp-welcome .blob{width:108px;height:108px}.lp-welcome b,.lp-welcome small{display:block}.lp-welcome b{font:600 22px var(--display);letter-spacing:-.03em}.lp-welcome small{margin-top:7px;color:#6f7784;font:500 8px var(--mono);text-transform:uppercase;letter-spacing:.1em}@keyframes lpWelcomeIn{from{opacity:0;transform:translateY(18px) scale(.94)}to{opacity:1;transform:none}}
+#auth{background:radial-gradient(850px 500px at 78% 40%,rgba(32,99,210,.2),transparent 68%),#05070a;color:#f5f7fa}.auth-split{max-width:1100px;min-height:650px;grid-template-columns:minmax(380px,.88fr) minmax(480px,1.12fr);gap:10px;padding:10px;border:1px solid rgba(255,255,255,.11);border-radius:28px;background:#090b0f;box-shadow:0 40px 120px rgba(0,0,0,.55)}.auth-form-panel{position:relative;padding:56px 54px;border-radius:20px;background:#0b0e13;color:#f5f7fa}.auth-form-panel .mark{margin-bottom:42px;color:#5b6573}.auth-form-panel .mark::before{content:"";display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:#52b9ff;box-shadow:0 0 13px rgba(74,171,255,.8)}.auth-form-panel h1{color:#fff;font-size:38px}.auth-form-panel .lead{color:#7f8793}.auth-home{position:absolute;left:54px;top:28px;color:#6f7884}.auth-form{margin-top:30px}.af label{color:#9ba4b0}.af .box{min-height:50px;padding:12px 14px;border:1px solid rgba(255,255,255,.1);background:#11151b;box-shadow:none}.af .box:focus-within{border-color:#479fff;box-shadow:0 0 0 3px rgba(54,144,255,.1)}.af .box input{color:#f5f7fa}.af .box input::placeholder{color:#58616d}.auth-btn{min-height:49px;border-radius:12px;background:linear-gradient(135deg,#62d4ff,#2a86ff);color:#06101b;box-shadow:0 15px 34px rgba(35,125,255,.22)}.auth-alt2{color:#6f7782}.auth-alt2 button{color:#d7eaff}.auth-security{border-color:rgba(255,255,255,.08);color:#65707d}.auth-security b{color:#aeb8c5}.auth-visual{display:grid!important;border-radius:20px;background:radial-gradient(70% 62% at 78% 19%,rgba(90,174,255,.78),transparent 58%),radial-gradient(72% 72% at 12% 93%,rgba(24,102,255,.72),transparent 64%),linear-gradient(145deg,#071226,#071a47 48%,#030816)}.auth-visual::before{background:linear-gradient(145deg,rgba(166,221,255,.55),rgba(48,131,255,.06))}.auth-mate2{width:min(330px,63%);height:auto;aspect-ratio:1}.auth-mate2 .blob{width:100%;height:100%}.auth-visual-copy b{font-size:25px}.auth-visual-copy span{color:rgba(255,255,255,.62)}.odp-card{background:#0d1118;color:#fff;border:1px solid rgba(255,255,255,.1)}.odp-card p{color:#85909d}.odp-input{background:#111720;color:#fff;border-color:rgba(255,255,255,.12)}
+@media(max-width:980px){.lp-business-gallery{grid-template-columns:1fr 1fr}.auth-split{grid-template-columns:1fr;max-width:560px;min-height:0}.auth-visual{display:none!important}.auth-form-panel{min-height:610px}}
+@media(max-width:620px){.lp-feature:has(.lp-feature-visual) h3,.lp-feature:has(.lp-feature-visual) p{max-width:100%}.lp-feature-visual{width:40%;height:82px;opacity:.18}.lp-business-gallery{grid-template-columns:1fr}.lp-pricing{width:calc(100% - 24px);padding:30px 24px;display:block}.lp-pricing-badge{display:inline-flex;margin-top:24px}.auth-split{padding:6px;border-radius:22px}.auth-form-panel{min-height:0;padding:74px 26px 34px}.auth-home{left:26px;top:26px}.auth-form-panel h1{font-size:32px}.auth-security{align-items:flex-start;flex-direction:column}}
 </style>
 
 </head>
@@ -2546,6 +2558,7 @@ body{user-select:none;-webkit-user-select:none}input,textarea,select,[contentedi
 
 <!-- LANDING PUBLIQUE -->
 <div id="landing" aria-label="Présentation de GRID">
+  <div class="lp-welcome" id="landingWelcome" aria-hidden="true"><div><span id="landingWelcomeBlob"></span><b>Bienvenue dans GRID</b><small>Ton Business OS se met en place</small></div></div>
   <div class="lp-glow one" aria-hidden="true"></div>
   <div class="lp-glow two" aria-hidden="true"></div>
   <div class="lp-noise" aria-hidden="true"></div>
@@ -2556,6 +2569,7 @@ body{user-select:none;-webkit-user-select:none}input,textarea,select,[contentedi
       <div class="lp-links">
         <a href="#lpProduct">Fonctionnalités</a>
         <a href="#lpBusiness">Business</a>
+        <a href="#lpPricing">Pricing</a>
         <a href="#lpSecurity">Sécurité</a>
       </div>
       <div class="lp-auth-actions">
@@ -2632,7 +2646,13 @@ body{user-select:none;-webkit-user-select:none}input,textarea,select,[contentedi
       </section>
 
       <section class="lp-section lp-reveal" id="lpBusiness">
-        <div class="lp-section-head"><div><span class="lp-kicker">Multi-business</span><h2>Du général<br>au particulier.</h2></div><p>GRID maintient une base cohérente entre toutes tes activités, tout en réservant à chacune les outils et les indicateurs qui lui sont réellement utiles.</p></div>
+        <div class="lp-section-head"><div><span class="lp-kicker">Les business pris en charge</span><h2>Une base commune.<br>Des outils spécialisés.</h2></div><p>GRID maintient une vision cohérente entre toutes tes activités, puis adapte ses outils au fonctionnement réel de chaque business.</p></div>
+        <div class="lp-business-gallery">
+          <article><span class="lp-business-state ready">Disponible</span><div class="lp-business-glyph">F</div><h3>UEFN Fortnite</h3><p>Suivi des cartes, revenus, dépenses, clôtures et outils de production intégrés.</p><small>Créateurs et studios UEFN</small></article>
+          <article><span class="lp-business-state ready">Disponible</span><div class="lp-business-glyph">C</div><h3>Casino</h3><p>Jeux, sessions, mouvements, dépôts, cashouts et balance opérationnelle.</p><small>Gestion complète des sessions</small></article>
+          <article class="soon"><span class="lp-business-state">Bientôt</span><div class="lp-business-glyph">P</div><h3>Plateforme privée</h3><p>Un espace dédié aux opérations, utilisateurs et performances d’une plateforme.</p><small>En cours de développement</small></article>
+          <article class="global"><span class="lp-business-state ready">Toujours actif</span><div class="lp-business-glyph">G</div><h3>Vue globale GRID</h3><p>Tous tes chiffres consolidés dans une seule lecture, quel que soit le business.</p><small>Le centre de contrôle</small></article>
+        </div>
         <div class="lp-business-flow">
           <article class="lp-flow-card"><div class="lp-flow-icon">01</div><h3>Tous les business</h3><p>Commence par une vision consolidée de tes chiffres et de tes priorités.</p><small>Décider avec le contexte complet</small></article>
           <article class="lp-flow-card"><div class="lp-flow-icon">02</div><h3>Une activité</h3><p>Isole un business et retrouve son calendrier, ses documents et ses performances.</p><small>Comprendre chaque moteur</small></article>
@@ -2640,19 +2660,24 @@ body{user-select:none;-webkit-user-select:none}input,textarea,select,[contentedi
         </div>
       </section>
 
+      <section class="lp-pricing lp-reveal" id="lpPricing">
+        <div><span class="lp-kicker">Pricing</span><h2>Une offre simple arrive.</h2><p>Les formules GRID seront présentées ici. Les testeurs privés conservent leur accès actuel pendant cette phase.</p></div>
+        <span class="lp-pricing-badge">Bientôt disponible</span>
+      </section>
+
       <section class="lp-section lp-reveal" id="lpSecurity">
-        <div class="lp-section-head"><div><span class="lp-kicker">Confiance</span><h2>Tes données<br>restent à toi.</h2></div><p>Dans cette version, les données métier sont conservées localement dans ton navigateur. L’accès à la création de compte est protégé par code ODP et les actions sensibles demandent une confirmation.</p></div>
+        <div class="lp-section-head"><div><span class="lp-kicker">Sécurité locale</span><h2>Tes données<br>restent sur ton appareil.</h2></div><p>GRID fonctionne sans serveur métier distant dans cette version : les chiffres, documents et préférences restent dans le stockage local de ton navigateur et ne sont pas envoyés vers un cloud GRID.</p></div>
         <div class="lp-business-flow">
-          <article class="lp-flow-card"><div class="lp-flow-icon">L</div><h3>Stockage local</h3><p>Aucun serveur métier GRID ne reçoit volontairement tes chiffres ou tes documents.</p><small>Architecture local-first</small></article>
-          <article class="lp-flow-card"><div class="lp-flow-icon">O</div><h3>Accès ODP</h3><p>La création d’un nouvel espace reste réservée aux utilisateurs autorisés.</p><small>Programme privé</small></article>
-          <article class="lp-flow-card"><div class="lp-flow-icon">↗</div><h3>Exports</h3><p>Tes bilans et tickets peuvent être enregistrés pour garder une copie indépendante.</p><small>Pas de verrouillage</small></article>
+          <article class="lp-flow-card"><div class="lp-flow-icon">L</div><h3>Aucun cloud GRID</h3><p>Tes données de gestion ne quittent pas volontairement le navigateur utilisé pour les enregistrer.</p><small>Contrôle local direct</small></article>
+          <article class="lp-flow-card"><div class="lp-flow-icon">O</div><h3>Création sur invitation</h3><p>Le code ODP réserve l’ouverture d’un nouvel espace aux membres autorisés du programme privé.</p><small>Accès maîtrisé</small></article>
+          <article class="lp-flow-card"><div class="lp-flow-icon">↗</div><h3>Données exportables</h3><p>Bilans et tickets peuvent être enregistrés indépendamment pour conserver tes propres sauvegardes.</p><small>Tes données restent les tiennes</small></article>
         </div>
       </section>
 
       <section class="lp-final lp-reveal"><h2>Prêt à reprendre<br>le contrôle ?</h2><p>Crée ton espace GRID et construis une vue claire de toutes tes activités, dès aujourd’hui.</p><button class="lp-primary" type="button" data-land-auth="create">Créer mon espace GRID</button></section>
     </main>
 
-    <footer class="lp-footer"><a class="lp-brand" href="#landingTop"><span class="lp-brand-blob" id="landingFooterBlob"></span><span>GRID</span></a><span>Propulsé par LVXTON · v5.7.0</span><div class="lp-footer-links"><span>Mentions légales</span><span>CGU</span><span>Confidentialité · RGPD</span></div></footer>
+    <footer class="lp-footer"><a class="lp-brand" href="#landingTop"><span class="lp-brand-blob" id="landingFooterBlob"></span><span>GRID</span></a><span>Propulsé par LVXTON · v5.8.0</span><div class="lp-footer-links"><span>Mentions légales</span><span>CGU</span><span>Confidentialité · RGPD</span></div></footer>
   </div>
 </div>
 
@@ -2700,15 +2725,15 @@ body{user-select:none;-webkit-user-select:none}input,textarea,select,[contentedi
           <span id="authErrTxt"></span>
         </div>
         <div class="auth-alt2" id="authAlt"></div>
-        <div class="auth-security"><span><i></i>Connexion locale sécurisée</span><span>Propulsé par <b>LVXTON</b> · GRID v5.7.0</span></div>
+        <div class="auth-security"><span><i></i>Données conservées sur cet appareil</span><span>Aucun cloud GRID · <b>v5.8.0</b></span></div>
       </div>
     </div>
-    <span id="authBlob" hidden aria-hidden="true"></span>
+    <aside class="auth-visual" aria-hidden="true"><div class="auth-visual-grid"></div><span class="auth-mate2" id="authBlob"></span><div class="auth-visual-copy"><div><b>Ton activité.<br>Enfin lisible.</b></div><span>Un seul environnement pour tous tes chiffres et toutes tes décisions.</span></div></aside>
     <div class="odp-layer" id="odpLayer" role="dialog" aria-modal="true" aria-labelledby="odpTitle" hidden>
       <div class="odp-card">
         <div class="odp-mark" aria-hidden="true">ODP</div>
         <h2 id="odpTitle">Code d’accès requis</h2>
-        <p>La création d’un compte GRID est protégée. Saisissez votre code ODP à 6 chiffres pour continuer.</p>
+        <p>GRID est actuellement réservé au programme privé. Le code ODP confirme que votre invitation autorise la création de cet espace local.</p>
         <input class="odp-input" id="odpCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••" aria-label="Code ODP à 6 chiffres">
         <p class="odp-err" id="odpErr" role="alert"></p>
         <div class="odp-actions"><button class="odp-cancel" id="odpCancel" type="button">Annuler</button><button class="gbtn auth-btn odp-submit" id="odpSubmit" type="button">Vérifier le code</button></div>
@@ -6182,6 +6207,12 @@ window.addEventListener('pointerdown', eyesTo, {passive:true});
    À tenir à jour à CHAQUE mise à jour : une entrée en tête, rien d'autre à faire.
    Grid lit ce tableau, en déduit la version courante et prévient si elle est neuve. */
 const PATCH = [
+  { v:'5.8.0', d:'16 août 2026', items:[
+    ['Landing enrichie', 'la navigation disparaît pendant la lecture, une section Pricing est prête et les business pris en charge disposent de leur galerie.'],
+    ['Interface en mouvement', 'la tablette progresse et se redresse naturellement au rythme du défilement.'],
+    ['Connexion repensée', 'l’entrée adopte une composition nocturne en deux panneaux avec GRID au centre de l’expérience.'],
+    ['Sécurité explicitée', 'les messages expliquent clairement le stockage local, l’absence de cloud métier GRID et le rôle de l’invitation ODP.']
+  ]},
   { v:'5.7.0', d:'16 août 2026', items:[
     ['Nouvelle direction artistique', 'la landing adopte une composition noire et bleue plus spectaculaire, structurée autour d’un horizon lumineux.'],
     ['GRID devient le logo', 'la bulle animée de GRID apparaît maintenant dans la navigation, le hero et le pied de page.'],
@@ -6432,7 +6463,7 @@ function openPatch(){
 }
 function legalFooterHTML(){
   return `<footer class="legal-footer" aria-label="Informations juridiques">
-    <span class="legal-footer-copy">GRID v5.7.0 · Propulsé par LVXTON</span>
+    <span class="legal-footer-copy">GRID v5.8.0 · Propulsé par LVXTON</span>
     <nav class="legal-footer-nav" aria-label="Documents juridiques">
       <button type="button" data-legal="mentions">Mentions légales</button>
       <button type="button" data-legal="terms">Conditions Générales d’Utilisation</button>
@@ -7514,11 +7545,11 @@ $('reveal').addEventListener('click', ()=>{
 fPass.addEventListener('input', ()=>{ clearErr(); gaugePw(); });
 fPseudo.addEventListener('input', clearErr);
 
-/* Il ne regarde pas votre mot de passe. Il ferme les yeux et le dit en violet. */
+/* Il ne regarde pas votre mot de passe : il ferme les yeux en restant bleu GRID. */
 function eyesShut(){
   AUTH_BUB.locked = true;
   AUTH_BUB.look(0, 0);
-  AUTH_BUB.tone('purple');
+  AUTH_BUB.tone('blue');
   AUTH_BUB.set('shut');
 }
 function eyesOpen(){
@@ -8440,6 +8471,25 @@ const LANDING=$('landing');
 const LANDING_BRAND_BLOB=new Blob($('landingBrandBlob'));
 const LANDING_HERO_BLOB=new Blob($('landingHeroBlob'));
 const LANDING_FOOTER_BLOB=new Blob($('landingFooterBlob'));
+const LANDING_WELCOME_BLOB=new Blob($('landingWelcomeBlob'));
+let LANDING_LAST_SCROLL=0,LANDING_SCROLL_FRAME=0;
+function updateLandingMotion(){
+  LANDING_SCROLL_FRAME=0;
+  const y=LANDING.scrollTop,nav=LANDING.querySelector('.lp-nav');
+  if(y>LANDING_LAST_SCROLL&&y>120)nav.classList.add('nav-hidden');
+  else if(y<LANDING_LAST_SCROLL||y<70)nav.classList.remove('nav-hidden');
+  LANDING_LAST_SCROLL=y;
+  const section=LANDING.querySelector('.lp-interface-section');
+  if(section){
+    const rect=section.getBoundingClientRect(),vh=window.innerHeight;
+    const progress=Math.max(0,Math.min(1,(vh-rect.top)/(vh+Math.min(rect.height,850)*.55)));
+    section.style.setProperty('--tablet-y',`${Math.round((1-progress)*130)}px`);
+    section.style.setProperty('--tablet-tilt',`${(15-progress*15).toFixed(2)}deg`);
+    section.style.setProperty('--tablet-scale',(.89+progress*.11).toFixed(3));
+    section.style.setProperty('--tablet-opacity',(.55+progress*.45).toFixed(3));
+  }
+}
+LANDING.addEventListener('scroll',()=>{if(!LANDING_SCROLL_FRAME)LANDING_SCROLL_FRAME=requestAnimationFrame(updateLandingMotion);},{passive:true});
 function openLandingAuth(mode){
   MODE=mode==='login'?'login':'create';
   paintAuth();
@@ -8463,8 +8513,10 @@ function returnToLanding(){
 LANDING.addEventListener('click',event=>{
   const authTrigger=event.target.closest('[data-land-auth]');
   if(authTrigger){openLandingAuth(authTrigger.dataset.landAuth);return;}
+  const anchor=event.target.closest('a[href^="#"]');
+  if(anchor){const target=document.querySelector(anchor.getAttribute('href'));if(target){event.preventDefault();const top=target.getBoundingClientRect().top-LANDING.getBoundingClientRect().top+LANDING.scrollTop;LANDING.scrollTo({top:Math.max(0,top-16),behavior:'smooth'});}return;}
   const scrollTrigger=event.target.closest('[data-land-scroll]');
-  if(scrollTrigger){document.getElementById(scrollTrigger.dataset.landScroll)?.scrollIntoView({behavior:'smooth',block:'start'});}
+  if(scrollTrigger){const target=document.getElementById(scrollTrigger.dataset.landScroll);if(target){const top=target.getBoundingClientRect().top-LANDING.getBoundingClientRect().top+LANDING.scrollTop;LANDING.scrollTo({top:Math.max(0,top-16),behavior:'smooth'});}}
 });
 $('authHomeBtn').addEventListener('click',returnToLanding);
 if('IntersectionObserver' in window){
@@ -8492,6 +8544,8 @@ if('IntersectionObserver' in window){
   if(legacyAccountsRemoved){const note=document.createElement('div');note.className='auth-migration-note';note.textContent='Mise à niveau de sécurité : les anciens identifiants GRID ont été supprimés. Créez un nouveau compte pour continuer.';$('authAlt').insertAdjacentElement('beforebegin',note);}
   LANDING.classList.add('on');
   LANDING.scrollTop=0;
+  updateLandingMotion();
+  setTimeout(()=>$('landingWelcome')?.classList.add('leave'),1450);
 })();
 </script>
 </body>
